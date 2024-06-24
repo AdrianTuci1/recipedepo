@@ -1,0 +1,170 @@
+@use './responsive.scss' as media;
+@import './variables.scss';
+
+.sectiune_reteta{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: $darkGreen;
+    @include media.tablet{
+        height: 150vh;
+    }
+}
+
+.reteta-page{
+    display: grid;
+    grid-template-columns: 300px 2fr;
+    width: 800px;
+    height: 600px;
+    @include media.tablet{
+        display: flex;
+        flex-direction: column-reverse;
+        width: 400px;
+        height: 1000px;
+    }
+}
+
+.reteta-left{
+    background-color:antiquewhite;
+    display: flex;
+    overflow: hidden;
+    justify-content: center;
+}
+
+.reteta-image{
+    object-fit: contain;
+}
+
+
+.reteta-right{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+.like-print-share{
+    flex: 1;
+    position: absolute;
+    transform: translateX(+900%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    background-color: gray;
+    align-items: center;
+    width: 50px;
+    @include media.tablet{
+        transform: translateX(+700%);
+    }
+}
+
+.preparare{
+    transform: translateY(-150%);
+    height: 100px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    @include media.tablet{
+        transform: translateY(0%);
+    }
+}
+
+
+.social-ins{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 150px;
+    .instructiuni{
+        background-color: darkgray;
+        display: flex;
+        height: 100px;
+        flex-direction: column;
+        align-items: center;
+        .cook{
+            width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+
+.reteta-ingrediente{
+    padding-top: 10px;
+    height: 190px;
+    width: 380px;
+}
+
+.reteta-title{
+    width: 380px;
+    height: 80px;
+}
+
+.mod{
+    height: 32px;
+    display: flex;
+    align-items: center;
+}
+
+.reteta-wrapper{
+    padding: 20px;
+}
+
+.d{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ins-text{
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    height: 60px;
+}
+
+.ins-button{
+    width: 100px;
+}
+
+.icn{
+    width: 100%;
+    margin-right: 10px;
+    display: flex;
+}
+
+.a{
+    width: 20px;
+    height: 20px;
+}
+
+.sc{
+    width: 40px;
+}
+.social{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    background-color: gray;
+    gap: 10px;
+}
+
+.username{
+    width: fit-content;
+}
+
+.butoane{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 90px;
+
+    .btn-reteta{
+        width: 70px;
+        height: 70px;
+    }
+}

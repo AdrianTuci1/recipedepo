@@ -1,0 +1,64 @@
+@use './responsive.scss' as media;
+@import './variables.scss';
+
+.sectiune_1{
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    color: $textWhite;
+    font-family: $primaryFont;
+    background-color: $darkGreen;
+    @include media.tablet{
+        height: auto;
+        flex-direction: column;
+    }
+}
+
+.buttons{
+    display: flex;
+    gap: 30px;
+    button{
+        width: 170px;
+        margin: 20px 0px;
+        padding: 7px;
+        border-radius: 50px;
+        border: none;
+    }
+}
+
+.strong{
+    color: $darkOrange;
+}
+
+.text_big{
+    font-size: 40px;
+}
+
+.stanga{
+    padding-top: 20vh;
+    padding-bottom: 20vh;
+    padding-left: 5%;
+    padding-right: 5%;
+    @include media.tablet{
+        width: 90%;
+    }
+}
+
+.dreapta{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img01{
+    width: 170px;
+    rotate: 10deg;
+    outline: 3px solid whitesmoke;
+}
+
+.img02{
+    width: 230px;
+    rotate: -10deg;
+    outline: 3px solid whitesmoke;
+    transform: translateY(-10%);
+}

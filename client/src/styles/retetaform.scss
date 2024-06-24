@@ -1,0 +1,15 @@
+@import './variables.scss';
+
+.recipe-form{
+    width: 60%;
+    background-color: $darkerGreen;
+    padding: 10%;
+    border-radius: 20px;
+    margin-top: 50px;
+    color: white;
+}
+
+.adauga-content{
+    background-color: $darkGreen;
+    height: 100vh;
+}

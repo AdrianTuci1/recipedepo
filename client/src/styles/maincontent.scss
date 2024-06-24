@@ -1,0 +1,23 @@
+
+.second_row{
+    margin-top: 10px;
+    display: flex;
+}
+.sorteaza{
+    display: flex;
+    flex-direction: row;
+    .sort-dropdown{
+        width: 140px;
+    }
+}
+
+.filter-row{
+    margin-top: 10px;
+    display: flex;
+    width: 50%;
+}
+
+.recipe-card-container{
+    background-color: rgb(0, 31, 0);
+    height: auto;
+}

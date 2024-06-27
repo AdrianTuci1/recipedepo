@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
-import { loginSuccess } from '../reducers/actions'
+import { loginSuccess } from '../redux/authSlice';
+
 
 interface LoginFormProps {
   onClose: () => void;
@@ -42,13 +44,18 @@ const LoginComponent: React.FC<LoginFormProps> = ({ onClose, onSubmit }: LoginFo
         setError(data.message || 'Login failed'); // Provide more specific error message (if available)
       } else {
         const data = await response.json();
-
-        // Handle successful login (store JWT token securely)
+        const userData = {
+          id: data.id,
+          username: data.username,
+          email: data.email,
+          roles: data.roles,
+        };
         const token = data.accessToken; // Assuming the backend sends the token in the response
         storeToken(token); // Implement secure token storage (see next section)
-        dispatch(loginSuccess(data.user))
         onSubmit(username, password); // Pass credentials for further processing (optional)
-        console.log('Login successful:', data); // Optional logging
+        console.log('Login successful:', userData); // Optional logging
+        dispatch(loginSuccess({ user: userData, token: token, roles: data.roles }));
+        onClose();
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -59,7 +66,7 @@ const LoginComponent: React.FC<LoginFormProps> = ({ onClose, onSubmit }: LoginFo
   };
 
   const storeToken = (token: string) => {
-    document.cookie = `jwtToken=${token}; HttpOnly; Secure; SameSite=Strict`;
+    Cookies.set('auth_token', token, { expires: 1, secure: true, httpOnly: true });
     console.log('Storing token in HttpOnly cookie'); // Optional logging
   };
   

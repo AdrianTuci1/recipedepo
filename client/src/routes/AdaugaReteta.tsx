@@ -2,6 +2,7 @@
 import RetetaForm from '../components/RetetaForm'
 import { RecipeCardProps } from '../components/RecipeCard';
 import '../styles/retetaform.scss'
+import Cookies from 'js-cookie';
 
 function AdaugaReteta() {
 
@@ -25,14 +26,20 @@ const initialRecipeData:RecipeCardProps = {
   comments:    0,
   author:      '',
   isPublic:    false,
+  userId: '',
+  approved: false,
 }
 
   const handleSubmit = async (data: RecipeCardProps) => {
 
     try {
+      const token = Cookies.get('auth_token');
       const response = await fetch('http://localhost:8080/api/recipes', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` 
+        },
         body: JSON.stringify(data),
       });
 

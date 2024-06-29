@@ -73,6 +73,10 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false
       },
+      approved: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      },
       created_at: {
         allowNull: false,
         type: DataTypes.DATE
@@ -80,8 +84,14 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
       updated_at: {
         allowNull: false,
         type: DataTypes.DATE
-      }
-    },
+      },
+      userId: {
+        type: DataTypes.UUID,
+        references: {
+          model: 'users', // Name of the User model
+          key: 'id'
+        }
+    }},
     {
       // Options
       timestamps: true,
@@ -90,6 +100,13 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
       updatedAt: "updated_at"
     }
   );
+
+  Recipe.associate = function(models) {
+    Recipe.belongsTo(models.user, {
+      foreignKey: 'userId',
+      as: 'user'
+    });
+  };
 
   return Recipe;
 };

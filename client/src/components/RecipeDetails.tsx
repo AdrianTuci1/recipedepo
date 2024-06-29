@@ -93,7 +93,7 @@ function RecipeDetails({ recipe }: { recipe: RecipeCardProps }) {
                 <Heart className="a" /> {recipe.likes}
               </div>
               <div className="username icn">
-                <User className="a" /> {recipe.author}
+                <User className="a" /> {recipe.userId}
               </div>
             </div>
           </div>

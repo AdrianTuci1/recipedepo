@@ -5,15 +5,15 @@ function HomePage() {
     <div className="sectiune_1">
       <div className="stanga">
         <h1 className='text_big'>CAUTA <a className='strong'>RETETELE</a> TALE PREFERATE</h1>
-        <h3>
-        Aici gasesti cele mai bune retete de mancare!
-        </h3>
+        <h2>
+        AICI GASESTI CELE MAI BUNE RETETE DE MANCARE!
+        </h2>
         <p>
-        Pagina functioneaza ca o retea sociala, 
-        alege din retetele postate de utilizatori sau
-        creeaza-ti propriile retete. Poti adauga la favorite
-        sau gestiona retele tale si poti creea un plan de mancare
-        pentru urmatoarele zile.
+                PAGINA FUNCȚIONEAZĂ CA O RETEA SOCIALA,
+        ALEGE DIN RETELELE POSTATE DE UTILIZATORI SAU
+        CREAZĂ-ȚI PROPRIILE RETETE. POȚI ADAUGA LA FAVORITE
+        SAU GESTIONA RETELE TALE ȘI POȚI CREA UN PLAN DE MÂNCARE
+        PENTRU URMATOARELE ZILE.
         </p>
         <div className='buttons'>
         <button>VEZI RETETELE</button>

@@ -34,7 +34,7 @@ function NavBar() {
         </button>
         <div className={`dropdown-content ${dropdownOpen ? 'show' : ''}`}>
             <a href="/">Acasa</a>
-            <a href="/recipes">Retete</a>
+            <a href="/retete">Retete</a>
             <a href="/catering">Meniu Digital</a>
         </div>
        <img src="./logocook.png" alt="" className='logo'/>
@@ -43,7 +43,7 @@ function NavBar() {
         <ul className='pages'>
             <li><Link to="/" style={{textDecoration: 'none', color: 'whitesmoke'}}>ACASA</Link></li>
             <li><Link to="/retete" style={{textDecoration: 'none', color: 'whitesmoke'}}>RETETE</Link></li>
-            <li style={{minWidth:'120px'}}>MENIU DIGITAL</li>
+            <li style={{minWidth:'120px'}}>MENIU</li>
         </ul>
         <div className="buttonz" style={{ width:'150px', height:'50px', display:'flex'}}>
         <Link to="/retetele_mele" className='hidden' style={{width:'50px', height:'50px', display: 'flex', justifyContent:'center', alignItems:'center', textDecoration:'none', color:'white', marginLeft:'20%',}}><Library className='lib'/></Link>

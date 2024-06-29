@@ -18,6 +18,7 @@ import RegisterPage from './routes/RegisterPage';
 import ProtectedRoute from './functional/ProtectedRoute';
 import { AppDispatch } from './redux/store';
 import NotAuthorized from './routes/NotAuthorized';
+import PaginaAdmin from './routes/PaginaAdmin';
 
 
 function App () {
@@ -41,7 +42,7 @@ function App () {
     <Route 
       path="/retetele_mele" 
       element={
-      <ProtectedRoute requiredRoles={['ROLE_USER']}>
+      <ProtectedRoute requiredRoles={['ROLE_USER', 'ROLE_ADMIN']}>
         <Layout />
       </ProtectedRoute>}>
       <Route path='' element={<ReteteleMele />} />
@@ -51,6 +52,7 @@ function App () {
     <Route path='/setari' element={<SetariPage />} />
     <Route path='/inregistrare' element={<RegisterPage />} />
     <Route path='/not-authorized' element={<NotAuthorized />} />
+    <Route path='/admin' element={<PaginaAdmin />} />
   </Routes>
   </div>
     </>

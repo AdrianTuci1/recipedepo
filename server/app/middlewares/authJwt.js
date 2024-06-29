@@ -4,7 +4,7 @@ const db = require("../models");
 const User = db.user;
 
 verifyToken = (req, res, next) => {
-  let token = req.headers["x-access-token"];
+  let token = req.headers["authorization"];
 
   if (!token) {
     return res.status(403).send({
@@ -12,35 +12,53 @@ verifyToken = (req, res, next) => {
     });
   }
 
+  token = token.split(" ")[1]; // Assuming 'Bearer <token>'
+
   jwt.verify(token, config.auth.secret, (err, decoded) => {
     if (err) {
+      console.log('Token verification failed:', err); // Log the error
       return res.status(401).send({
         message: "Unauthorized!"
       });
     }
 
     req.userId = decoded.id;
-
+    console.log(`Token verified, user ID: ${req.userId}`);
     next();
   });
 };
 
-isAdmin = (req, res, next) => {
-  User.findByPk(req.userId).then(user => {
-    user.getRoles().then(roles => {
-      for (let i = 0; i < roles.lenth; i++) {
-        if (roles[i].name === "admin") {
-          next();
-          return;
-        }
+const isAdmin = (req, res, next) => {
+  User.findByPk(req.userId)
+    .then(user => {
+      if (!user) {
+        return res.status(404).send({ message: "User not found!" });
       }
 
-      res.status(403).send({
-        message: "Require Admin Role!"
+      user.getRoles()
+        .then(roles => {
+          for (let i = 0; i < roles.length; i++) {
+            if (roles[i].name === "admin") {
+              next();
+              return;
+            }
+          }
+
+          res.status(403).send({
+            message: "Require Admin Role!"
+          });
+        })
+        .catch(err => {
+          res.status(500).send({
+            message: "Error retrieving user roles"
+          });
+        });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error retrieving user"
       });
-      return;
     });
-  });
 };
 
 isModerator = (req, res, next) => {

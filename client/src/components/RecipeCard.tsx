@@ -17,11 +17,13 @@ export interface RecipeCardProps {
   otherKitchen?:string;
   ingredients: string; // 400gr Pui, 1/2 linguri sare, 1 ou
   steps:       string; // se prajesc cartofii, se pune puiul pe grill
+  author:      string;
   likes:       number; 
   views:       number;
   comments:    number;
-  author:      string;
+  userId:      string;
   isPublic:    boolean;
+  approved:    boolean;
 }
 
 function RecipeCard({ recipe }: { recipe: RecipeCardProps}) {

@@ -1,164 +1,195 @@
 const db = require("../models");
 const Recipe = db.recipes;
+const User = db.user;
 const Op = db.Op;
 
-// Create and Save a new 
-exports.create = (req, res) => {
+// Create and Save a new Recipe
+exports.create = async (req, res) => {
   // Validate request
   if (!req.body.title) {
-    res.status(400).send({
+    return res.status(400).send({
       message: "Content can not be empty!"
     });
-    return;
   }
 
-  // Create a Recipe
-  const { title, author, published = false, 
-    imageUrl, cookingTime, prepTime, type, options, servings,
-    difficulty, price, kitchen, otherKitchen, 
-    ingredients, // Initialize as empty JSON string
-    steps, // Initialize as empty JSON string
-    likes = 0, views = 0, comments = 0, isPublic = false } = req.body;
+  try {
+    // Create a Recipe
+    const { 
+      title, imageUrl, cookingTime, prepTime, type, options, servings,
+      difficulty, price, kitchen, ingredients, steps, isPublic 
+    } = req.body;
 
-    const recipe = {
-      title,
-      author,
-      imageUrl,
-      cookingTime,
-      prepTime,
-      type,
-      options,
-      servings,
-      difficulty,
-      price,
-      kitchen,
-      otherKitchen,
-      ingredients: JSON.stringify(ingredients), 
-      steps: JSON.stringify(steps), 
-      likes,
-      views,
-      comments,
-      isPublic
-    };
+    const userId = req.userId; // Assumed set by auth middleware
 
-  // Save Recipe in database
-  Recipe.create(recipe)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while creating the Recipe."
-      });
+    const recipe = await Recipe.create({
+      title, imageUrl, cookingTime, prepTime, type, options, servings,
+      difficulty, price, kitchen, ingredients: JSON.stringify(ingredients),
+      steps: JSON.stringify(steps), isPublic, userId, author: req.userId // Assuming `author` to be `req.userId`
     });
+
+    res.send(recipe);
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occurred while creating the Recipe."
+    });
+  }
 };
-
 // Retrieve all Recipes from the database.
-exports.findAll = (req, res) => {
+exports.findAll = async (req, res) => {
   const title = req.query.title;
-  var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+  const condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
-  Recipe.findAll({ where: condition })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      // Create a new response object for error handling
-      const errorResponse = { message: err.message || "Some error accurred while retrieving recipes." };
-      res.status(500).json(errorResponse); // Send error response with JSON data
-    });
+  try {
+    const recipes = await Recipe.findAll({ where: condition });
+    res.send(recipes);
+  } catch (error) {
+    res.status(500).json({ message: error.message || "Some error occurred while retrieving recipes." });
+  }
 };
 
 // Find a single Recipe with an id
-exports.findOne = (req, res) => {
+exports.findOne = async (req, res) => {
   const id = req.params.id;
 
-  Recipe.findByPk(id)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: `Error retrieving Recipe with id = ${id}`
-      });
-    });
+  try {
+    const recipe = await Recipe.findByPk(id);
+    if (recipe) {
+      res.send(recipe);
+    } else {
+      res.status(404).send({ message: `Recipe with id=${id} not found` });
+    }
+  } catch (error) {
+    res.status(500).send({ message: `Error retrieving Recipe with id=${id}` });
+  }
 };
 
 // Update a Recipe by the id in the request
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
   const id = req.params.id;
+  const userId = req.user.id; // Assuming req.user contains the authenticated user
 
-  Recipe.update(req.body, {
-    where: { id: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Recipe was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update Recipe with id=${id}. Maybe Recipe was not found or req.body is empty!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating Book with id=" + id
-      });
-    });
+  try {
+    const [num] = await Recipe.update(req.body, { where: { id, userId } });
+    if (num === 1) {
+      res.send({ message: "Recipe was updated successfully." });
+    } else {
+      res.send({ message: `Cannot update Recipe with id=${id}. Maybe Recipe was not found or req.body is empty!` });
+    }
+  } catch (error) {
+    res.status(500).send({ message: "Error updating Recipe with id=" + id });
+  }
 };
 
 // Delete a Recipe with the specified id in the request
-exports.delete = (req, res) => {
+exports.delete = async (req, res) => {
   const id = req.params.id;
+  const userId = req.user.id; // Assuming req.user contains the authenticated user
 
-  Recipe.destroy({
-    where: { id: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Recipe was deleted successfully!"
-        });
-      } else {
-        res.send({
-          message: `Cannot delete Recipe with id=${id}. Maybe Recipe was not found!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Could not delete Recipe with id=" + id
-      });
-    });
+  try {
+    const num = await Recipe.destroy({ where: { id, userId } });
+    if (num === 1) {
+      res.send({ message: "Recipe was deleted successfully!" });
+    } else {
+      res.send({ message: `Cannot delete Recipe with id=${id}. Maybe Recipe was not found!` });
+    }
+  } catch (error) {
+    res.status(500).send({ message: "Could not delete Recipe with id=" + id });
+  }
 };
 
 // Delete all Recipes from the database.
-exports.deleteAll = (req, res) => {
-  Recipe.destroy({
-    where: {},
-    truncate: false
-  })
-    .then(nums => {
-      res.send({ message: `${nums} Recipes were deleted successfully!` });
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while removing all recipes."
-      });
-    });
+exports.deleteAll = async (req, res) => {
+  try {
+    const nums = await Recipe.destroy({ where: {}, truncate: false });
+    res.send({ message: `${nums} Recipes were deleted successfully!` });
+  } catch (error) {
+    res.status(500).send({ message: error.message || "Some error occurred while removing all recipes." });
+  }
 };
 
-// Find all published Recipes
-exports.findAllPublished = (req, res) => {
-  Recipe.findAll({ where: { published: true } })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving recipes."
-      });
+// Find all public Recipes
+exports.findAllPublic = async (req, res) => {
+  try {
+    const recipes = await Recipe.findAll({ where: { isPublic: true, approved: true } });
+    res.send(recipes);
+  } catch (error) {
+    res.status(500).send({ message: error.message || "Some error occurred while retrieving public recipes." });
+  }
+};
+
+// Get all recipes for the authenticated user
+exports.findUserRecipes = (req, res) => {
+  const userId = req.userId;
+  console.log(`Fetching recipes for user ID: ${userId}`); // Log user ID
+
+  Recipe.findAll({
+    where: {
+      author: userId
+    }
+  })
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    console.error('Error fetching user recipes:', err); // Log the error
+    res.status(500).send({
+      message: err.message || "Some error occurred while retrieving user recipes."
     });
+  });
+};
+
+
+
+// Send a Recipe for approval (user)
+exports.requestApproval = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userId = req.userId;
+
+    const [updated] = await Recipe.update({ isPublic: true }, { where: { id, userId } });
+
+    if (updated) {
+      const recipe = await Recipe.findByPk(id);
+      return res.send({ message: "Recipe was sent for approval successfully.", recipe });
+    }
+
+    throw new Error(`Cannot send Recipe with id=${id} for approval. Maybe Recipe was not found!`);
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || `Error sending Recipe with id=${id} for approval`
+    });
+  }
+};
+
+// Retrieve all Recipes awaiting approval (admin)
+exports.findAllPendingApproval = async (req, res) => {
+  try {
+    const recipes = await Recipe.findAll({ where: { isPublic: true, approved: false } });
+    res.send(recipes);
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occurred while retrieving recipes pending approval."
+    });
+  }
+};
+
+// Approve or deny a Recipe (admin)
+exports.approveOrDenyRecipe = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { approve } = req.body; // approve should be true or false
+
+    const [updated] = await Recipe.update({ approved: approve }, { where: { id } });
+
+    if (updated) {
+      const updatedRecipe = await Recipe.findByPk(id);
+      return res.send({ message: `Recipe was ${approve ? 'approved' : 'denied'} successfully.`, recipe: updatedRecipe });
+    }
+
+    throw new Error(`Cannot update approval status of Recipe with id=${id}. Maybe Recipe was not found!`);
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || `Error updating approval status of Recipe with id=${id}`
+    });
+  }
 };

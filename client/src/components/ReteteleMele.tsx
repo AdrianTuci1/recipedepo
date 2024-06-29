@@ -1,6 +1,7 @@
 import RecipeCard, {RecipeCardProps} from "./RecipeCard"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 interface RecipeListProps {
 }
@@ -17,9 +18,14 @@ function ReteteleMele({}: RecipeListProps) {
     const fetchData = async () => {
       setIsLoading(true);
       setError(null); // Reset error on each fetch
+      const token = Cookies.get('auth_token')
 
       try {
-        const response = await fetch('http://localhost:8080/api/recipes'); // Replace with your server URL
+        const response = await fetch('http://localhost:8080/api/recipes/user/recipes',{
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }); // Replace with your server URL
         const data = await response.json();
         setRecipes(data);
       } catch (error) {

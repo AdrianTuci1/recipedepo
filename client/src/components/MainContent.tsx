@@ -16,7 +16,7 @@ function MainContent() {
       setError(null); // Reset error on each fetch
 
       try {
-        const response = await fetch('http://localhost:8080/api/recipes'); // Replace with your server URL
+        const response = await fetch('http://localhost:8080/api/recipes/public'); // Replace with your server URL
         const data = await response.json();
         setRecipes(data);
       } catch (error) {

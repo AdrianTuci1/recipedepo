@@ -1,29 +1,19 @@
-const { authJwt } = require("../middlewares");
-const controller = require("../controllers/user.controller");
+const upload = require('../middlewares/upload.middleware');
 
-module.exports = function(app) {
-  app.use(function(req, res, next) {
-    res.header(
-      "Access-Control-Allow-Headers",
-      "x-access-token, Origin, Content-Type, Accept"
-    );
+module.exports = (app) => {
+  const userController = require("../controllers/user.controller.js");
+  const { verifyToken, isAdmin } = require("../middlewares/authJwt");
 
-    next();
-  });
+  const router = require("express").Router();
 
-  app.get("/api/test/all", controller.allAccess);
+  // Get user information by ID (for logged-in user)
+  router.get("/:id", verifyToken, userController.getUserById);
 
-  app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);
+  // Update user information by ID (for logged-in user)
+  router.put("/:id", verifyToken, upload.single('image'), userController.updateUser);
 
-  app.get(
-    "/api/test/mod",
-    [authJwt.verifyToken, authJwt.isModerator],
-    controller.moderatorBoard
-  );
+  // Get all users (only accessible by admins)
+  router.get("/", verifyToken, isAdmin, userController.getAllUsers);
 
-  app.get(
-    "/api/test/admin",
-    [authJwt.verifyToken, authJwt.isAdmin],
-    controller.adminBoard
-  );
+  app.use("/api/users", router);
 };

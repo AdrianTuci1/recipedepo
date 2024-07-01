@@ -66,9 +66,12 @@ exports.findOne = async (req, res) => {
 // Update a Recipe by the id in the request
 exports.update = async (req, res) => {
   const id = req.params.id;
-  const userId = req.user.id; // Assuming req.user contains the authenticated user
+  const userId = req.userId; // Assuming req.user contains the authenticated user
 
   try {
+    console.log(`Updating recipe with ID: ${id} for user ID: ${userId}`);
+    console.log('Update data:', req.body); // Log the incoming data
+
     const [num] = await Recipe.update(req.body, { where: { id, userId } });
     if (num === 1) {
       res.send({ message: "Recipe was updated successfully." });
@@ -76,6 +79,7 @@ exports.update = async (req, res) => {
       res.send({ message: `Cannot update Recipe with id=${id}. Maybe Recipe was not found or req.body is empty!` });
     }
   } catch (error) {
+    console.error('Error updating recipe:', error); // Log the error
     res.status(500).send({ message: "Error updating Recipe with id=" + id });
   }
 };

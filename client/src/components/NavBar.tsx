@@ -11,11 +11,6 @@ function NavBar() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
-  // Implement your login logic here (e.g., send login request to server)
-  const handleLoginSubmit = (username: string, password: string) => {
-    console.log('Login attempted:', username, password);
-    // Replace with your actual login logic
-  };
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -59,7 +54,6 @@ function NavBar() {
       {showLoginModal && (
         <LoginComponent
           onClose={() => setShowLoginModal(false)}
-          onSubmit={handleLoginSubmit}
         />
       )}
       </div>

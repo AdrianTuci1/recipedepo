@@ -17,12 +17,26 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
       },
       password: {
         type: DataTypes.STRING
+      },
+      phoneNumber: {
+        type: DataTypes.STRING
+      },
+      image: {
+        type: DataTypes.STRING
+      },
+      verified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      },
+      banned: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       }
     },
     {
       // Options
       timestamps: true,
-      underscrored: true,
+      underscored: true,
       createdAt: "created_at",
       updatedAt: "updated_at"
     }

@@ -1,151 +1,117 @@
-import React, { useState } from 'react';
-import '../styles/usersettings.scss';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import { updateUser } from '../redux/authSlice';
 
-interface UserSettings {
-  userId: string; // Unique user identifier
-  fullName: string;
-  email: string;
-  phone: string;
-  verified: boolean;
-  profileImage?: string; // Optional profile image URL
-}
+const UserSettings: React.FC = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch();
 
-const dummyUser: UserSettings = {
-  userId: 'user123',
-  fullName: 'John Doe',
-  email: 'john.doe@example.com',
-  phone: '+1234567890',
-  verified: true,
-  profileImage: 'https://picsum.photos/200',
-};
+  // Initialize state with user data or empty strings
+  const [username, setUsername] = useState(user?.username || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || '');
+  const [image, setImage] = useState<File | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-const UserSettingsPage: React.FC = () => {
-  const [user, setUser] = useState<UserSettings>(dummyUser);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
-  // We don't need updatedUser for ID change
+  // Update state if user data changes
+  useEffect(() => {
+    if (user) {
+      setUsername(user.username || '');
+      setEmail(user.email || '');
+      setPhoneNumber(user.phoneNumber || '');
+    }
+  }, [user]);
 
-  const verificationStatus = user.verified ? 'Verified' : 'Not Verified';
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUser({
-      ...user,
-      [event.target.name]: event.target.value,
-    });
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setImage(event.target.files[0]);
+    }
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // Simulate image upload (replace with your actual logic)
-    console.log('Image uploaded:', event.target.files?.[0].name);
+  const handleUpdateUser = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError(null);
+    setIsLoading(true);
+
+    if (user) {
+      const formData = new FormData();
+      formData.append('username', username);
+      formData.append('email', email);
+      formData.append('phoneNumber', phoneNumber);
+      if (image) {
+        formData.append('image', image);
+      }
+
+      try {
+        await dispatch(updateUser(user.id, formData) as any);
+        setError('User information updated successfully');
+      } catch (error: any) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
   };
 
-  const handleSaveSettings = () => {
-    // Update UI with other edited values (if any)
-    // Update logic would normally go here (commented out)
-    // setUser(user); // Assuming successful update
-    setIsEditing(false);
-  };
-
-  const handleDeleteAccount = () => {
-    // Implement logic to delete account (replace with your backend logic)
-    console.log('Deleting account...');
-    // After successful deletion, you can redirect to login page or handle it differently
-  };
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="user-settings">
-      <h2>User Settings</h2>
-      <div className="profile-info">
-        <img src={user.profileImage} alt="Profile Image" style={{width:'50px'}}/>
-        {isEditing && (
-          <label htmlFor="profileImage">
-            Update Image
-            <input type="file" id="profileImage" onChange={handleImageUpload} />
-          </label>
-        )}
-      </div>
-      <div className="user-details">
-        <p>
-          <b>User ID:</b>
-          {isEditing ? (
-            <input
-              type="text"
-              name="userId"
-              value={user.userId}
-              onChange={handleChange}
-            />
-          ) : (
-            user.userId
-          )}
-        </p>
-        <p>
-          <b>Full Name:</b>
-          {isEditing ? (
-            <input
-              type="text"
-              name="fullName"
-              value={user.fullName}
-              onChange={handleChange}
-            />
-          ) : (
-            user.fullName
-          )}
-        </p>
-        <p>
-          <b>Email:</b>
-          {isEditing ? (
-            <input
-              type="email"
-              name="email"
-              value={user.email}
-              onChange={handleChange}
-            />
-          ) : (
-            user.email
-          )}
-        </p>
-        <p>
-          <b>Phone Number:</b>
-          {isEditing ? (
-            <input
-              type="tel"
-              name="phone"
-              value={user.phone}
-              onChange={handleChange}
-            />
-          ) : (
-            user.phone
-          )}
-        </p>
-        <p>
-          <b>Verification Status:</b> {verificationStatus}
-        </p>
-      </div>
-      <div className="actions">
-        {isEditing ? (
-          <button onClick={handleSaveSettings}>Save Settings</button>
-        ) : (
-          <button onClick={() => setIsEditing(true)}>Edit Settings</button>
-        )}
-      </div>
-      <div className="danger-zone">
-        <h2>Danger Zone</h2>
-        <p className="warning">Deleting your account is permanent and cannot be undone.</p>
-        <button
-          className="delete-account-button"
-          disabled={isConfirmingDelete}
-          onClick={() => setIsConfirmingDelete(true)}
-        >
-          Delete Account
-        </button>
-        {isConfirmingDelete && (
-          <div className="delete-confirmation">
-            <p>Are you sure you want to delete your account?</p>
-            <button onClick={handleDeleteAccount}>Yes, Delete</button>
-          </div>)}
+    <div>
+      <h1>User Settings</h1>
+      <form onSubmit={handleUpdateUser}>
+        <div className="form-group">
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            placeholder="Enter username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
         </div>
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="phoneNumber">Phone Number</label>
+          <input
+            type="text"
+            id="phoneNumber"
+            placeholder="Enter phone number"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="image">Profile Image</label>
+          <input
+            type="file"
+            id="image"
+            onChange={handleFileChange}
+          />
+        </div>
+        <button type="submit" className="btn btn-primary" disabled={isLoading}>
+          {isLoading ? 'Updating...' : 'Update'}
+        </button>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+      </form>
     </div>
   );
 };
 
-export default UserSettingsPage;
+export default UserSettings;
+

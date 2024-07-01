@@ -159,7 +159,7 @@ const RetetaForm: React.FC<RecipeFormProps> = ({ initialData, onSubmit }) => {
       <input type="range" id="prepTime" name="prepTime" min={10} max={50} step={5} required value={formData.prepTime} onChange={handleChange} />
 
       <label htmlFor="inside">Tip:</label>
-      <select id="inside" name="inside" value={formData.type} onChange={handleChange}>
+      <select id="type" name="type" value={formData.type} onChange={handleChange}>
         <option value="altele">Altele</option>
         <option value="vegan">Vegan</option>
         <option value="pui">Pui</option>

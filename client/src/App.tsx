@@ -29,6 +29,8 @@ function App () {
     dispatch(initializeLoginState());
   }, [dispatch]);
 
+  
+
   return (
     <>
   <div className="homepage">
@@ -49,10 +51,18 @@ function App () {
       <Route path='plan' element={<PlanAlimentar />}/>
     </Route>
     <Route path='/adauga' element={<AdaugaReteta />} />
-    <Route path='/setari' element={<SetariPage />} />
+    <Route path='/setari' element={
+      <ProtectedRoute requiredRoles={['ROLE_USER', 'ROLE_ADMIN']}>
+        <SetariPage />
+      </ProtectedRoute>
+      } />
     <Route path='/inregistrare' element={<RegisterPage />} />
     <Route path='/not-authorized' element={<NotAuthorized />} />
-    <Route path='/admin' element={<PaginaAdmin />} />
+    <Route path='/admin' element={
+      <ProtectedRoute requiredRoles={['ROLE_ADMIN']}>
+        <PaginaAdmin />
+      </ProtectedRoute>
+      } />
   </Routes>
   </div>
     </>

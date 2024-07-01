@@ -24,7 +24,7 @@ const Role = db.role;
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Hi there, welcome to this tutorial." });
+  res.json({ message: "Hi there, Recipe house." });
 });
 
 // api routes
@@ -37,4 +37,6 @@ const PORT = config.PORT;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+
 

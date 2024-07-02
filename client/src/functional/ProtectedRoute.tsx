@@ -1,4 +1,3 @@
-// src/components/ProtectedRoute.tsx
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -10,11 +9,20 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRoles }) => {
-  const { isAuthenticated, roles } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated, roles, loading } = useSelector((state: RootState) => state.auth);
   const location = useLocation();
 
-  const hasRequiredRole = requiredRoles?.some(role => roles.includes(role));
-    
+  if (loading) {
+    return <div>Loading...</div>; // or a spinner
+  }
+
+  const hasRequiredRole = requiredRoles ? requiredRoles.some(role => roles.includes(role)) : true;
+
+  console.log('Is authenticated:', isAuthenticated);
+  console.log('User roles:', roles);
+  console.log('Has required role:', hasRequiredRole);
+  console.log('Required roles for this route:', requiredRoles);
+
   if (!isAuthenticated || !hasRequiredRole) {
     return <Navigate to="/not-authorized" state={{ from: location }} />;
   }
@@ -23,5 +31,3 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRoles
 };
 
 export default ProtectedRoute;
-
-

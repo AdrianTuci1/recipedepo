@@ -66,13 +66,35 @@ exports.findOne = async (req, res) => {
 // Update a Recipe by the id in the request
 exports.update = async (req, res) => {
   const id = req.params.id;
-  const userId = req.userId; // Assuming req.user contains the authenticated user
 
   try {
-    console.log(`Updating recipe with ID: ${id} for user ID: ${userId}`);
+    console.log(`Updating recipe with ID: ${id}`);
     console.log('Update data:', req.body); // Log the incoming data
 
-    const [num] = await Recipe.update(req.body, { where: { id, userId } });
+    // Destructure the fields from the request body
+    const { 
+      title, imageUrl, cookingTime, prepTime, type, options, servings,
+      difficulty, price, kitchen, ingredients, steps, isPublic 
+    } = req.body;
+
+    // Create an update object, stringifying ingredients and steps
+    const updateData = {
+      title,
+      imageUrl,
+      cookingTime,
+      prepTime,
+      type,
+      options,
+      servings,
+      difficulty,
+      price,
+      kitchen,
+      ingredients: JSON.stringify(ingredients),
+      steps: JSON.stringify(steps),
+      isPublic
+    };
+
+    const [num] = await Recipe.update(updateData, { where: { id } });
     if (num === 1) {
       res.send({ message: "Recipe was updated successfully." });
     } else {

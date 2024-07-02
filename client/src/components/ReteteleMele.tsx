@@ -14,17 +14,20 @@ function ReteteleMele({}: RecipeListProps) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('useEffect called');
 
     const fetchData = async () => {
+      console.log('fetchData called');
       setIsLoading(true);
       setError(null); // Reset error on each fetch
-      const token = Cookies.get('auth_token')
+      const token = Cookies.get('auth_token');
 
       try {
-        const response = await fetch('http://localhost:8080/api/recipes/user/recipes',{
+        const response = await fetch('http://localhost:8080/api/recipes/user/recipes', {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
         }); // Replace with your server URL
         const data = await response.json();
         setRecipes(data);

@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import Cookies from 'js-cookie';
 import { AppThunk } from './store'; // Adjust the path as necessary
+import { 
+  setAuthToken, getAuthToken, removeAuthToken,
+  setAuthUser, getAuthUser, removeAuthUser,
+  setAuthRoles, getAuthRoles, removeAuthRoles 
+} from './storage';
 
 interface User {
   id: string;
@@ -10,7 +14,7 @@ interface User {
   image: string;
   verified: boolean;
   roles: string[];
-  banned: boolean; // This field will not be displayed in the UI
+  banned: boolean;
 }
 
 interface AuthState {
@@ -18,13 +22,17 @@ interface AuthState {
   user: User | null;
   token: string | null;
   roles: string[];
+  error: string | null;
+  loading: boolean;
 }
 
 const initialState: AuthState = {
   isAuthenticated: false,
   user: null,
-  token: Cookies.get('auth_token') || null,
+  token: getAuthToken(),
   roles: [],
+  error: null,
+  loading: true,
 };
 
 const authSlice = createSlice({
@@ -36,38 +44,53 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.roles = action.payload.roles;
-      Cookies.set('auth_token', action.payload.token, { expires: 7 });
-      localStorage.setItem('auth_user', JSON.stringify(action.payload.user)); // Store user in localStorage
-      localStorage.setItem('auth_roles', JSON.stringify(action.payload.roles)); // Store roles in localStorage
+      state.error = null;
+      state.loading = false;
+      setAuthToken(action.payload.token);
+      setAuthUser(action.payload.user);
+      setAuthRoles(action.payload.roles);
     },
-    logout: (state) => {
+    logoutSuccess: (state) => {
       state.isAuthenticated = false;
       state.user = null;
       state.token = null;
       state.roles = [];
-      Cookies.remove('auth_token');
-      localStorage.removeItem('auth_user'); // Remove user from localStorage
-      localStorage.removeItem('auth_roles'); // Remove roles from localStorage
+      state.error = null;
+      state.loading = false;
+      removeAuthToken();
+      removeAuthUser();
+      removeAuthRoles();
     },
     updateUserSuccess: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
-      localStorage.setItem('auth_user', JSON.stringify(action.payload)); // Update user in localStorage
+      setAuthUser(action.payload);
+    },
+    authFailure: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+      state.loading = false;
+    },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
     },
   },
 });
 
-export const { loginSuccess, logout, updateUserSuccess } = authSlice.actions;
+export const { loginSuccess, logoutSuccess, updateUserSuccess, authFailure, setLoading } = authSlice.actions;
 
-export const initializeLoginState = (): AppThunk => (dispatch) => {
-  const token = Cookies.get('auth_token');
-  const storedUser = localStorage.getItem('auth_user');
-  const storedRoles = localStorage.getItem('auth_roles');
-  const roles = storedRoles ? JSON.parse(storedRoles) : [];
-  const user = storedUser ? JSON.parse(storedUser) : null;
+const setAuthStateFromStorage = (dispatch: any) => {
+  const token = getAuthToken();
+  const user = getAuthUser();
+  const roles = getAuthRoles();
 
   if (token && user) {
     dispatch(loginSuccess({ user, token, roles }));
+  } else {
+    dispatch(setLoading(false));
   }
+};
+
+export const initializeLoginState = (): AppThunk => (dispatch) => {
+  setAuthStateFromStorage(dispatch);
 };
 
 export const login = (username: string, password: string): AppThunk => async (dispatch) => {
@@ -83,7 +106,7 @@ export const login = (username: string, password: string): AppThunk => async (di
       throw new Error(data.message || 'Login failed');
     } else {
       const data = await response.json();
-      const userData = {
+      const userData: User = {
         id: data.id,
         username: data.username,
         email: data.email,
@@ -96,9 +119,9 @@ export const login = (username: string, password: string): AppThunk => async (di
       const token = data.accessToken;
       dispatch(loginSuccess({ user: userData, token, roles: data.roles }));
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Login error:', error);
-    throw error; // Rethrow the error to handle it in the component
+    dispatch(authFailure(error.message));
   }
 };
 
@@ -106,8 +129,7 @@ export const updateUser = (id: string, formData: FormData): AppThunk => async (d
   try {
     const response = await fetch(`http://localhost:8080/api/users/${id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
+      body: formData,
     });
 
     if (!response.ok) {
@@ -117,12 +139,14 @@ export const updateUser = (id: string, formData: FormData): AppThunk => async (d
       const data: User = await response.json();
       dispatch(updateUserSuccess(data));
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Update error:', error);
-    throw error; // Rethrow the error to handle it in the component
+    dispatch(authFailure(error.message));
   }
 };
 
+export const logout = (): AppThunk => (dispatch) => {
+  dispatch(logoutSuccess());
+};
 
 export default authSlice.reducer;
-

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
-import { updateUser } from '../redux/authSlice';
+import { logout, updateUser } from '../redux/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const UserSettings: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Initialize state with user data or empty strings
   const [username, setUsername] = useState(user?.username || '');
@@ -53,6 +55,11 @@ const UserSettings: React.FC = () => {
         setIsLoading(false);
       }
     }
+  };
+
+  const handleLogout = () => {
+    dispatch(logout() as any);
+    navigate('/'); // Redirect to login or home page after logout
   };
 
   if (!user) {
@@ -109,6 +116,9 @@ const UserSettings: React.FC = () => {
         </button>
         {error && <p style={{ color: 'red' }}>{error}</p>}
       </form>
+      <button onClick={handleLogout} className="btn btn-secondary">
+        Logout
+      </button>
     </div>
   );
 };

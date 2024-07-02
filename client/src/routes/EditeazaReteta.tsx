@@ -26,7 +26,7 @@ function EditeazaReteta() {
     try {
       const token = Cookies.get('auth_token');
       const response = await fetch(`http://localhost:8080/api/recipes/${recipeId}`, {
-        method: 'POST',
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}` 
          },

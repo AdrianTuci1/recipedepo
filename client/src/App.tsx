@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { initializeLoginState } from './redux/authSlice';
 
 import { Routes, Route } from 'react-router-dom';
@@ -16,57 +16,64 @@ import SetariPage from './routes/SetariPage';
 import EditeazaReteta from './routes/EditeazaReteta';
 import RegisterPage from './routes/RegisterPage';
 import ProtectedRoute from './functional/ProtectedRoute';
-import { AppDispatch } from './redux/store';
+import { RootState } from './redux/store';
 import NotAuthorized from './routes/NotAuthorized';
 import PaginaAdmin from './routes/PaginaAdmin';
 
 
-function App () {
-
-  const dispatch = useDispatch<AppDispatch>();
+function App() {
+  const dispatch = useDispatch();
+  const loading = useSelector((state: RootState) => state.auth.loading);
 
   useEffect(() => {
-    dispatch(initializeLoginState());
+    dispatch(initializeLoginState() as any);
   }, [dispatch]);
 
-  
+  if (loading) {
+    return <div>Loading...</div>; // or a spinner
+  }
 
   return (
-    <>
-  <div className="homepage">
-  <NavBar />
-  <Routes>
-    <Route path="/" element={<HomePage />} />
-      <Route path="/retete" element={<Retete />}>  
-    </Route> 
-      <Route path="/retete/:recipeId" element={<RetetaPage />}/>
-      <Route path="/retete/edit/:recipeId" element={<EditeazaReteta />} />
-    <Route 
-      path="/retetele_mele" 
-      element={
-      <ProtectedRoute requiredRoles={['ROLE_USER', 'ROLE_ADMIN']}>
-        <Layout />
-      </ProtectedRoute>}>
-      <Route path='' element={<ReteteleMele />} />
-      <Route path='plan' element={<PlanAlimentar />}/>
-    </Route>
-    <Route path='/adauga' element={<AdaugaReteta />} />
-    <Route path='/setari' element={
-      <ProtectedRoute requiredRoles={['ROLE_USER', 'ROLE_ADMIN']}>
-        <SetariPage />
-      </ProtectedRoute>
-      } />
-    <Route path='/inregistrare' element={<RegisterPage />} />
-    <Route path='/not-authorized' element={<NotAuthorized />} />
-    <Route path='/admin' element={
-      <ProtectedRoute requiredRoles={['ROLE_ADMIN']}>
-        <PaginaAdmin />
-      </ProtectedRoute>
-      } />
-  </Routes>
-  </div>
-    </>
-  )
+    <div className="homepage">
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/retete" element={<Retete />} />
+        <Route path="/retete/:recipeId" element={<RetetaPage />} />
+        <Route path="/retete/edit/:recipeId" element={<EditeazaReteta />} />
+        <Route 
+          path="/retetele_mele" 
+          element={
+            <ProtectedRoute requiredRoles={['ROLE_USER', 'ROLE_ADMIN']}>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path='' element={<ReteteleMele />} />
+          <Route path='plan' element={<PlanAlimentar />} />
+        </Route>
+        <Route path='/adauga' element={<AdaugaReteta />} />
+        <Route 
+          path='/setari' 
+          element={
+            <ProtectedRoute requiredRoles={['ROLE_USER', 'ROLE_ADMIN']}>
+              <SetariPage />
+            </ProtectedRoute>
+          } 
+        />
+        <Route path='/inregistrare' element={<RegisterPage />} />
+        <Route path='/not-authorized' element={<NotAuthorized />} />
+        <Route 
+          path='/admin' 
+          element={
+            <ProtectedRoute requiredRoles={['ROLE_ADMIN']}>
+              <PaginaAdmin />
+            </ProtectedRoute>
+          } 
+        />
+      </Routes>
+    </div>
+  );
 }
 
 export default App

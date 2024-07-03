@@ -19,6 +19,8 @@ import ProtectedRoute from './functional/ProtectedRoute';
 import { RootState } from './redux/store';
 import NotAuthorized from './routes/NotAuthorized';
 import PaginaAdmin from './routes/PaginaAdmin';
+import AdminLayout from './routes/AdminLayout';
+import AdminUsers from './components/AdminUsers';
 
 
 function App() {
@@ -67,10 +69,13 @@ function App() {
           path='/admin' 
           element={
             <ProtectedRoute requiredRoles={['ROLE_ADMIN']}>
-              <PaginaAdmin />
+              <AdminLayout />
             </ProtectedRoute>
           } 
-        />
+        >
+        <Route path='' element={<PaginaAdmin/>}/>
+        <Route path='users' element={<AdminUsers/>}/>
+        </Route>
       </Routes>
     </div>
   );

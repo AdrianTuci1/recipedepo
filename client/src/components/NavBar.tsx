@@ -35,11 +35,13 @@ function NavBar() {
        <img src="./logocook.png" alt="" className='logo'/>
        <h1 className='title'>MAGAZIA DE <br /> BUCATE</h1>
        </div>
+       <div className="pges">
         <ul className='pages'>
             <li><Link to="/" style={{textDecoration: 'none', color: 'whitesmoke'}}>ACASA</Link></li>
             <li><Link to="/retete" style={{textDecoration: 'none', color: 'whitesmoke'}}>RETETE</Link></li>
             <li style={{minWidth:'120px'}}>MENIU</li>
         </ul>
+        </div>
         <div className="buttonz" style={{ width:'150px', height:'50px', display:'flex'}}>
         <Link to="/retetele_mele" className='hidden' style={{width:'50px', height:'50px', display: 'flex', justifyContent:'center', alignItems:'center', textDecoration:'none', color:'white', marginLeft:'20%',}}><Library className='lib'/></Link>
         {isAuthenticated ? (

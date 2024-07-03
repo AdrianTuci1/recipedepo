@@ -60,6 +60,7 @@ const UserSettings: React.FC = () => {
   const handleLogout = () => {
     dispatch(logout() as any);
     navigate('/'); // Redirect to login or home page after logout
+    
   };
 
   if (!user) {

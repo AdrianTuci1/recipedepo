@@ -48,8 +48,8 @@ function RetetaPage() {
     <>
     {recipeData ? (
       <div className="sectiune_reteta">
-        <RecipeDetails recipe={recipeData} />
-        <div className="butoane">
+        <RecipeDetails recipe={recipeData}/>
+        <div className="butoane" style={{display:'flex'}}>
           <button className="btn-reteta" onClick={() => navigate(-1)}>ÎNAPOI</button>
           <button className="btn-reteta"onClick={() => handleEditClick(recipeId)}>EDITARE</button>
           <button className="btn-reteta" disabled={isDeleting} onClick={handleDeleteClick}>

@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     outline: 2px solid $textWhite;
 }
 
@@ -20,6 +20,7 @@
 
 .title{
     font-size: 16px;
+    width: 100px;
     @include media.tablet{
         display: none;
     }
@@ -28,13 +29,16 @@
 .pages{
     display: flex;
     list-style-type: none;
-    margin-right: 10%;
-    align-items: center;
-    width: 650px;
-    gap: 10px;
     @include media.tablet{
         display: none;
     }
+}
+
+.pges{
+    display: flex;
+    width: 800px;
+    align-items: center;
+    justify-content: center;
 }
 
 .login{
@@ -78,6 +82,12 @@
         scale: 1.1;
         cursor: pointer;
     }
+}
+
+.buttonz{
+    display: flex;
+    min-width: 30%;
+    justify-content: flex-end;
 }
 
 

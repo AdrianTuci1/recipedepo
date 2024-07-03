@@ -127,9 +127,13 @@ export const login = (username: string, password: string): AppThunk => async (di
 
 export const updateUser = (id: string, formData: FormData): AppThunk => async (dispatch) => {
   try {
+    const token = getAuthToken();
     const response = await fetch(`http://localhost:8080/api/users/${id}`, {
       method: 'PUT',
       body: formData,
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
     });
 
     if (!response.ok) {
@@ -138,6 +142,7 @@ export const updateUser = (id: string, formData: FormData): AppThunk => async (d
     } else {
       const data: User = await response.json();
       dispatch(updateUserSuccess(data));
+      setAuthUser(data);
     }
   } catch (error: any) {
     console.error('Update error:', error);
@@ -147,6 +152,7 @@ export const updateUser = (id: string, formData: FormData): AppThunk => async (d
 
 export const logout = (): AppThunk => (dispatch) => {
   dispatch(logoutSuccess());
+  console.log('Logout succesful!')
 };
 
 export default authSlice.reducer;

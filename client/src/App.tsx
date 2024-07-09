@@ -5,7 +5,6 @@ import { initializeLoginState } from './redux/authSlice';
 import { Routes, Route } from 'react-router-dom';
 import NavBar from "./components/NavBar"
 import HomePage from "./routes/HomePage"
-import Retete from "./routes/Retete"
 import './styles/app.scss'
 import RetetaPage from './routes/RetetaPage';
 import Layout from './routes/Layout';
@@ -21,6 +20,7 @@ import NotAuthorized from './routes/NotAuthorized';
 import PaginaAdmin from './routes/PaginaAdmin';
 import AdminLayout from './routes/AdminLayout';
 import AdminUsers from './components/AdminUsers';
+import MainContent from './routes/MainContent';
 
 
 function App() {
@@ -40,7 +40,7 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/retete" element={<Retete />} />
+        <Route path="/retete" element={<MainContent />} />
         <Route path="/retete/:recipeId" element={<RetetaPage />} />
         <Route path="/retete/edit/:recipeId" element={<EditeazaReteta />} />
         <Route 

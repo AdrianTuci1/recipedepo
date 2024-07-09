@@ -9,9 +9,10 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRoles }) => {
-  const { isAuthenticated, roles, loading } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated, roles, loading, token } = useSelector((state: RootState) => state.auth);
   const location = useLocation();
 
+  console.log(token)
   if (loading) {
     return <div>Loading...</div>; // or a spinner
   }

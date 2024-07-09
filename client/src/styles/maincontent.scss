@@ -1,23 +1,120 @@
-
-.second_row{
-    margin-top: 10px;
+.recipes-page {
     display: flex;
-}
-.sorteaza{
+    flex-wrap: nowrap;
+  }
+  
+  .left-column {
+    width: 25%;
     display: flex;
-    flex-direction: row;
-    .sort-dropdown{
-        width: 140px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    background-color: #f4f4f4;
+  
+    .filters-container {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+  
+      label {
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+      }
+  
+      &.show {
+        display: flex;
+      }
     }
-}
-
-.filter-row{
-    margin-top: 10px;
+  
+    .toggle-filters-btn {
+      display: none;
+      margin-top: 20px;
+    }
+  }
+  
+  .right-column {
+    width: 75%;
     display: flex;
-    width: 50%;
-}
-
-.recipe-card-container{
-    background-color: rgb(0, 31, 0);
-    height: auto;
-}
+    flex-direction: column;
+    padding: 20px;
+  
+    .info-section {
+      margin-bottom: 20px;
+  
+      h2 {
+        margin-bottom: 10px;
+      }
+  
+      .active-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+  
+        .filter-box {
+          display: flex;
+          align-items: center;
+          padding: 5px 10px;
+          background-color: #ddd;
+          border-radius: 5px;
+  
+          button {
+            margin-left: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+          }
+        }
+      }
+  
+      button {
+        margin-top: 10px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-decoration: underline;
+        color: blue;
+      }
+  
+      select {
+        margin-top: 10px;
+      }
+    }
+  
+    .recipe-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .recipes-page {
+      flex-direction: column;
+    }
+  
+    .left-column {
+      display: none;
+  
+      &.show {
+        display: flex;
+        position: absolute;
+        z-index: 1;
+        background-color: #fff;
+        width: 100%;
+        height: 100%;
+        overflow-y: scroll;
+        padding: 20px;
+      }
+    }
+  
+    .right-column {
+      width: 100%;
+  
+      .toggle-filters-btn {
+        display: block;
+      }
+    }
+  }

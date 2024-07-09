@@ -32,7 +32,7 @@ function NavBar() {
             <a href="/retete">Retete</a>
             <a href="/catering">Meniu Digital</a>
         </div>
-       <img src="./logocook.png" alt="" className='logo'/>
+       <img src="/logocook.png" alt="favicon" className='logo'/>
        <h1 className='title'>MAGAZIA DE <br /> BUCATE</h1>
        </div>
        <div className="pges">

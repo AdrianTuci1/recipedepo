@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import '../styles/retetapage.scss';
-import { Clock, Forward, CookingPot, Eye, MessagesSquare, User, Heart } from 'lucide-react';
+import { CookingPot, Eye, MessagesSquare, User, Heart } from 'lucide-react';
 import { RecipeCardProps } from './RecipeCard';
+import HoverImage from './HoverImage';
 
 function RecipeDetails({ recipe }: { recipe: RecipeCardProps }) {
-  const { steps: stepsString, ingredients: ingredientsString, type, title, options, servings, difficulty, price, kitchen, views, comments, likes, userId, prepTime, cookingTime } = recipe;
+  const { steps: stepsString, ingredients: ingredientsString, type, title, options, servings, difficulty, price, kitchen, views, comments, likes, userId, prepTime, cookingTime, imageUrl } = recipe;
 
   const steps = JSON.parse(stepsString);
   const ingredients = JSON.parse(ingredientsString);
@@ -26,37 +27,78 @@ function RecipeDetails({ recipe }: { recipe: RecipeCardProps }) {
   const showBackButton = currentStep > 0;
   const showNextButton = currentStep < steps.length - 1;
 
+  type DifficultyLevel = 'easy' | 'medium' | 'hard';
+
+    // Type guard to ensure difficulty is one of the allowed levels
+    const isDifficultyLevel = (value: any): value is DifficultyLevel => {
+      return ['easy', 'medium', 'hard'].includes(value);
+    };
+
+    // Determine the image path based on the difficulty level
+    const getDifficultyImagePath = (difficulty: DifficultyLevel) => {
+      switch (difficulty) {
+        case 'easy':
+          return '/easy.png';
+        case 'medium':
+          return '/medium.png';
+        case 'hard':
+          return '/hard.png';
+        default:
+          return ''; // Default case, though it shouldn't be needed
+      }
+    };
+
+  // Ensure difficulty is one of the allowed levels before rendering the image
+  const difficultyImage = isDifficultyLevel(difficulty) ? getDifficultyImagePath(difficulty) : '';
+
+    // Generate an array of dollar tag images based on the price value
+    const renderDollarTags = (price: number) => {
+      const tags = [];
+      for (let i = 0; i < price; i++) {
+        tags.push(<img key={i} src='/price.png' alt='dollar tag' style={{width:'20px'}}/>);
+      }
+      return tags;
+    };
+  
+
+
   return (
     <>
     <div className="page-box">
     <div className="reteta-page">
         <div className="image-containe">
-          <img src="./recipedesc.jpeg" alt="" className="recipeimg" />
+          <div className="image-wrape bs">
+          <img src={imageUrl} alt="" className="recipeimg" />
+          </div>
         </div>
-        <div className="ingredients-container">
-          <h3>Ingrediente</h3>
+        <div className="ingredients-container bd">
+          <h3 className='listing'><img src="/ingredients.png" alt="" style={{width:'50px'}}/>INGREDIENTE</h3>
           <ul className="ingredients-list">
             {ingredients.map((ingredient: string) => (
               <li key={ingredient}>{ingredient}</li>
             ))}
           </ul>
         </div>
-        <div className="header">
+        <div className="header bd">
           <h1 className="titlez">{title}</h1>
           <div className="type">{type}</div>
         </div>
-        <div className="options">
-          <div className="option-item">{servings}</div>
-          <div className="option-item">{difficulty}</div>
-          <div className="option-item">{price}</div>
+        <div className="options ">
+          <div className="option-item"><img src="/person.png" alt="" style={{width:'25px'}}/>{servings}</div>
+          <div className="option-item">
+          {difficultyImage && <img src={difficultyImage} alt={`${difficulty} difficulty`} style={{width:'30px'}}/>}
+          </div>
+          <div className="option-item">
+          {renderDollarTags(price)}
+          </div>
           <div className="option-item">{kitchen}</div>
         </div>
         <div className="times">
-          <div className="time-item"><Clock className="icon" /> Timp prep: <p>{prepTime}</p></div>
-          <div className="time-item"><Clock className="icon" /> Timp gatit: <p>{cookingTime}</p></div>
+          <div className="time-item bd"><img src='/prepare.png' alt='prepare' className="ic" /> <p>{prepTime} min</p></div>
+          <div className="time-item bd"><img src='/cook.png' alt='cook' className="ic" /> <p>{cookingTime} min</p></div>
         </div>
-        <div className="instructions-container">
-          <h3>Instructiuni de Preparare:</h3>
+        <div className="instructions-container bd">
+          <h3 style={{display:'flex', alignItems:'center'}}><img src="/instructions.png" alt="" style={{width:'50px'}}/>INSTRUCTIUNI DE PREPARARE:</h3>
           <div className="instructiuni">
             <div className="ins-text">
               <CookingPot className="icon" />
@@ -72,12 +114,47 @@ function RecipeDetails({ recipe }: { recipe: RecipeCardProps }) {
             </div>
           </div>
         </div>
-        <div className="like-print-share">
-          <div className="icon-wrapper"><Heart className="icon" /></div>
-          <div className="icon-wrapper"><img src="./printer.png" alt="Print" className="icon" /></div>
-          <div className="icon-wrapper"><Forward className="icon" /></div>
+        <div className="menu-edit">
+        <div className="inapoi bd"><img src="/back.png" alt="" style={{width:'40px'}} /></div>
+        <div className="like-print-share bd">
+          <div className="icon-wrapper inima">
+          <HoverImage
+              key='1'
+              defaultSrc='/hearti.png'
+              hoverSrc='/hearta.png'
+              alt='like'
+              action='switch'
+              switchSrc='/hearta.png'
+          />
+          </div>
+          <div className="icon-wrapper printer">
+          <HoverImage
+              key='2'
+              defaultSrc='/printerinactive.png'
+              hoverSrc='/printeractive.png'
+              alt='printer'
+              action='print'
+          />
+          </div>
+          <div className="icon-wrapper share">
+          <HoverImage
+              key='3'
+              defaultSrc='/sharei.png'
+              hoverSrc='/sharea.png'
+              alt='share'
+              action='share'
+          />
+          </div>
         </div>
-        <div className="social">
+        <div className="editeaza-reteta bd">
+          <img src="/edit.png" alt="" />
+        </div>
+        <div className="editeaza-reteta-open">
+          <img src="/editare.png" alt="" style={{width:'40px'}}/>
+          <img src="/deletec.png" alt="" style={{width:'40px'}}/>
+        </div>
+        </div>
+        <div className="social bd">
           <div className="views icn sc"><Eye className="icon" /> {views}</div>
           <div className="comments icn sc"><MessagesSquare className="icon" /> {comments}</div>
           <div className="likes icn sc"><Heart className="icon" /> {likes}</div>

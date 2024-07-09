@@ -1,11 +1,14 @@
 @use './responsive.scss' as media;
+@import './variables.scss';
 
 .page-box{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: $darkGreen;
+    font-family: $secfont;
 }
 
 .reteta-page {
@@ -13,11 +16,11 @@
     display: grid;
     grid-template-columns: 1fr 2fr;
     grid-template-areas:
+      "image menu-edit"
       "image header"
       "image options"
-      "image times"
+      "ingredients times"
       "ingredients instructions"
-      "ingredients like-print-share"
       "ingredients social";
   
     gap: 10px; // Adjust the gap between grid items as needed
@@ -26,49 +29,57 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: darkgray;
-      .recipeimg{
+      .image-wrape{
         width: 250px;
         height: 250px;
         background-color: black;
+        border: 10px solid white;
+        border-radius: 10px;
       }
     }
   
     .header {
       grid-area: header;
       display: flex;
-      background-color: lightgray;
+      height: 150px;
       .type{
         width: 100px;
+      }
+      .titlez{
+        margin: 10px 20px
       }
     }
   
     .options {
       grid-area: options;
       display: flex;
-      gap: 20px;
       align-items: center;
-      background-color: darkgray;
       .option-item{
         background-color: lightgray;
+        color: black;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 50px;
-        width: 70px;
+        border-radius: 10px;
         height: 30px;
+        margin: 0px 10px;
+        -webkit-box-shadow: 4px 4px 34px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 4px 4px 34px 0px rgba(0,0,0,0.75);
+        box-shadow: 4px 4px 34px 0px rgba(0,0,0,0.75);
       }
     }
   
     .times {
       grid-area: times;
       display: flex;
-      background-color: darkgray;
+      gap: 10px;
+      justify-content: center;
       .time-item{
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 10px;
+        gap: 5px;
+        padding: 10px;
       }
     }
   
@@ -76,26 +87,36 @@
       grid-area: instructions;
       display: flex;
       flex-direction: column;
-      background-color: darkgray;
+      h3{
+        padding: 10px;
+      }
       .instructiuni{
+        margin: 0px 10px;
         .ins-text{
             height: 200px;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
             .icon{
                 width: 50px;
             }
             p{
+                padding: 20px;
                 text-align: left;
             }
         }
         .Step-nav{
             display: flex;
             justify-content: center;
-            button{
+            .ins-button{
                 width: 100px;
+                margin: 10px;
+                padding: 5px;
+                border-radius: 10px;
+                border: 2px solid gray;
+                &:hover{
+                  cursor: pointer;
+                }
             }
         }
       }
@@ -105,13 +126,17 @@
     .like-print-share {
       grid-area: like-print-share;
       display: flex;
-      background-color: darkgray;
+      width: 200px;
+      height: 40px;
+      justify-content: space-between;
+      align-items: center;
+      padding-left: 10px;
+      padding-right: 10px;
     }
   
     .social {
       grid-area: social;
       display: flex;
-      background-color: darkgray;
         .icn{
             display: flex;
             justify-content: center;
@@ -121,7 +146,16 @@
   
     .ingredients-container {
       grid-area: ingredients;
-      background-color: darkgray;
+      display: flex;
+      flex-direction: column;
+      .ingredients-list{
+        width: 210px;
+        padding: 10px;
+        margin: 15px;
+      }
+      .listing{
+        margin: 10px;
+      }
     }
   
     // Styles for mobile
@@ -165,4 +199,73 @@
       }
     }
   }
-  
+
+.ic{
+  width: 50px;
+  height: 50px;
+}
+
+.icon-wrapper{
+  margin: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bd{
+  color: black;
+  border-radius: 5px;
+  background-color: rgba(254, 247, 247, 0.963);
+
+  -webkit-box-shadow: 4px 4px 34px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 4px 4px 34px 0px rgba(0,0,0,0.75);
+  box-shadow: 4px 4px 34px 0px rgba(0,0,0,0.75);
+}
+
+.bs{
+  -webkit-box-shadow: 4px 4px 34px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 4px 4px 34px 0px rgba(0,0,0,0.75);
+  box-shadow: 4px 4px 34px 0px rgba(0,0,0,0.75);
+}
+
+.inima{
+  scale: 0.8;
+  width: 10px;
+}
+
+.printer{
+  width: 25px;
+}
+
+.share{
+  scale: 1.1;
+  width: 25px
+}
+
+.listing{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.menu-edit{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.inapoi{
+  width: 40px;
+  height: 40px;
+}
+
+.editeaza-reteta{
+  width: 40px;
+  height: 40px;
+}
+
+.editeaza-reteta-open{
+  width: 80px;
+  height: 40px;
+  background-color: white;
+}

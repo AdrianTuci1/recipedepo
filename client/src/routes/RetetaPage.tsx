@@ -47,7 +47,7 @@ function RetetaPage() {
   return (
     <>
     {recipeData ? (
-      <div className="sectiune_reteta">
+      <div className="sectiune_reteta" >
         <RecipeDetails recipe={recipeData}/>
         <div className="butoane" style={{display:'flex'}}>
           <button className="btn-reteta" onClick={() => navigate(-1)}>ÎNAPOI</button>

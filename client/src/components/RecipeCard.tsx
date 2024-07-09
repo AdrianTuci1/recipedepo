@@ -6,8 +6,8 @@ export interface RecipeCardProps {
   id:          number;
   title:       string; // Titlu
   imageUrl?:   string; // Optional image URL
-  cookingTime: number; // Time for cooking (timp preparare, timp gatit)
-  prepTime:    number;
+  cookingTime: string; // Time for cooking (timp preparare, timp gatit)
+  prepTime:    string;
   type:        string; // Vegan/Pui/Porc/Peste
   options:     string; // Dimineata/Pranz/Seara/Gustare
   servings:    number; // Numar de portii

@@ -21,10 +21,6 @@
       display: flex;
       flex-direction: column;
     }
-
-    &.show {
-      display: flex;
-    }
   }
 
   .toggle-filters-btn {
@@ -97,17 +93,6 @@
 
   .left-column {
     display: none;
-
-    &.show {
-      display: flex;
-      position: absolute;
-      z-index: 1;
-      background-color: #fff;
-      width: 100%;
-      height: 100%;
-      overflow-y: scroll;
-      padding: 20px;
-    }
   }
 
   .right-column {

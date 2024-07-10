@@ -1,5 +1,6 @@
 import React from 'react';
 import { Filters } from '../types/Filters';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 type InfoSectionProps = {
   sortedRecipes: any[];
@@ -23,14 +24,18 @@ const InfoSectionComponent: React.FC<InfoSectionProps> = ({
   toggleFilters,
 }) => {
   const recipeType = filters.type || '';
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <div className="info-section">
       <h2>{recipeType.charAt(0).toUpperCase() + recipeType.slice(1)} Recipes ({sortedRecipes.length} Available)</h2>
       <div>
-        <button className="toggle-filters-btn" onClick={toggleFilters}>
-          Filter
-        </button>
+        {isSmallScreen && (
+          <button className="toggle-filters-btn" onClick={toggleFilters}>
+            Filter
+          </button>
+        )}
         Sort By:
         <select value={sortOption} onChange={handleSortChange}>
           <option value="">None</option>
@@ -57,4 +62,5 @@ const InfoSectionComponent: React.FC<InfoSectionProps> = ({
 };
 
 export default InfoSectionComponent;
+
 

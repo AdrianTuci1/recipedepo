@@ -102,10 +102,12 @@ const RecipeListComponent: React.FC<RecipeListProps> = ({ filters, setFilters, t
         handleSortChange={handleSortChange}
         toggleFilters={toggleFilters}
       />
-      <div className="recipe-cards">
+      <div className="outline-container">
+      <div className="card-container">
         {sortedRecipes.map(recipe => (
           <RecipeCard key={recipe.id} recipe={recipe} />
         ))}
+      </div>
       </div>
     </div>
   );

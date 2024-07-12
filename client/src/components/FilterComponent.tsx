@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Filters } from '../types/Filters';
 
 type FilterProps = {
@@ -9,6 +9,7 @@ type FilterProps = {
 };
 
 const FilterComponent: React.FC<FilterProps> = ({ showFilters, toggleFilters, filters, setFilters }) => {
+
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     if (name === 'price') {
@@ -38,15 +39,37 @@ const FilterComponent: React.FC<FilterProps> = ({ showFilters, toggleFilters, fi
       ...filters,
       type,
     });
+    setSelectedType(type);
   };
+
+  const [selectedType, setSelectedType] = useState('all');
+
+  const getDifficultyImage = (difficulty: string) => {
+    switch (difficulty) {
+      case 'easy':
+        return '/easy.png';
+      case 'medium':
+        return '/medium.png';
+      case 'hard':
+        return '/hard.png';
+      default:
+        return '';
+    }
+  };
+
 
   return (
     <div className="filters-container">
       <div>
         <label>Type:</label>
-        <ul>
+        <ul className='fil-type ule'>
           {['all', 'main course', 'salad', 'soup', 'snack', 'sushi', 'dessert'].map(type => (
-            <li key={type} onClick={() => handleTypeChange(type)}>
+            <li 
+            key={type} 
+            onClick={() => handleTypeChange(type)}
+            className={`type-item ${selectedType === type ? 'selected' : ''}`}
+            style={{cursor:'pointer'}}
+            >
               <span>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
             </li>
           ))}
@@ -54,17 +77,28 @@ const FilterComponent: React.FC<FilterProps> = ({ showFilters, toggleFilters, fi
       </div>
       <div>
         <label>Price:</label>
-        <ul>
+        <ul className='ule'>
           {[1, 2, 3, 4].map(price => (
-            <li key={price}>
+            <li 
+            key={price}
+            >
               <input
                 type="checkbox"
                 name="price"
                 value={price}
                 checked={filters.price === price}
                 onChange={handleFilterChange}
+                style={{width:'20px'}}
               />
-              {'$'.repeat(price)}
+              {Array(price).fill(null).map((_, index) => (
+              <img
+                key={index}
+                src="/price.png"
+                alt="$"
+                className="dollar-image"
+                style={{width:'20px'}}
+              />
+            ))}
             </li>
           ))}
         </ul>
@@ -86,15 +120,18 @@ const FilterComponent: React.FC<FilterProps> = ({ showFilters, toggleFilters, fi
       </div>
       <div>
         <label>Options:</label>
-        <div style={{ maxHeight: '200px', overflowY: 'scroll' }}>
-          {['Dimineata', 'Pranz', 'Seara', 'Gustare', 'High-Protein'].map(option => (
-            <div key={option}>
+        <div style={{ maxHeight: '200px', overflowY: 'scroll'}}>
+          {['Traditional', 'Balanced', 'Vegan', 'High-Protein'].map(option => (
+            <div 
+            key={option}
+            >
               <input
                 type="checkbox"
                 name="options"
                 value={option}
                 checked={filters.options.includes(option)}
                 onChange={handleFilterChange}
+                style={{width:'20px'}}
               />
               {option}
             </div>
@@ -112,8 +149,15 @@ const FilterComponent: React.FC<FilterProps> = ({ showFilters, toggleFilters, fi
                 value={difficulty}
                 checked={filters.difficulty.includes(difficulty)}
                 onChange={handleFilterChange}
+                style={{width:'20px'}}
               />
               {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+              <img
+              src={getDifficultyImage(difficulty)}
+              alt={difficulty}
+              className="difficulty-image"
+              style={{width:'25px'}}
+              />
             </div>
           ))}
         </div>

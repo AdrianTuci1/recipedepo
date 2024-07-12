@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import RecipeCard from './RecipeCard'; // Adjust the import path as necessary
+import ListRecipeCard from './ListRecipeCard'; // Import the new ListRecipeCard component
 import { RecipeCardProps } from './RecipeCard'; // Ensure the correct path
 import InfoSectionComponent from './InfoSectionComponent';
 import { Filters } from '../types/Filters';
@@ -14,6 +15,7 @@ type RecipeListProps = {
 const RecipeListComponent: React.FC<RecipeListProps> = ({ filters, setFilters, toggleFilters }) => {
   const [recipes, setRecipes] = useState<RecipeCardProps[]>([]);
   const [sortOption, setSortOption] = useState<string>('');
+  const [isCardView, setIsCardView] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -90,6 +92,10 @@ const RecipeListComponent: React.FC<RecipeListProps> = ({ filters, setFilters, t
     });
   };
 
+  const toggleView = () => {
+    setIsCardView(!isCardView);
+  };
+
   return (
     <div className="right-column">
       <InfoSectionComponent
@@ -101,13 +107,19 @@ const RecipeListComponent: React.FC<RecipeListProps> = ({ filters, setFilters, t
         sortOption={sortOption}
         handleSortChange={handleSortChange}
         toggleFilters={toggleFilters}
+        isCardView={isCardView}
+        toggleView={toggleView}
       />
       <div className="outline-container">
-      <div className="card-container">
-        {sortedRecipes.map(recipe => (
-          <RecipeCard key={recipe.id} recipe={recipe} />
-        ))}
-      </div>
+        <div className={`card-container ${isCardView ? 'card-view' : 'list-view'}`}>
+          {sortedRecipes.map(recipe => (
+            isCardView ? (
+              <RecipeCard key={recipe.id} recipe={recipe} />
+            ) : (
+              <ListRecipeCard key={recipe.id} recipe={recipe} />
+            )
+          ))}
+        </div>
       </div>
     </div>
   );

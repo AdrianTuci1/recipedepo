@@ -1,8 +1,9 @@
-import RecipeCard, {RecipeCardProps} from "./RecipeCard"
+import {RecipeCardProps} from "./RecipeCard"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import '../styles/retelemele.scss'
+import ListRecipeCard from "./ListRecipeCard";
 
 interface RecipeListProps {
 }
@@ -54,9 +55,9 @@ function ReteteleMele({}: RecipeListProps) {
       ) : error ? (
         <p className="error-message">{error}</p>
       ) : (
-        <div className="card-container">
+        <div className="card-containe list-view">
           {recipes.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} />
+            <ListRecipeCard key={recipe.id} recipe={recipe} />
           ))}
         </div>
       )}

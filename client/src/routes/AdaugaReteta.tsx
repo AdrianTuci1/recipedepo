@@ -10,8 +10,8 @@ const initialRecipeData:RecipeCardProps = {
   id: 0,
   title:       '', // Titlu
   imageUrl:   '', // Optional image URL
-  cookingTime: 0, // Time for cooking (timp preparare, timp gatit)
-  prepTime:    20,
+  cookingTime: '', // Time for cooking (timp preparare, timp gatit)
+  prepTime:    '',
   type:        '', // Vegan/Pui/Porc/Peste
   options:     '', // Dimineata/Pranz/Seara/Gustare
   servings:    1, // Numar de portii

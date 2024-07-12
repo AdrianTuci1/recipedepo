@@ -66,6 +66,8 @@ function RecipeCard({ recipe }: { recipe: RecipeCardProps}) {
   const overlayImage = getOverlayImage(recipe.options);
   const difficultyLevel = getDifficulty(recipe.difficulty);
 
+  const totalTime = parseInt(recipe.cookingTime, 10) + parseInt(recipe.prepTime, 10);
+
   return (
     <div className="card">
       <div className="content">
@@ -77,7 +79,7 @@ function RecipeCard({ recipe }: { recipe: RecipeCardProps}) {
         <p className="likes"><img src="/hearta.png" alt="" style={{width:'25px'}}/>{recipe.likes}</p>
         <h2 className='recipe-title'>{recipe.title}</h2>
         <div className="icons-container">
-          <p className="time"><Clock2 style={{width:'30px'}}/>{recipe.cookingTime} min</p>
+          <p className="time"><Clock2 style={{width:'30px'}}/>{totalTime} min</p>
           <p className="serving"><img src="/person.png" alt="" style={{width:'25px'}}/>{recipe.servings} pers.</p>
           <p className="dificulty"><img src={difficultyLevel} alt="" style={{width:'30px'}}/></p>
         </div>

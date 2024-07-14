@@ -1,12 +1,11 @@
-import {RecipeCardProps} from "./RecipeCard"
+import { RecipeCardProps } from "./RecipeCard";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import '../styles/retelemele.scss'
+import '../styles/retelemele.scss';
 import ListRecipeCard from "./ListRecipeCard";
 
-interface RecipeListProps {
-}
+interface RecipeListProps {}
 
 function ReteteleMele({}: RecipeListProps) {
   const [recipes, setRecipes] = useState<RecipeCardProps[]>([]);
@@ -43,28 +42,57 @@ function ReteteleMele({}: RecipeListProps) {
     fetchData();
   }, []);
 
+  const handleEdit = (id: string | undefined) => {
+    const recipeId = id;
+    navigate(`/retete/edit/${recipeId}`);
+  };
+
+  const handleDelete = async (id: string | undefined) => {
+    try {
+      const recipeId = id;
+      const response = await fetch(`http://localhost:8080/api/recipes/${recipeId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        console.log('Reteta a fost stearsa cu succes!');
+      } else {
+        console.error('Eroare la stergerea retetei:', await response.text());
+      }
+    } catch (error) {
+      console.error('Eroare la stergerea retetei:', error);
+    }
+  };
+
+
   return (
     <div>
-      <div className="panne" style={{display: 'flex'}}>
-      <h2 className="retete-m">Retetele Mele</h2>
-      <button style={{width:'100px'}} onClick={() => navigate('/adauga')}>ADAUGA O RETETA</button>
+      <div className="panne" style={{ display: 'flex' }}>
+        <h2 className="retete-m">Retetele Mele</h2>
+        <button style={{ width: '100px' }} onClick={() => navigate('/adauga')}>ADAUGA O RETETA</button>
       </div>
       <div className="recipe-container">
-      {isLoading ? (
-        <p>Loading recipes...</p>
-      ) : error ? (
-        <p className="error-message">{error}</p>
-      ) : (
-        <div className="card-containe list-view">
-          {recipes.map((recipe) => (
-            <ListRecipeCard key={recipe.id} recipe={recipe} />
-          ))}
-        </div>
-      )}
+        {isLoading ? (
+          <p>Loading recipes...</p>
+        ) : error ? (
+          <p className="error-message">{error}</p>
+        ) : (
+          <div className="card-containe list-view">
+            {recipes.map((recipe) => (
+              <ListRecipeCard
+                key={recipe.id}
+                recipe={recipe}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
-    </div>
-  )
+  );
 }
 
-export default ReteteleMele
+export default ReteteleMele;
+
 

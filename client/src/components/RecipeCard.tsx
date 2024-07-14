@@ -4,7 +4,7 @@ import { Clock2 } from 'lucide-react';
 
 export interface RecipeCardProps {
   // Define the data you want to pass to the component
-  id:          number;
+  id:          string;
   title:       string; // Titlu
   imageUrl?:   string; // Optional image URL
   cookingTime: string; // Time for cooking (timp preparare, timp gatit)
@@ -30,7 +30,7 @@ export interface RecipeCardProps {
 function RecipeCard({ recipe }: { recipe: RecipeCardProps}) {
   const navigate = useNavigate();
 
-  const handleRecipeClick = (id: number) => {
+  const handleRecipeClick = (id: string) => {
     const recipeId = id;
     navigate(`/retete/${recipeId}`);
   };

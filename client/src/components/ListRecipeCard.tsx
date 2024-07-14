@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import { Clock2 } from 'lucide-react';
+import { Clock2, Edit3, Trash2 } from 'lucide-react';
 import '../styles/listrecipecard.scss';
 
 export interface RecipeCardProps {
-  id: number;
+  id: string;
   title: string;
   imageUrl?: string;
   cookingTime: string;
@@ -26,10 +26,16 @@ export interface RecipeCardProps {
   approved: boolean;
 }
 
-function ListRecipeCard({ recipe }: { recipe: RecipeCardProps }) {
+interface ListRecipeCardProps {
+  recipe: RecipeCardProps;
+  onEdit?: (id: string) => void;
+  onDelete?: (id: string) => void;
+}
+
+function ListRecipeCard({ recipe, onEdit, onDelete }: ListRecipeCardProps) {
   const navigate = useNavigate();
 
-  const handleRecipeClick = (id: number) => {
+  const handleRecipeClick = (id: string) => {
     const recipeId = id;
     navigate(`/retete/${recipeId}`);
   };
@@ -64,10 +70,11 @@ function ListRecipeCard({ recipe }: { recipe: RecipeCardProps }) {
 
   const overlayImage = getOverlayImage(recipe.options);
   const difficultyLevel = getDifficulty(recipe.difficulty);
+
   const totalTime = parseInt(recipe.cookingTime, 10) + parseInt(recipe.prepTime, 10);
 
   return (
-    <div className="list-card" onClick={() => handleRecipeClick(recipe.id)}>
+    <div className="list-card">
       <div className="list-content">
         <div className="list-image-container">
           <img className="recipe-image" src={recipe.imageUrl || ''} alt="" />
@@ -81,7 +88,24 @@ function ListRecipeCard({ recipe }: { recipe: RecipeCardProps }) {
             <p className="serving"><img src="/person.png" alt="" style={{width:'25px'}}/>{recipe.servings}</p>
             <p className="difficulty"><img src={difficultyLevel} alt="" style={{width:'30px'}}/></p>
           </div>
+          <button className="view-recipe" onClick={() => handleRecipeClick(recipe.id)}>
+            VIEW RECIPE
+          </button>
         </div>
+        {(onEdit || onDelete) && (
+          <div className="actions-container">
+            {onEdit && (
+              <button className="edit-recipe" onClick={() => onEdit(recipe.id)}>
+                <Edit3 style={{width: '20px'}}/>
+              </button>
+            )}
+            {onDelete && (
+              <button className="delete-recipe" onClick={() => onDelete(recipe.id)}>
+                <Trash2 style={{width: '20px'}}/>
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

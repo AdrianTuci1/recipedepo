@@ -1,6 +1,10 @@
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import '../styles/profileMenu.scss';
 
 const ProfileMenu = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const sidebarItems = [
     { label: 'RETETELE MELE', path: '' },
     { label: 'PLAN ALIMENTAR', path: 'plan' },
@@ -10,9 +14,16 @@ const ProfileMenu = () => {
     // Add more items for different sections
   ];
 
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <div className="pannel" style={{ display: 'flex', justifyContent: 'center', }}>
-      <ul className='options' style={{ listStyle: 'none'}}>
+    <div className="pannel">
+      <button className="menu-toggle" onClick={toggleMenu}>
+        {isOpen ? 'Close Menu' : 'Open Menu'}
+      </button>
+      <ul className={`options ${isOpen ? 'open' : ''}`}>
         {sidebarItems.map((item) => (
           <li key={item.label}>
             <NavLink to={item.path}>

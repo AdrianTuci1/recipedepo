@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/hoverimage.scss';
+import { useNavigate } from 'react-router-dom';
 
 interface HoverImageProps {
     defaultSrc: string;
@@ -10,9 +11,11 @@ interface HoverImageProps {
     switchSrc?: string;
 }
 
-const HoverImage: React.FC<HoverImageProps> = ({ defaultSrc, hoverSrc, alt, action, route, switchSrc }) => {
+const HoverImage: React.FC<HoverImageProps> = ({ defaultSrc, hoverSrc, alt, action, switchSrc }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [isSwitched, setIsSwitched] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleMouseEnter = () => {
         setIsHovered(true);
@@ -25,10 +28,7 @@ const HoverImage: React.FC<HoverImageProps> = ({ defaultSrc, hoverSrc, alt, acti
     const handleClick = () => {
         switch (action) {
             case 'navigate':
-                if (route) {
-                    window.location.href = route; // For simple navigation
-                    // history.push(route); // Use if react-router is preferred
-                }
+                    navigate(-1);
                 break;
             case 'switch':
                 if (switchSrc) {

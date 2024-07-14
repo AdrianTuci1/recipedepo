@@ -5,11 +5,13 @@ import ProfileMenu from '../components/ProfileMenu';
 function Layout() {
   return (
     <>
+    <div className="content-wrap">
     <div className="pagepro">
       <ProfileMenu />
       <div className="prof-content">
         <Outlet />
       </div>
+    </div>
     </div>
     </>
   )

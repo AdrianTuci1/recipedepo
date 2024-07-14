@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { RecipeCardProps } from './RecipeCard';
-import '../styles/retetaform.scss'
+import '../styles/retetaform.scss';
 
 interface RecipeFormProps {
   onSubmit: (data: RecipeCardProps) => void;
   initialData: RecipeCardProps;
 }
+
 // Separate Ingredient component
 interface IngredientProps {
   ingredient: string;
@@ -13,10 +14,10 @@ interface IngredientProps {
 }
 
 const Ingredient: React.FC<IngredientProps> = ({ ingredient, onRemove }) => (
-  <div key={ingredient}>
+  <div className="ingredient-item">
     <span>{ingredient}</span>
-    <button type="button" onClick={onRemove}>
-      Remove
+    <button type="button" onClick={onRemove} className='smallbtn'>
+      -
     </button>
   </div>
 );
@@ -29,19 +30,17 @@ interface StepProps {
 }
 
 const Step: React.FC<StepProps> = ({ stepNumber, content, onRemove }) => (
-  <div key={stepNumber}>
-    <h3>Step {stepNumber}</h3>
+  <div className="step-item">
+    <h4 style={{width:'100px'}}>{stepNumber}</h4>
     <p>{content}</p>
-    <button type="button" onClick={onRemove}>
-      Remove
+    <button type="button" onClick={onRemove} className='smallbtn'>
+      -
     </button>
   </div>
 );
 
-
 const RetetaForm: React.FC<RecipeFormProps> = ({ initialData, onSubmit }) => {
   const [formData, setFormData] = useState<RecipeCardProps>(initialData);
-
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [newIngredient, setNewIngredient] = useState('');
   const [steps, setSteps] = useState<string[]>([]);
@@ -98,7 +97,7 @@ const RetetaForm: React.FC<RecipeFormProps> = ({ initialData, onSubmit }) => {
     setSteps(updatedSteps);
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -118,18 +117,17 @@ const RetetaForm: React.FC<RecipeFormProps> = ({ initialData, onSubmit }) => {
     const parsedData = JSON.parse(JSON.stringify(finalData));
 
     if(onSubmit) {
-    onSubmit(parsedData);
+      onSubmit(parsedData);
     } else {
-    console.error('onSubmit function not provided')
+      console.error('onSubmit function not provided');
     }
   };
-  
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
-            const imageUrl = URL.createObjectURL(selectedFile);
-            setFormData({ ...formData, imageUrl }); // Update form data with preview URL
+      const imageUrl = URL.createObjectURL(selectedFile);
+      setFormData({ ...formData, imageUrl }); // Update form data with preview URL
     }
   };
 
@@ -138,27 +136,30 @@ const RetetaForm: React.FC<RecipeFormProps> = ({ initialData, onSubmit }) => {
   };
 
   return (
-    <form id="recipe-form" onSubmit={handleSubmit} className='recipe-form'>
+    <form id="recipe-form" onSubmit={handleSubmit} className="recipe-form">
+      <h2>{initialData.title ? 'Edit Recipe' : 'Add Recipe'}</h2>
+
       <label htmlFor="title">Nume reteta:</label>
       <input type="text" id="title" name="title" required value={formData.title} onChange={handleChange} />
 
       <label htmlFor="imageUrl">Image (optional):</label>
       {formData.imageUrl && (
-        <div>
-        <img src={formData.imageUrl} alt="Preview" style={{width:'80px', height:'80px'}}/>
-        <button onClick={handleRemoveImage}>Remove Image</button>
+        <div className="image-preview">
+          <img src={formData.imageUrl} alt="Preview" />
+          <button type="button" onClick={handleRemoveImage} style={{width:'100px'}}>Sterge imaginea</button>
         </div>
       )}
       <input type="file" id="imageUrl" name="imageUrl" onChange={handleImageChange} />
 
-
       <label htmlFor="cookingTime">Timp de gatit:</label>
       <input type="range" id="cookingTime" name="cookingTime" min={0} max={120} step={5} required value={formData.cookingTime} onChange={handleChange} />
+      <span>{formData.cookingTime} min</span>
 
       <label htmlFor="prepTime">Timp de preparare:</label>
       <input type="range" id="prepTime" name="prepTime" min={10} max={50} step={5} required value={formData.prepTime} onChange={handleChange} />
+      <span>{formData.prepTime} min</span>
 
-      <label htmlFor="inside">Tip:</label>
+      <label htmlFor="type">Tip:</label>
       <select id="type" name="type" value={formData.type} onChange={handleChange}>
         <option value="altele">Altele</option>
         <option value="vegan">Vegan</option>
@@ -180,7 +181,8 @@ const RetetaForm: React.FC<RecipeFormProps> = ({ initialData, onSubmit }) => {
       </select>
 
       <label htmlFor="price">Pret:</label>
-      <input type="range" id="price" name="price"min={1} max={4} step={1} value={formData.price} onChange={handleChange} />
+      <input type="range" id="price" name="price" min={1} max={4} step={1} value={formData.price} onChange={handleChange} />
+      <span>{formData.price} $$$$</span>
 
       <label htmlFor="kitchen">Bucatarie:</label>
       <select id="kitchen" name="kitchen" value={formData.kitchen} onChange={handleChange}>
@@ -192,62 +194,62 @@ const RetetaForm: React.FC<RecipeFormProps> = ({ initialData, onSubmit }) => {
       {formData.kitchen === 'altele' && (
         <input
           type="text"
-          name="otherKitchen" // Use a different name to avoid conflicts
-          value={formData.otherKitchen || ''} // Set default value or existing value
+          name="otherKitchen"
+          value={formData.otherKitchen || ''}
           onChange={handleChange}
-          placeholder="Introduceti bucataria" // Placeholder text (optional)
+          placeholder="Introduceti bucataria"
         />
       )}
 
       <h3>Ingrediente</h3>
-            <div className="ingredients-list">
-              {ingredients.map((ingredient, index) => (
-                <Ingredient
-                  key={index}
-                  ingredient={ingredient}
-                  onRemove={() => handleRemoveIngredient(index)}
-                />
-              ))}
-            </div>
-            <input
-              type="text"
-              value={newIngredient}
-              onChange={(event) => setNewIngredient(event.target.value)}
-              placeholder="Add Ingredient"
-            />
-            <button type="button" onClick={handleAddIngredient}>
-              +
-            </button>
+      <div className="ingredients-list">
+        {ingredients.map((ingredient, index) => (
+          <Ingredient
+            key={index}
+            ingredient={ingredient}
+            onRemove={() => handleRemoveIngredient(index)}
+          />
+        ))}
+      </div>
+      <div className="add-item">
+        <input
+          type="text"
+          value={newIngredient}
+          onChange={(event) => setNewIngredient(event.target.value)}
+          placeholder="Add Ingredient"
+        />
+        <button type="button" onClick={handleAddIngredient} className='smallbtn'>+</button>
+      </div>
 
-            <h3>Instructiuni</h3>
-            <div className="steps-list">
-              {steps.map((step, index) => (
-                <Step 
-                key={index} 
-                stepNumber={index + 1} 
-                content={step}
-                onRemove={() => handleRemoveStep(index)} 
-                />
-              ))}
-            </div>
-            <input
-              type="text"
-              value={newStep}
-              onChange={(event) => setNewStep(event.target.value)}
-              placeholder="Add Step"
-            />
-            <button type="button" onClick={handleAddStep}>
-              +
-            </button>
+      <h3>Instructiuni</h3>
+      <div className="steps-list">
+        {steps.map((step, index) => (
+          <Step
+            key={index}
+            stepNumber={index + 1}
+            content={step}
+            onRemove={() => handleRemoveStep(index)}
+          />
+        ))}
+      </div>
+      <div className="add-item">
+        <input
+          type="text"
+          value={newStep}
+          onChange={(event) => setNewStep(event.target.value)}
+          placeholder="Add Step"
+        />
+        <button type="button" onClick={handleAddStep} className='smallbtn'>+</button>
+      </div>
 
-      <label htmlFor="usage">Vizibilitate:</label>
+      <label htmlFor="isPublic">Vizibilitate:</label>
       <select value={isPublic ? "true" : "false"} onChange={(event) => setIsPublic(event.target.value === 'true')}>
         <option value="false">Private</option>
         <option value="true">Public</option>
       </select>
 
       <button type="submit">
-      {initialData.title ? 'Edit Recipe' : 'Add Recipe'}
+        {initialData.title ? 'Editeaza Reteta' : 'Adauga Reteta'}
       </button>
     </form>
   );

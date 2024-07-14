@@ -12,12 +12,13 @@
   height: 180px; // Increase the height
 
   &:hover {
-    transform: scale(1.02); // Scale up both width and height
+    transform: scale(1.05); // Scale up both width and height
   }
 
   .list-content {
     display: flex;
     width: 100%;
+    align-items: center; // Center items vertically
 
     .list-image-container {
       width: 180px; // Adjust width to maintain 1:1 ratio with the new height
@@ -49,7 +50,6 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: center;
 
       .likes, .recipe-title, .icons-container, .view-recipe {
         margin: 5px 0;
@@ -61,8 +61,8 @@
         border: none;
         padding: 5px 10px; // Make the button smaller
         font-size: 0.8rem; // Adjust font size
-        width: 200px;
         cursor: pointer;
+        width: 180px;
         transition: background-color 0.3s ease;
 
         &:hover {
@@ -78,13 +78,76 @@
       .likes {
         display: flex;
         align-items: center;
+        padding-left: 10px;
         gap: 5px;
       }
 
       .time, .serving, .difficulty {
         display: flex;
         align-items: center;
+      }
+    }
+
+    .actions-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-left: 10px;
+      width: 100px;
+
+      button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin: 5px 0;
+        padding: 5px;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.2); // Enlarge icons on hover
+        }
+      }
+
+      .edit-recipe, .delete-recipe {
+        display: flex;
+        align-items: center;
         justify-content: center;
+      }
+    }
+  }
+}
+
+// Responsive Design for smaller devices
+@media (max-width: 600px) {
+  .list-card {
+    flex-direction: column;
+    height: auto;
+
+    .list-content {
+      flex-direction: column;
+
+      .list-image-container {
+        width: 100%;
+        height: auto;
+        max-height: 200px;
+      }
+
+      .list-description-container {
+        .view-recipe {
+          width: 100%;
+          text-align: center;
+        }
+      }
+
+      .actions-container {
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+        margin: 10px 0;
+
+        button {
+          margin: 0 5px;
+        }
       }
     }
   }

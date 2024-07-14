@@ -115,7 +115,15 @@ function RecipeDetails({ recipe }: { recipe: RecipeCardProps }) {
           </div>
         </div>
         <div className="menu-edit">
-        <div className="inapoi bd"><img src="/back.png" alt="" style={{width:'40px'}} /></div>
+        <div className="icon-wrapper inapoi">
+          <HoverImage
+              key='1'
+              defaultSrc='/backi.png'
+              hoverSrc='/back.png'
+              alt='like'
+              action='navigate'
+          />
+          </div>
         <div className="like-print-share bd">
           <div className="icon-wrapper inima">
           <HoverImage
@@ -145,13 +153,6 @@ function RecipeDetails({ recipe }: { recipe: RecipeCardProps }) {
               action='share'
           />
           </div>
-        </div>
-        <div className="editeaza-reteta bd">
-          <img src="/edit.png" alt="" />
-        </div>
-        <div className="editeaza-reteta-open">
-          <img src="/editare.png" alt="" style={{width:'40px'}}/>
-          <img src="/deletec.png" alt="" style={{width:'40px'}}/>
         </div>
         </div>
         <div className="social bd">

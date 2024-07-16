@@ -1,9 +1,136 @@
-.user-settings{
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: darkcyan;
-    padding: 10%;
-    margin-top: 10%;
+$user-settings-bg: #fff;
+$user-settings-shadow: rgba(0, 0, 0, 0.1);
+$user-settings-border-radius: 8px;
+$user-settings-primary-color: #007bff;
+$user-settings-secondary-color: #6c757d;
+$user-settings-error-color: red;
+
+.user-settings-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: $user-settings-bg;
+  box-shadow: 0 0 10px $user-settings-shadow;
+  border-radius: $user-settings-border-radius;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h1 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+
+  .user-settings-content {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 20px;
+    width: 100%;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+
+    .user-settings-image {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .profile-image {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 10px;
+      }
+
+      .btn-upload {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: $user-settings-primary-color;
+        color: white;
+      }
+    }
+
+    .user-settings-form {
+      display: flex;
+      flex-direction: column;
+
+      .form-group {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: bold;
+          width: 20%;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+          width: 60%;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+
+        input:disabled {
+          background-color: #f0f0f0;
+          cursor: not-allowed;
+        }
+
+        .btn {
+          margin-left: 10px;
+          padding: 8px 12px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+
+          &.btn-edit {
+            background-color: $user-settings-primary-color;
+            color: white;
+          }
+
+          &.btn-cancel {
+            background-color: $user-settings-secondary-color;
+            color: white;
+          }
+        }
+      }
+
+      .btn {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &.btn-primary {
+          background-color: $user-settings-primary-color;
+          color: white;
+
+          &:disabled {
+            background-color: rgba($user-settings-primary-color, 0.6);
+          }
+        }
+
+        &.btn-secondary {
+          background-color: $user-settings-secondary-color;
+          color: white;
+          margin-top: 10px;
+        }
+      }
+
+      .error-message {
+        color: $user-settings-error-color;
+        margin-top: 10px;
+        text-align: center;
+      }
+    }
+  }
 }

@@ -1,0 +1,35 @@
+/* styles/socialsection.scss */
+.social-section {
+    width: 90%;
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+  }
+  
+  .social-views,
+  .social-comments,
+  .social-likes {
+    margin-bottom: 10px;
+  }
+  
+  .comment-section {
+    width: 100%;
+  }
+  
+  .comment-section textarea {
+    width: 90%;
+    height: 100px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .comment-section button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  

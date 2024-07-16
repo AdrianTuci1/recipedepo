@@ -106,6 +106,8 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
       foreignKey: 'userId',
       as: 'user'
     });
+    Recipe.hasMany(models.Comment, { foreignKey: 'recipeId', as: 'comments' });
+    Recipe.hasMany(models.Like, { foreignKey: 'recipeId', as: 'likes' });
   };
 
   return Recipe;

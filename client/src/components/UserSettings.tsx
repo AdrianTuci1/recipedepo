@@ -3,21 +3,35 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { logout, updateUser } from '../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
+import '../styles/usersettings.scss'; // Import SCSS for styling
 
 const UserSettings: React.FC = () => {
-  const user = useSelector((state: RootState) => state.auth.user);
+  const userFromState = useSelector((state: RootState) => state.auth.user);
+  const [user, setUser] = useState(userFromState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Initialize state with user data or empty strings
   const [username, setUsername] = useState(user?.username || '');
   const [email, setEmail] = useState(user?.email || '');
   const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || '');
   const [image, setImage] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState({
+    username: false,
+    email: false,
+    phoneNumber: false,
+  });
 
-  // Update state if user data changes
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!user) {
+      const storedUser = JSON.parse(localStorage.getItem('auth_user') || '{}');
+      setUser(storedUser);
+    }
+  }, [user]);
+
   useEffect(() => {
     if (user) {
       setUsername(user.username || '');
@@ -53,14 +67,38 @@ const UserSettings: React.FC = () => {
         setError(error.message);
       } finally {
         setIsLoading(false);
+        setIsEditing({
+          username: false,
+          email: false,
+          phoneNumber: false,
+        });
       }
     }
   };
 
   const handleLogout = () => {
     dispatch(logout() as any);
-    navigate('/'); // Redirect to login or home page after logout
-    
+    navigate('/');
+  };
+
+  const handleEdit = (field: string) => {
+    setIsEditing({ ...isEditing, [field]: true });
+  };
+
+  const handleCancel = (field: string) => {
+    setIsEditing({ ...isEditing, [field]: false });
+
+    if (user) {
+      setUsername(user.username || '');
+      setEmail(user.email || '');
+      setPhoneNumber(user.phoneNumber || '');
+    }
+  };
+
+  const handleUploadClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
   if (!user) {
@@ -68,55 +106,96 @@ const UserSettings: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className="user-settings-container">
       <h1>User Settings</h1>
-      <form onSubmit={handleUpdateUser}>
-        <div className="form-group">
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            placeholder="Enter username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
+      <div className="user-settings-content">
+        <div className="user-settings-image">
+          <img
+            src={image ? URL.createObjectURL(image) : user.image}
+            alt="Profile"
+            className="profile-image"
           />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="phoneNumber">Phone Number</label>
-          <input
-            type="text"
-            id="phoneNumber"
-            placeholder="Enter phone number"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="image">Profile Image</label>
           <input
             type="file"
             id="image"
+            ref={fileInputRef}
             onChange={handleFileChange}
+            style={{ display: 'none' }}
           />
+          <button type="button" className="btn btn-upload" onClick={handleUploadClick}>
+            Upload Image
+          </button>
         </div>
-        <button type="submit" className="btn btn-primary" disabled={isLoading}>
-          {isLoading ? 'Updating...' : 'Update'}
-        </button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-      </form>
+        <form onSubmit={handleUpdateUser} className="user-settings-form">
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              placeholder="Enter username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              disabled={!isEditing.username}
+            />
+            {!isEditing.username ? (
+              <button type="button" className="btn btn-edit" onClick={() => handleEdit('username')}>
+                Edit
+              </button>
+            ) : (
+              <button type="button" className="btn btn-cancel" onClick={() => handleCancel('username')}>
+                Cancel
+              </button>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={!isEditing.email}
+            />
+            {!isEditing.email ? (
+              <button type="button" className="btn btn-edit" onClick={() => handleEdit('email')}>
+                Edit
+              </button>
+            ) : (
+              <button type="button" className="btn btn-cancel" onClick={() => handleCancel('email')}>
+                Cancel
+              </button>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="phoneNumber">Phone Number</label>
+            <input
+              type="text"
+              id="phoneNumber"
+              placeholder="Enter phone number"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+              disabled={!isEditing.phoneNumber}
+            />
+            {!isEditing.phoneNumber ? (
+              <button type="button" className="btn btn-edit" onClick={() => handleEdit('phoneNumber')}>
+                Edit
+              </button>
+            ) : (
+              <button type="button" className="btn btn-cancel" onClick={() => handleCancel('phoneNumber')}>
+                Cancel
+              </button>
+            )}
+          </div>
+          <button type="submit" className="btn btn-primary" disabled={isLoading}>
+            {isLoading ? 'Updating...' : 'Update'}
+          </button>
+          {error && <p className="error-message">{error}</p>}
+        </form>
+      </div>
       <button onClick={handleLogout} className="btn btn-secondary">
         Logout
       </button>

@@ -31,12 +31,12 @@ app.get("/", (req, res) => {
 require("./app/routes/recipe.routes.js")(app);
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
+require("./app/routes/comment.routes.js")(app);
+require("./app/routes/like.routes.js")(app);
+require("./app/routes/views.routes.js")(app);
 
 // set port, listen for requests
 const PORT = config.PORT;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-
-

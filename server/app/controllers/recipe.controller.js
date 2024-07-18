@@ -20,11 +20,16 @@ exports.create = async (req, res) => {
     } = req.body;
 
     const userId = req.userId; // Assumed set by auth middleware
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
 
     const recipe = await Recipe.create({
       title, imageUrl, cookingTime, prepTime, type, options, servings,
       difficulty, price, kitchen, ingredients: JSON.stringify(ingredients),
-      steps: JSON.stringify(steps), isPublic, userId, author: req.userId // Assuming `author` to be `req.userId`
+      steps: JSON.stringify(steps), isPublic, userId , author: user.username // Assuming `author` to be `req.userId`
     });
 
     res.send(recipe);
@@ -40,7 +45,10 @@ exports.findAll = async (req, res) => {
   const condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
   try {
-    const recipes = await Recipe.findAll({ where: condition });
+    const recipes = await Recipe.findAll({ 
+      where: condition, 
+      include: [{ model: User, as: 'user', attributes: ['username'] }]
+    });
     res.send(recipes);
   } catch (error) {
     res.status(500).json({ message: error.message || "Some error occurred while retrieving recipes." });
@@ -52,7 +60,9 @@ exports.findOne = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const recipe = await Recipe.findByPk(id);
+    const recipe = await Recipe.findByPk(id, {
+      include: [{ model: User, as: 'user', attributes: ['username'] }]
+    });
     if (recipe) {
       res.send(recipe);
     } else {
@@ -136,7 +146,10 @@ exports.deleteAll = async (req, res) => {
 // Find all public Recipes
 exports.findAllPublic = async (req, res) => {
   try {
-    const recipes = await Recipe.findAll({ where: { isPublic: true, approved: true } });
+    const recipes = await Recipe.findAll({ 
+      where: { isPublic: true, approved: true },
+      include: [{ model: User, as: 'user', attributes: ['username'] }]
+    });
     res.send(recipes);
   } catch (error) {
     res.status(500).send({ message: error.message || "Some error occurred while retrieving public recipes." });
@@ -150,8 +163,9 @@ exports.findUserRecipes = (req, res) => {
 
   Recipe.findAll({
     where: {
-      author: userId
-    }
+      userId: userId
+    },
+    include: [{ model: User, as: 'user', attributes: ['username'] }]
   })
   .then(data => {
     res.send(data);

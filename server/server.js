@@ -33,6 +33,7 @@ require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
 require("./app/routes/comment.routes.js")(app);
 require("./app/routes/favorite.routes.js")(app);
+require("./app/routes/alimentaryPlan.routes.js")(app);
 
 // set port, listen for requests
 const PORT = config.PORT;

@@ -29,6 +29,8 @@ db.user = require("./user.model.js")(sequelize, DataTypes);
 db.role = require("./role.model.js")(sequelize, DataTypes);
 db.favorite = require("./favorite.model.js")(sequelize, DataTypes);
 db.comment = require("./comment.model.js")(sequelize, DataTypes);
+db.alimentaryPlan = require("./alimentaryPlan.model.js")(sequelize, DataTypes);
+db.card = require("./card.model.js")(sequelize, DataTypes);
 
 // Define associations for favorites
 db.user.belongsToMany(db.recipes, { through: db.favorite, foreignKey: 'userId', as: 'favoritedRecipes' });
@@ -47,5 +49,9 @@ db.user.belongsToMany(db.role, {
 });
 db.user.hasMany(db.comment, { foreignKey: 'userId', as: 'comments' });
 db.recipes.hasMany(db.comment, { foreignKey: 'recipeId', as: 'comments' });
+
+db.user.hasMany(db.alimentaryPlan, { foreignKey: 'userId', as: 'alimentaryPlans' });
+db.alimentaryPlan.hasMany(db.card, { foreignKey: 'planId', as: 'cards' });
+db.card.belongsTo(db.alimentaryPlan, { foreignKey: 'planId', as: 'plan' });
 
 module.exports = db;

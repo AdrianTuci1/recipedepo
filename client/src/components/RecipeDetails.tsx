@@ -12,7 +12,7 @@ interface RecipeDetailsProps {
 type DifficultyLevel = 'easy' | 'medium' | 'hard';
 
 const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
-  const { steps: stepsString, ingredients: ingredientsString, type, title, options, servings, difficulty, price, kitchen, views, comments, likes, userId, prepTime, cookingTime, imageUrl } = recipe;
+  const { steps: stepsString, ingredients: ingredientsString, type, title, options, servings, difficulty, price, kitchen, views, commentsCount, likes, userId, prepTime, cookingTime, imageUrl } = recipe;
 
   const steps = JSON.parse(stepsString);
   const ingredients = JSON.parse(ingredientsString);
@@ -84,6 +84,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
           <div className="header bd">
             <h1 className="titlez">{title}</h1>
             <div className="type">{type}</div>
+            <div className="optionnn">{options}</div>
           </div>
           <div className="options ">
             <div className="option-item"><img src="/person.png" alt="" style={{width:'25px'}}/>{servings}</div>
@@ -159,14 +160,14 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
           </div>
           <div className="social bd" onClick={toggleSocialSection}>
             <div className="views icn sc"><Eye className="icon" /> {views}</div>
-            <div className="comments icn sc"><MessagesSquare className="icon" /> {comments}</div>
+            <div className="comments icn sc"><MessagesSquare className="icon" /> {commentsCount}</div>
             <div className="likes icn sc"><Heart className="icon" /> {likes}</div>
             <div className="username icn"><User className="icon" /> {userId}</div>
           </div>
         </div>
         {isSocialSectionOpen && (
           <div className="social-wrapper">
-            <SocialSection comments={comments} likes={likes} />
+            <SocialSection comments={commentsCount} likes={likes} />
           </div>
           )}
       </div>

@@ -1,52 +1,32 @@
-module.exports = (sequelize, Sequelize, DataTypes) => {
-  const User = sequelize.define(
-    "user", // Model name
-    {
-      // Attributes
-      id: {
-        type: DataTypes.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        primaryKey: true
-      },
-      username: {
-        type: DataTypes.STRING,
-        unique: true
-      },
-      email: {
-        type: DataTypes.STRING
-      },
-      password: {
-        type: DataTypes.STRING
-      },
-      phoneNumber: {
-        type: DataTypes.STRING
-      },
-      image: {
-        type: DataTypes.STRING
-      },
-      verified: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-      },
-      banned: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define("user", {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true
       }
     },
-    {
-      // Options
-      timestamps: true,
-      underscored: true,
-      createdAt: "created_at",
-      updatedAt: "updated_at"
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
-  );
+  });
+
 
   User.associate = function(models) {
-    User.hasMany(models.recipe, {
-      foreignKey: 'userId',
-      as: 'recipes'
-    });
+    User.hasMany(models.recipe, { foreignKey: 'userId', as: 'recipes', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+    User.hasMany(models.favorite, { foreignKey: 'userId', as: 'favorites', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
   };
 
   return User;

@@ -219,3 +219,40 @@ exports.approveOrDenyRecipe = async (req, res) => {
     });
   }
 };
+
+// Increment view count for a recipe
+exports.incrementViews = async (req, res) => {
+  try {
+    const { recipeId } = req.params;
+
+    const recipe = await Recipe.findByPk(recipeId);
+    if (!recipe) {
+      return res.status(404).json({ message: "Recipe not found" });
+    }
+
+    recipe.views += 1;
+    await recipe.save();
+
+    res.status(200).json({ message: "Recipe view count incremented", views: recipe.views });
+  } catch (error) {
+    console.error('Error incrementing views:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Fetch 10 most favorited recipes
+exports.getTopFavoritedRecipes = async (req, res) => {
+  try {
+    const recipes = await Recipe.findAll({
+      limit: 10,
+      order: [['likes', 'DESC']],
+      include: [{ model: User, as: 'user', attributes: ['username'] }]
+    });
+
+    res.status(200).json(recipes);
+  } catch (error) {
+    console.error('Error fetching top favorited recipes:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+

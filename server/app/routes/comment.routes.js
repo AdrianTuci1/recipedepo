@@ -1,4 +1,3 @@
-// routes/comments.js
 module.exports = (app) => {
     const commentController = require("../controllers/comment.controller.js");
     const { verifyToken } = require("../middlewares/authJwt");

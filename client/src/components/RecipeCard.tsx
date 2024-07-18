@@ -21,7 +21,7 @@ export interface RecipeCardProps {
   author:      string;
   likes:       number; 
   views:       number;
-  comments:    number;
+  commentsCount:number;
   userId:      string;
   isPublic:    boolean;
   approved:    boolean;

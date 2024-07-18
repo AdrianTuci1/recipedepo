@@ -37,5 +37,11 @@ module.exports = (app) => {
   // Send a Recipe for approval (user)
   router.put("/:id/request-approval", verifyToken, recipeController.requestApproval);
 
+  // Increment views
+  router.put("/:recipeId/views", recipeController.incrementViews);
+
+  // Fetch 10 most favorited recipes
+  router.get("/top/favorites", recipeController.getTopFavoritedRecipes);
+
   app.use("/api/recipes", router);
 };

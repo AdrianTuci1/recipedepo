@@ -13,6 +13,9 @@ module.exports = (app) => {
   
     // Retrieve all favorite recipes of the authenticated user
     router.get("/user/:userId", verifyToken, favoriteController.findAllByUser);
+
+    // Check if a recipe is liked by the user
+    router.get('/isLiked/:userId/:recipeId', verifyToken, favoriteController.isLikedByUser);
   
     app.use("/api/favorites", router);
   };

@@ -42,7 +42,7 @@ const FilterComponent: React.FC<FilterProps> = ({ showFilters, toggleFilters, fi
     setSelectedType(type);
   };
 
-  const [selectedType, setSelectedType] = useState('all');
+  const [selectedType, setSelectedType] = useState('toate');
 
   const getDifficultyImage = (difficulty: string) => {
     switch (difficulty) {
@@ -63,7 +63,7 @@ const FilterComponent: React.FC<FilterProps> = ({ showFilters, toggleFilters, fi
       <div>
         <label>Type:</label>
         <ul className='fil-type ule'>
-          {['all', 'main course', 'salad', 'soup', 'snack', 'sushi', 'dessert'].map(type => (
+          {['toate', 'fel principal', 'salata', 'supe', 'gustare', 'sushi', 'desert'].map(type => (
             <li 
             key={type} 
             onClick={() => handleTypeChange(type)}

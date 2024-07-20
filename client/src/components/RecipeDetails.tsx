@@ -12,7 +12,7 @@ interface RecipeDetailsProps {
 type DifficultyLevel = 'easy' | 'medium' | 'hard';
 
 const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
-  const { steps: stepsString, ingredients: ingredientsString, type, title, options, servings, difficulty, price, kitchen, views, commentsCount, likes, userId, prepTime, cookingTime, imageUrl } = recipe;
+  const { id, steps: stepsString, ingredients: ingredientsString, type, title, options, servings, difficulty, price, kitchen, views, commentsCount, likes, prepTime, cookingTime, imageUrl, author } = recipe;
 
   const steps = JSON.parse(stepsString);
   const ingredients = JSON.parse(ingredientsString);
@@ -52,7 +52,23 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
     }
   };
 
+  const getOverlayImage = (options: string) => {
+    switch (options) {
+      case 'High-Protein':
+        return '/protein.png';
+      case 'Vegan':
+        return '/vegan.png';
+      case 'Balanced':
+        return '/balanced.png';
+      case 'Traditional':
+        return '/traditional.png';
+      default:
+        return '/protein.png';
+    }
+  };
+
   const difficultyImage = isDifficultyLevel(difficulty) ? getDifficultyImagePath(difficulty) : '';
+  const overlayImage = getOverlayImage(recipe.options);
 
   const renderDollarTags = (price: number) => {
     const tags = [];
@@ -84,7 +100,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
           <div className="header bd">
             <h1 className="titlez">{title}</h1>
             <div className="type">{type}</div>
-            <div className="optionnn">{options}</div>
+            <div className="optionnn"><img src={overlayImage} alt={options} style={{width:'30px'}}/></div>
           </div>
           <div className="options ">
             <div className="option-item"><img src="/person.png" alt="" style={{width:'25px'}}/>{servings}</div>
@@ -136,6 +152,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
                   alt='like'
                   action='switch'
                   switchSrc='/hearta.png'
+                  recipeId={id}
                 />
               </div>
               <div className="icon-wrapper printer">
@@ -162,7 +179,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
             <div className="views icn sc"><Eye className="icon" /> {views}</div>
             <div className="comments icn sc"><MessagesSquare className="icon" /> {commentsCount}</div>
             <div className="likes icn sc"><Heart className="icon" /> {likes}</div>
-            <div className="username icn"><User className="icon" /> {userId}</div>
+            <div className="username icn"><User className="icon" /> {author}</div>
           </div>
         </div>
         {isSocialSectionOpen && (

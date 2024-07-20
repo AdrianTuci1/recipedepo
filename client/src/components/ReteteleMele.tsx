@@ -49,9 +49,14 @@ function ReteteleMele({}: RecipeListProps) {
 
   const handleDelete = async (id: string | undefined) => {
     try {
+      const token = Cookies.get('auth_token');
       const recipeId = id;
       const response = await fetch(`http://localhost:8080/api/recipes/${recipeId}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.ok) {

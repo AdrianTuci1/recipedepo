@@ -21,11 +21,6 @@ exports.create = async (req, res) => {
       return res.status(404).json({ message: "Recipe not found" });
     }
 
-    const existingFavorite = await Favorite.findOne({ where: { userId, recipeId } });
-    if (existingFavorite) {
-      return res.status(400).json({ message: "Already favorited this recipe" });
-    }
-
     const favorite = await Favorite.create({ userId, recipeId });
 
     recipe.likes += 1;
@@ -59,7 +54,7 @@ exports.delete = async (req, res) => {
       await recipe.save();
     }
 
-    res.status(204).end();
+    res.status(204).end(); // Return 204 No Content
   } catch (error) {
     console.error('Error deleting favorite:', error);
     res.status(500).json({ message: error.message });
@@ -84,6 +79,23 @@ exports.findAllByUser = async (req, res) => {
     res.status(200).json(favorites);
   } catch (error) {
     console.error('Error finding favorites:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Check if a user has liked a specific recipe
+exports.isLikedByUser = async (req, res) => {
+  try {
+    const { userId, recipeId } = req.params;
+
+    const favorite = await Favorite.findOne({ where: { userId, recipeId } });
+    if (favorite) {
+      res.status(200).json({ liked: true });
+    } else {
+      res.status(200).json({ liked: false });
+    }
+  } catch (error) {
+    console.error('Error checking if liked:', error);
     res.status(500).json({ message: error.message });
   }
 };

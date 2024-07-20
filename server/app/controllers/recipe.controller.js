@@ -47,7 +47,6 @@ exports.findAll = async (req, res) => {
   try {
     const recipes = await Recipe.findAll({ 
       where: condition, 
-      include: [{ model: User, as: 'user', attributes: ['username'] }]
     });
     res.send(recipes);
   } catch (error) {
@@ -60,9 +59,7 @@ exports.findOne = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const recipe = await Recipe.findByPk(id, {
-      include: [{ model: User, as: 'user', attributes: ['username'] }]
-    });
+    const recipe = await Recipe.findByPk(id);
     if (recipe) {
       res.send(recipe);
     } else {
@@ -119,7 +116,7 @@ exports.update = async (req, res) => {
 // Delete a Recipe with the specified id in the request
 exports.delete = async (req, res) => {
   const id = req.params.id;
-  const userId = req.user.id; // Assuming req.user contains the authenticated user
+  const userId = req.userId; // Assuming req.user contains the authenticated user
 
   try {
     const num = await Recipe.destroy({ where: { id, userId } });
@@ -148,7 +145,6 @@ exports.findAllPublic = async (req, res) => {
   try {
     const recipes = await Recipe.findAll({ 
       where: { isPublic: true, approved: true },
-      include: [{ model: User, as: 'user', attributes: ['username'] }]
     });
     res.send(recipes);
   } catch (error) {
@@ -165,7 +161,6 @@ exports.findUserRecipes = (req, res) => {
     where: {
       userId: userId
     },
-    include: [{ model: User, as: 'user', attributes: ['username'] }]
   })
   .then(data => {
     res.send(data);

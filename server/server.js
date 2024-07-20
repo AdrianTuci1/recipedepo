@@ -42,12 +42,13 @@ app.listen(PORT, () => {
 });
 
 // Sync the database
-db.sequelize.sync({ force: true })
+db.sequelize.sync()
   .then(() => {
     console.log("Database synced with force: true.");
   })
   .catch((err) => {
     console.log("Failed to sync database: " + err.message);
   });
+
 
 

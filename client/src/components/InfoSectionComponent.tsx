@@ -34,7 +34,7 @@ const InfoSectionComponent: React.FC<InfoSectionProps> = ({
   return (
     <div className="info-section">
       <div className="type-ava">
-        <h2>{recipeType.charAt(0).toUpperCase() + recipeType.slice(1)} Recipes</h2>
+        <h2>{recipeType.charAt(0).toUpperCase() + recipeType.slice(1)}</h2>
         <h4>({sortedRecipes.length} Available)</h4>
       </div>
       <div className="filter-section">

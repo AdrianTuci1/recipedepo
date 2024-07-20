@@ -22,7 +22,12 @@ const RecipeListComponent: React.FC<RecipeListProps> = ({ filters, setFilters, t
       try {
         const response = await fetch('http://localhost:8080/api/recipes/public');
         const data = await response.json();
-        setRecipes(data);
+
+        if (Array.isArray(data)) {
+          setRecipes(data);
+        } else {
+          console.error('API response is not an array:', data);
+        }
       } catch (error) {
         console.error('Error fetching recipes:', error);
       }
@@ -37,7 +42,7 @@ const RecipeListComponent: React.FC<RecipeListProps> = ({ filters, setFilters, t
 
   const filterRecipes = () => {
     return recipes.filter(recipe => {
-      const matchesType = filters.type === 'all' || recipe.type.toLowerCase() === filters.type.toLowerCase();
+      const matchesType = filters.type === 'toate' || recipe.type.toLowerCase() === filters.type.toLowerCase();
       const matchesPrice = filters.price === null || recipe.price <= filters.price;
       const matchesKitchen = filters.kitchen === '' || recipe.kitchen.toLowerCase() === filters.kitchen.toLowerCase();
       const cookingTime = parseInt(recipe.cookingTime, 10) + parseInt(recipe.prepTime, 10);
@@ -126,3 +131,4 @@ const RecipeListComponent: React.FC<RecipeListProps> = ({ filters, setFilters, t
 };
 
 export default RecipeListComponent;
+

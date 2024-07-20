@@ -54,4 +54,7 @@ db.user.hasMany(db.alimentaryPlan, { foreignKey: 'userId', as: 'alimentaryPlans'
 db.alimentaryPlan.hasMany(db.card, { foreignKey: 'planId', as: 'cards' });
 db.card.belongsTo(db.alimentaryPlan, { foreignKey: 'planId', as: 'plan' });
 
+db.favorite.belongsTo(db.user, { foreignKey: 'userId' });
+db.favorite.belongsTo(db.recipes, { foreignKey: 'recipeId' });
+
 module.exports = db;

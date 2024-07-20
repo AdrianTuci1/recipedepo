@@ -14,7 +14,7 @@ const MainContent: React.FC = () => {
     cookingTime: 120,
     options: [],
     difficulty: [],
-    type: 'all',
+    type: 'toate',
   });
 
   const theme = useTheme();

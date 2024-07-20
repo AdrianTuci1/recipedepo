@@ -80,6 +80,7 @@ export const removeFavorite = createAsyncThunk<Favorite, { userId: string; recip
   }
 );
 
+
 const interactionSlice = createSlice({
   name: 'interaction',
   initialState,

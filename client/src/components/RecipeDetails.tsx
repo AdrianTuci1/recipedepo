@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/retetapage.scss';
 import { CookingPot, Eye, MessagesSquare, User, Heart } from 'lucide-react';
 import { RecipeCardProps } from './RecipeCard';
 import HoverImage from './HoverImage';
 import SocialSection from './SocialSection';
+import { incrementRecipeViews } from '../redux/commentService';
 
 interface RecipeDetailsProps {
   recipe: RecipeCardProps;
@@ -19,6 +20,12 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
 
   const [currentStep, setCurrentStep] = useState(0);
   const [isSocialSectionOpen, setIsSocialSectionOpen] = useState(false);
+
+  useEffect(() => {
+    incrementRecipeViews(id).catch(error => {
+      console.error('Error incrementing views:', error);
+    });
+  }, [id]);
 
   const handleNextStep = () => {
     if (currentStep < steps.length - 1) {
@@ -73,7 +80,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
   const renderDollarTags = (price: number) => {
     const tags = [];
     for (let i = 0; i < price; i++) {
-      tags.push(<img key={i} src='/price.png' alt='dollar tag' style={{width:'20px'}}/>);
+      tags.push(<img key={i} src='/price.png' alt='dollar tag' style={{ width: '20px' }} />);
     }
     return tags;
   };
@@ -90,7 +97,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
             </div>
           </div>
           <div className="ingredients-container bd">
-            <h3 className='listing'><img src="/ingredients.png" alt="" style={{width:'50px'}}/>INGREDIENTE</h3>
+            <h3 className='listing'><img src="/ingredients.png" alt="" style={{ width: '50px' }} />INGREDIENTE</h3>
             <ul className="ingredients-list">
               {ingredients.map((ingredient: string) => (
                 <li key={ingredient}>{ingredient}</li>
@@ -100,12 +107,12 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
           <div className="header bd">
             <h1 className="titlez">{title}</h1>
             <div className="type">{type}</div>
-            <div className="optionnn"><img src={overlayImage} alt={options} style={{width:'30px'}}/></div>
+            <div className="optionnn"><img src={overlayImage} alt={options} style={{ width: '30px' }} /></div>
           </div>
           <div className="options ">
-            <div className="option-item"><img src="/person.png" alt="" style={{width:'25px'}}/>{servings}</div>
+            <div className="option-item"><img src="/person.png" alt="" style={{ width: '25px' }} />{servings}</div>
             <div className="option-item">
-              {difficultyImage && <img src={difficultyImage} alt={`${difficulty} difficulty`} style={{width:'30px'}}/>}
+              {difficultyImage && <img src={difficultyImage} alt={`${difficulty} difficulty`} style={{ width: '30px' }} />}
             </div>
             <div className="option-item">
               {renderDollarTags(price)}
@@ -117,7 +124,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
             <div className="time-item bd"><img src='/cook.png' alt='cook' className="ic" /> <p>{cookingTime} min</p></div>
           </div>
           <div className="instructions-container bd">
-            <h3 style={{display:'flex', alignItems:'center'}}><img src="/instructions.png" alt="" style={{width:'50px'}}/>INSTRUCTIUNI DE PREPARARE:</h3>
+            <h3 style={{ display: 'flex', alignItems: 'center' }}><img src="/instructions.png" alt="" style={{ width: '50px' }} />INSTRUCTIUNI DE PREPARARE:</h3>
             <div className="instructiuni">
               <div className="ins-text">
                 <CookingPot className="icon" />
@@ -184,13 +191,14 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
         </div>
         {isSocialSectionOpen && (
           <div className="social-wrapper">
-            <SocialSection comments={commentsCount} likes={likes} />
+            <SocialSection recipeId={id} commentsCount={commentsCount} likes={likes} />
           </div>
-          )}
+        )}
       </div>
     </>
   );
 };
 
 export default RecipeDetails;
+
 

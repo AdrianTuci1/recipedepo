@@ -47,6 +47,10 @@ db.user.belongsToMany(db.role, {
   foreignKey: "user_id",
   otherKey: "role_id"
 });
+
+
+db.comment.belongsTo(db.user, { foreignKey: 'userId', as: 'user' });
+
 db.user.hasMany(db.comment, { foreignKey: 'userId', as: 'comments' });
 db.recipes.hasMany(db.comment, { foreignKey: 'recipeId', as: 'comments' });
 

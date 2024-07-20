@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = function(models) {
     User.hasMany(models.recipe, { foreignKey: 'userId', as: 'recipes', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
     User.hasMany(models.favorite, { foreignKey: 'userId', as: 'favorites', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+    User.hasMany(models.Comment, { foreignKey: 'userId', as: 'comments' });
   };
 
   return User;

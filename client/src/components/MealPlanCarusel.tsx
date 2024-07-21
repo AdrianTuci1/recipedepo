@@ -19,7 +19,7 @@ const MealPlanCarousel: React.FC = () => {
         { day: `Day ${mealPlans.length + 1}`, meals: ['', '', ''], nutrition: { carbs: 0, protein: 0, calories: 0 } },
       ];
       setMealPlans(newPlans);
-      setActiveIndex(newPlans.length); // Set active index to the new card
+      setActiveIndex(newPlans.length - 1); // Set active index to the new card
     }
   };
 
@@ -51,8 +51,8 @@ const MealPlanCarousel: React.FC = () => {
     if (containerRef.current && containerRef.current.children.length > 0) {
       const container = containerRef.current;
       const containerWidth = container.offsetWidth;
-      const cardWidth = container.children[1]?.getBoundingClientRect().width || 0;
-      const activeCard = container.children[1] as HTMLElement;
+      const cardWidth = container.children[0]?.getBoundingClientRect().width || 0;
+      const activeCard = container.children[activeIndex] as HTMLElement;
 
       if (activeCard) {
         const scrollPosition = activeCard.offsetLeft - (containerWidth / 2 - cardWidth / 2);
@@ -63,7 +63,7 @@ const MealPlanCarousel: React.FC = () => {
 
   const renderCards = () => {
     const cardsToRender = [];
-    const startIndex = Math.max(0, activeIndex - 1);
+    const startIndex = activeIndex > 0 ? activeIndex - 1 : 0;
     const endIndex = Math.min(mealPlans.length, activeIndex + 1);
 
     for (let i = startIndex; i <= endIndex; i++) {
@@ -117,13 +117,6 @@ const MealPlanCarousel: React.FC = () => {
       }
     }
 
-    // Always add the "+" card at the end
-    cardsToRender.push(
-      <div className={`card add-card ${activeIndex === mealPlans.length ? 'active' : ''}`} key="add-card" onClick={handleAddCard}>
-        <span>+</span>
-      </div>
-    );
-
     return cardsToRender;
   };
 
@@ -131,6 +124,12 @@ const MealPlanCarousel: React.FC = () => {
     <div className="meal-plan-carousel">
       <div className="cards-container" ref={containerRef}>
         {renderCards()}
+        {/* Conditionally render the "+" card */}
+        {mealPlans.length < 7 && (
+          <div className={`card add-card ${activeIndex >= mealPlans.length - 1 ? 'visible' : ''}`} key="add-card" onClick={handleAddCard}>
+            <span>+</span>
+          </div>
+        )}
       </div>
       {mealPlans.length > 0 && (
         <button className="save-button" onClick={handleSaveMealPlan}>
@@ -142,6 +141,5 @@ const MealPlanCarousel: React.FC = () => {
 };
 
 export default MealPlanCarousel;
-
 
 

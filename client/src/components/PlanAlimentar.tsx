@@ -1,7 +1,10 @@
+import MealPlanCarousel from "./MealPlanCarusel"
 
 function PlanAlimentar() {
   return (
-    <div>PlanAlimentar</div>
+    <div className="appcarusel">
+      <MealPlanCarousel />
+    </div>
   )
 }
 

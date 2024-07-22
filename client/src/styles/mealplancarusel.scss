@@ -1,39 +1,112 @@
-.meal-plan-carousel {
+.appcarusel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    width: 100%;
+  }
+  
+  .meal-plan-carousel {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 700px;
+    box-sizing: border-box;
+  
+    .cards-container-wrapper {
+      padding: 5% 0;
+      box-sizing: border-box;
+      width: 100%;
+      overflow: hidden;
+      outline: 2px solid red;
+    }
   
     .cards-container {
       display: flex;
-      overflow-x: auto;
+      position: relative;
+      scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
-      padding: 10px;
-    }
+      padding: 1rem 0;
+      box-sizing: border-box;
+      max-width: 100%;
+      justify-content: center;
+      overflow: visible; // Allow overflow
+      padding-left: calc(50% - 110px); /* Adjust for half the width of an active card */
+      padding-right: calc(50% - 110px); /* Adjust for half the width of an active card */
+      
   
-    .card {
-      min-width: 150px;
-      margin: 0 10px;
-      padding: 20px;
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
-      cursor: pointer;
+      .card {
+        scroll-snap-align: center;
+        flex: 0 0 auto;
+        width: 180px; /* Smaller width for non-active cards */
+        margin: 0 1rem;
+        padding: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, width 0.3s ease, opacity 0.3s ease;
+        position: relative;
+        box-sizing: border-box;
+        opacity: 0.5; /* Make side cards less opaque */
   
-      &.active {
-        transform: scale(1.05);
-        z-index: 1;
+        &.active {
+          transform: scale(1.2);
+          min-width: 220px; /* Larger width for the active card */
+          opacity: 1; /* Full opacity for active card */
+          z-index: 2;
+        }
+  
+        .remove-button {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          background: none;
+          border: none;
+          font-size: 1.5rem;
+          cursor: pointer;
+          color: #f00;
+        }
+  
+        h2 {
+          margin-bottom: 1rem;
+        }
+  
+        input {
+          display: block;
+          width: calc(100% - 2rem);
+          margin: 0.5rem 0;
+          padding: 0.5rem;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+        }
       }
   
-      &.add-card {
+      .add-card {
         display: flex;
-        justify-content: center;
         align-items: center;
-        background: #f0f0f0;
-        font-size: 24px;
+        justify-content: center;
+        width: 180px; /* Smaller width for add card */
+        height: 300px;
+        margin: 0 1rem;
+        padding: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        color: #666;
+        font-size: 2rem;
         cursor: pointer;
-        
+        transition: background-color 0.3s ease, width 0.3s ease, opacity 0.3s ease;
+        box-sizing: border-box;
+        opacity: 0.5; /* Make add card less opaque */
+  
+        &:hover {
+          background-color: #eee;
+        }
+  
         &.visible {
           display: flex;
         }
@@ -42,48 +115,66 @@
           display: none;
         }
       }
-  
-      .remove-button {
-        background: transparent;
-        border: none;
-        font-size: 20px;
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-      }
-  
-      h2 {
-        margin: 0 0 10px;
-      }
-  
-      input {
-        width: 100%;
-        margin: 5px 0;
-        padding: 8px;
-        border: 1px solid #ddd;
-        border-radius: 3px;
-      }
     }
   
     .save-button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: #007bff;
-      color: white;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      color: #fff;
+      background-color: #007bff;
       border: none;
-      border-radius: 5px;
+      border-radius: 4px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
   
       &:hover {
-        background: #0056b3;
+        background-color: #0056b3;
       }
     }
   }
-
-  .appcarusel{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  
+  @media (max-width: 768px) {
+    .meal-plan-carousel {
+      .cards-container-wrapper {
+        padding: 5% 0;
+      }
+  
+      .cards-container {
+        padding-left: calc(50% - 90px); /* Adjust for half the width of an active card */
+        padding-right: calc(50% - 90px); /* Adjust for half the width of an active card */
+  
+        .card,
+        .add-card {
+          width: 140px; /* Adjusted for better centering on smaller screens */
+          margin: 0 1rem;
+  
+          &.active {
+            width: 180px; /* Adjusted for better centering on smaller screens */
+          }
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .meal-plan-carousel {
+      .cards-container-wrapper {
+        padding: 5% 0;
+      }
+  
+      .cards-container {
+  
+        .card,
+        .add-card {
+          width: 100px;
+          margin: 0 1rem;
+  
+          &.active {
+            width: 140px; /* Adjusted for better centering on smaller screens */
+          }
+        }
+      }
+    }
   }
   

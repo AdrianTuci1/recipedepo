@@ -21,6 +21,7 @@ import PaginaAdmin from './routes/PaginaAdmin';
 import AdminLayout from './routes/AdminLayout';
 import AdminUsers from './components/AdminUsers';
 import MainContent from './routes/MainContent';
+import MealPlanCarousel from './components/MealPlanCarusel';
 
 
 function App() {
@@ -52,7 +53,7 @@ function App() {
           }
         >
           <Route path='' element={<ReteteleMele />} />
-          <Route path='plan' element={<PlanAlimentar />} />
+          <Route path='plan' element={<MealPlanCarousel/>} />
         </Route>
         <Route path='/adauga' element={<AdaugaReteta />} />
         <Route 

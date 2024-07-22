@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../styles/mealplancarusel.scss';
+import MealPlanCard from './MealPlanCard';
 
 type MealPlan = {
   day: string;
@@ -51,68 +52,34 @@ const MealPlanCarousel: React.FC = () => {
     if (containerRef.current && containerRef.current.children.length > 0) {
       const container = containerRef.current;
       const containerWidth = container.offsetWidth;
-      const cardWidth = container.children[0]?.getBoundingClientRect().width || 0;
+      const cardWidth = container.children[activeIndex]?.getBoundingClientRect().width || 0;
       const activeCard = container.children[activeIndex] as HTMLElement;
-
+  
       if (activeCard) {
-        const scrollPosition = activeCard.offsetLeft - (containerWidth / 2 - cardWidth / 2);
+        const scrollPosition = activeCard.offsetLeft - (containerWidth / 2 - cardWidth / 2) + (containerWidth / 2 - cardWidth / 2);
         container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
       }
     }
   }, [activeIndex, mealPlans.length]);
+  
 
   const renderCards = () => {
     const cardsToRender = [];
     const startIndex = activeIndex > 0 ? activeIndex - 1 : 0;
-    const endIndex = Math.min(mealPlans.length, activeIndex + 1);
+    const endIndex = Math.min(mealPlans.length, activeIndex + 2);
 
-    for (let i = startIndex; i <= endIndex; i++) {
+    for (let i = startIndex; i < endIndex; i++) {
       if (mealPlans[i]) {
         cardsToRender.push(
-          <div
-            className={`card ${activeIndex === i ? 'active' : ''}`}
+          <MealPlanCard
             key={i}
-            onClick={() => handleCardClick(i)}
-            style={{ zIndex: activeIndex === i ? 1 : 0 }}
-          >
-            <button
-              className="remove-button"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleRemoveCard(i);
-              }}
-            >
-              ×
-            </button>
-            <h2>{mealPlans[i].day}</h2>
-            {mealPlans[i].meals.map((meal, mealIndex) => (
-              <input
-                key={mealIndex}
-                type="text"
-                placeholder={`Meal ${mealIndex + 1}`}
-                value={meal}
-                onChange={(e) => handleInputChange(i, 'meals', e.target.value, mealIndex)}
-              />
-            ))}
-            <input
-              type="number"
-              placeholder="Carbs"
-              value={mealPlans[i].nutrition.carbs}
-              onChange={(e) => handleInputChange(i, 'nutrition', { carbs: parseInt(e.target.value) })}
-            />
-            <input
-              type="number"
-              placeholder="Protein"
-              value={mealPlans[i].nutrition.protein}
-              onChange={(e) => handleInputChange(i, 'nutrition', { protein: parseInt(e.target.value) })}
-            />
-            <input
-              type="number"
-              placeholder="Calories"
-              value={mealPlans[i].nutrition.calories}
-              onChange={(e) => handleInputChange(i, 'nutrition', { calories: parseInt(e.target.value) })}
-            />
-          </div>
+            mealPlan={mealPlans[i]}
+            index={i}
+            activeIndex={activeIndex}
+            onCardClick={handleCardClick}
+            onRemoveCard={handleRemoveCard}
+            onInputChange={handleInputChange}
+          />
         );
       }
     }
@@ -121,25 +88,27 @@ const MealPlanCarousel: React.FC = () => {
   };
 
   return (
-    <div className="meal-plan-carousel">
-      <div className="cards-container" ref={containerRef}>
-        {renderCards()}
-        {/* Conditionally render the "+" card */}
-        {mealPlans.length < 7 && (
-          <div className={`card add-card ${activeIndex >= mealPlans.length - 1 ? 'visible' : ''}`} key="add-card" onClick={handleAddCard}>
-            <span>+</span>
+    <div className="appcarusel">
+      <div className="meal-plan-carousel">
+        <div className="cards-container-wrapper">
+          <div className="cards-container" ref={containerRef}>
+            {renderCards()}
+            {/* Conditionally render the "+" card */}
+            {mealPlans.length === 0 || activeIndex === mealPlans.length - 1 ? (
+              <div className={`card add-card ${activeIndex >= mealPlans.length - 1 ? 'visible' : ''}`} key="add-card" onClick={handleAddCard}>
+                <span>+</span>
+              </div>
+            ) : null}
           </div>
+        </div>
+        {mealPlans.length > 0 && (
+          <button className="save-button" onClick={handleSaveMealPlan}>
+            Save Meal Plan
+          </button>
         )}
       </div>
-      {mealPlans.length > 0 && (
-        <button className="save-button" onClick={handleSaveMealPlan}>
-          Save Meal Plan
-        </button>
-      )}
     </div>
   );
 };
 
 export default MealPlanCarousel;
-
-

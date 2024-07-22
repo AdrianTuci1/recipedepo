@@ -20,7 +20,6 @@
       box-sizing: border-box;
       width: 100%;
       overflow: hidden;
-      outline: 2px solid red;
     }
   
     .cards-container {
@@ -89,8 +88,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 180px; /* Smaller width for add card */
-        height: 300px;
+        min-width: 200px; /* Smaller width for add card */
+        min-height: 220px;
         margin: 0 1rem;
         padding: 1rem;
         border: 1px solid #ccc;
@@ -167,14 +166,17 @@
   
         .card,
         .add-card {
-          width: 100px;
-          margin: 0 1rem;
+          width: 80px;
+          margin: 0 0.2rem;
   
           &.active {
             width: 140px; /* Adjusted for better centering on smaller screens */
           }
         }
       }
+    }
+    .save-button{
+        width: 150px;
     }
   }
   

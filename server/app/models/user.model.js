@@ -20,6 +20,12 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    phoneNumber: {
+      type: DataTypes.STRING
+    },
+    image: {
+      type: DataTypes.STRING // Add this line to store image URL
     }
   });
 

@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
-import { logout, updateUser } from '../redux/authSlice';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { logout, updateUser } from '../redux/authSlice';
+import { getAuthToken, getAuthUser } from '../redux/storage';
 import '../styles/usersettings.scss'; // Import SCSS for styling
 
+interface User {
+  id: string;
+  username: string;
+  email: string;
+  phoneNumber: string;
+  image: string;
+}
+
 const UserSettings: React.FC = () => {
-  const userFromState = useSelector((state: RootState) => state.auth.user);
-  const [user, setUser] = useState(userFromState);
+  const [user, setUser] = useState<User | null>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState(user?.username || '');
-  const [email, setEmail] = useState(user?.email || '');
-  const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || '');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [image, setImage] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,19 +33,33 @@ const UserSettings: React.FC = () => {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (!user) {
-      const storedUser = JSON.parse(localStorage.getItem('auth_user') || '{}');
-      setUser(storedUser);
-    }
-  }, [user]);
+    const fetchUser = async () => {
+      const authUser = getAuthUser();
+      const authToken = getAuthToken();
 
-  useEffect(() => {
-    if (user) {
-      setUsername(user.username || '');
-      setEmail(user.email || '');
-      setPhoneNumber(user.phoneNumber || '');
-    }
-  }, [user]);
+      if (!authUser) {
+        setError('Unauthorized');
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:8080/api/users/${authUser.id}`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`
+          }
+        });
+        const data = await response.json();
+        setUser(data);
+        setUsername(data.username);
+        setEmail(data.email);
+        setPhoneNumber(data.phoneNumber);
+      } catch (err) {
+        setError('Failed to fetch user data');
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -89,9 +110,9 @@ const UserSettings: React.FC = () => {
     setIsEditing({ ...isEditing, [field]: false });
 
     if (user) {
-      setUsername(user.username || '');
-      setEmail(user.email || '');
-      setPhoneNumber(user.phoneNumber || '');
+      setUsername(user.username);
+      setEmail(user.email);
+      setPhoneNumber(user.phoneNumber);
     }
   };
 
@@ -104,14 +125,15 @@ const UserSettings: React.FC = () => {
   if (!user) {
     return <div>Loading...</div>;
   }
+  
 
   return (
     <div className="user-settings-container">
-      <h1>User Settings</h1>
+      <h1>SETARI</h1>
       <div className="user-settings-content">
         <div className="user-settings-image">
           <img
-            src={image ? URL.createObjectURL(image) : user.image}
+            src={image ? URL.createObjectURL(image) : `http://localhost:8080${user.image}`}
             alt="Profile"
             className="profile-image"
           />
@@ -204,4 +226,3 @@ const UserSettings: React.FC = () => {
 };
 
 export default UserSettings;
-

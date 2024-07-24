@@ -23,7 +23,7 @@ exports.getUserById = (req, res) => {
 exports.updateUser = async (req, res) => {
   const userId = req.params.id;
   const { username, email, phoneNumber } = req.body;
-  const image = req.file ? `/uploads/${req.file.filename}` : undefined;
+  const image = req.file ? `/uploads/${req.file.filename}` : `/uploads/default.png`;
 
   try {
     const user = await User.findByPk(userId);

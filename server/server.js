@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const config = require("./app/config/config.js");
+const path = require('path');
 
 const app = express();
 
@@ -26,6 +27,8 @@ const Role = db.role;
 app.get("/", (req, res) => {
   res.json({ message: "Hi there, Recipe house." });
 });
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // api routes
 require("./app/routes/recipe.routes.js")(app);

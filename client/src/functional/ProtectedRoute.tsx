@@ -24,6 +24,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRoles
   console.log('Has required role:', hasRequiredRole);
   console.log('Required roles for this route:', requiredRoles);
 
+  if(!isAuthenticated) {
+    return <Navigate to="/not-authenticated" state={{ from: location }}/>
+  }
+
   if (!isAuthenticated || !hasRequiredRole) {
     return <Navigate to="/not-authorized" state={{ from: location }} />;
   }

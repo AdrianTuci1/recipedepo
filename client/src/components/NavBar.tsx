@@ -43,7 +43,7 @@ function NavBar() {
         </ul>
         </div>
         <div className="buttonz" style={{ width:'150px', height:'50px', display:'flex'}}>
-        <Link to="/retetele_mele" className='hidden' style={{width:'50px', height:'50px', display: 'flex', justifyContent:'center', alignItems:'center', textDecoration:'none', color:'white', marginLeft:'20%',}}><Library className='lib'/></Link>
+        <Link to="/retetele-mele/retete" className='hidden' style={{width:'50px', height:'50px', display: 'flex', justifyContent:'center', alignItems:'center', textDecoration:'none', color:'white', marginLeft:'20%',}}><Library className='lib'/></Link>
         {isAuthenticated ? (
         <Link to="/setari" className='login' style={{ backgroundColor: 'transparent', border: 'none', width:'50px', height:'50px' }}>
           <User className='lib'/>

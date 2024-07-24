@@ -74,7 +74,7 @@ function ReteteleMele({}: RecipeListProps) {
     <div>
       <div className="panne" style={{ display: 'flex' }}>
         <h2 className="retete-m">Retetele Mele</h2>
-        <button style={{ width: '100px' }} onClick={() => navigate('/adauga')}>ADAUGA O RETETA</button>
+        <button style={{ width: '50px',height:'50px', cursor:'pointer', borderRadius:'10px', marginRight:'20px', display:'flex', justifyContent:'center', alignItems:'center' }} onClick={() => navigate('/adauga')}><img src='/adauga.png' alt='adauga' style={{width:'40px'}}/></button>
       </div>
       <div className="recipe-container">
         {isLoading ? (

@@ -15,9 +15,10 @@ exports.create = async (req, res) => {
   try {
     // Create a Recipe
     const { 
-      title, imageUrl, cookingTime, prepTime, type, options, servings,
+      title, cookingTime, prepTime, type, options, servings,
       difficulty, price, kitchen, ingredients, steps, isPublic 
     } = req.body;
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
     const userId = req.userId; // Assumed set by auth middleware
     const user = await User.findByPk(userId);
@@ -80,9 +81,10 @@ exports.update = async (req, res) => {
 
     // Destructure the fields from the request body
     const { 
-      title, imageUrl, cookingTime, prepTime, type, options, servings,
+      title, cookingTime, prepTime, type, options, servings,
       difficulty, price, kitchen, ingredients, steps, isPublic 
     } = req.body;
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
     // Create an update object, stringifying ingredients and steps
     const updateData = {
@@ -255,7 +257,6 @@ exports.getTopFavoritedRecipes = async (req, res) => {
     const recipes = await Recipe.findAll({
       limit: 10,
       order: [['likes', 'DESC']],
-      include: [{ model: User, as: 'user', attributes: ['username'] }]
     });
 
     res.status(200).json(recipes);

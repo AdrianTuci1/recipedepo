@@ -1,3 +1,5 @@
+const upload = require('../middlewares/upload.middleware');
+
 module.exports = (app) => {
   const recipeController = require("../controllers/recipe.controller.js");
   const { verifyToken, isAdmin } = require("../middlewares/authJwt");
@@ -5,7 +7,7 @@ module.exports = (app) => {
   const router = require("express").Router();
 
   // Create a new Recipe
-  router.post("/", verifyToken, recipeController.create);
+  router.post("/", verifyToken,upload.single('image'), recipeController.create);
 
   // Retrieve all Recipes
   router.get("/", recipeController.findAll);
@@ -23,7 +25,7 @@ module.exports = (app) => {
   router.get("/:id", recipeController.findOne);
 
   // Update a Recipe with id
-  router.put("/:id", verifyToken, recipeController.update);
+  router.put("/:id", verifyToken,upload.single('image'), recipeController.update);
 
   // Delete a Recipe with id
   router.delete("/:id", verifyToken, recipeController.delete);

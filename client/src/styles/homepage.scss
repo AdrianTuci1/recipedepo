@@ -1,6 +1,11 @@
 @use './responsive.scss' as media;
 @import './variables.scss';
 
+.pagina{
+    display: flex;
+    flex-direction: column;
+}
+
 .sectiune_1{
     overflow: hidden;
     display: flex;
@@ -48,6 +53,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-bottom: 20vh;
 }
 
 .img01{
@@ -61,4 +67,9 @@
     rotate: -10deg;
     outline: 3px solid whitesmoke;
     transform: translateY(-10%);
+}
+
+.sectiune_2{
+    display: flex;
+    overflow: hidden;
 }

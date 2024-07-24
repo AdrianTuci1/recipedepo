@@ -5,13 +5,15 @@ const db = require("../models");
 const User = db.user;
 const Role = db.role;
 const Op = db.Op;
+const defaultImagePath = '/uploads/default-profile.png';
 
 exports.signup = (req, res) => {
   // Save user to database
   User.create({
     username: req.body.username,
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8)
+    password: bcrypt.hashSync(req.body.password, 8),
+    image: defaultImagePath
   })
     .then(user => {
       if (req.body.roles) {

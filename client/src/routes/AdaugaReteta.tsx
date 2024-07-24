@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 function AdaugaReteta() {
 
 const initialRecipeData:RecipeCardProps = {
-  id: 0,
+  id: '',
   title:       '', // Titlu
   imageUrl:   '', // Optional image URL
   cookingTime: '', // Time for cooking (timp preparare, timp gatit)
@@ -23,7 +23,7 @@ const initialRecipeData:RecipeCardProps = {
   steps: '', // se prajesc cartofii, se pune puiul pe grill
   likes:       0,
   views:       0,
-  comments:    0,
+  commentsCount:    0,
   author:      '',
   isPublic:    false,
   userId: '',

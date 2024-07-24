@@ -6,7 +6,7 @@ const ProfileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const sidebarItems = [
-    { label: 'RETETELE MELE', path: '' },
+    { label: 'RETETELE MELE', path: 'retete' },
     { label: 'PLAN ALIMENTAR', path: 'plan' },
     { label: 'FAVORITE', path: 'favorite' },
     { label: 'STATISTICI', path: 'statistici' },

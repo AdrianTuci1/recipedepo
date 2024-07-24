@@ -10,7 +10,6 @@ import RetetaPage from './routes/RetetaPage';
 import Layout from './routes/Layout';
 import ReteteleMele from './components/ReteteleMele';
 import AdaugaReteta from './routes/AdaugaReteta';
-import PlanAlimentar from './components/PlanAlimentar';
 import SetariPage from './routes/SetariPage';
 import EditeazaReteta from './routes/EditeazaReteta';
 import RegisterPage from './routes/RegisterPage';
@@ -22,6 +21,7 @@ import AdminLayout from './routes/AdminLayout';
 import AdminUsers from './components/AdminUsers';
 import MainContent from './routes/MainContent';
 import MealPlanCarousel from './components/MealPlanCarusel';
+import NonAuthenticatedPage from './routes/NotAuthenticated';
 
 
 function App() {
@@ -45,14 +45,14 @@ function App() {
         <Route path="/retete/:recipeId" element={<RetetaPage />} />
         <Route path="/retete/edit/:recipeId" element={<EditeazaReteta />} />
         <Route 
-          path="/retetele_mele" 
+          path="/retetele-mele" 
           element={
             <ProtectedRoute requiredRoles={['ROLE_USER', 'ROLE_ADMIN']}>
               <Layout />
             </ProtectedRoute>
           }
         >
-          <Route path='' element={<ReteteleMele />} />
+          <Route path='retete' element={<ReteteleMele />} />
           <Route path='plan' element={<MealPlanCarousel/>} />
         </Route>
         <Route path='/adauga' element={<AdaugaReteta />} />
@@ -66,6 +66,7 @@ function App() {
         />
         <Route path='/inregistrare' element={<RegisterPage />} />
         <Route path='/not-authorized' element={<NotAuthorized />} />
+        <Route path='/not-authenticated' element={<NonAuthenticatedPage />} />
         <Route 
           path='/admin' 
           element={

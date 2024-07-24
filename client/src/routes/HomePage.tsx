@@ -1,7 +1,10 @@
+import RecipeSlider from '../components/RecipeSlider'
 import '../styles/homepage.scss'
 
 function HomePage() {
   return (
+    <>
+    <div className="pagina">
     <div className="sectiune_1">
       <div className="stanga">
         <h1 className='text_big'>CAUTA <a className='strong'>RETETELE</a> TALE PREFERATE</h1>
@@ -25,6 +28,14 @@ function HomePage() {
         <img src="gogosi.avif" alt="" className='img01'/>
       </div>
     </div>
+    <div className="sectiune_2">
+      <RecipeSlider />
+    </div>
+    <div className="sectiune_3">
+      
+    </div>
+    </div>
+    </>
   )
 }
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/authSlice';
+import '../styles/logincomponent.scss';
 
 interface LoginFormProps {
   onClose: () => void;
@@ -30,7 +31,7 @@ const LoginComponent: React.FC<LoginFormProps> = ({ onClose }) => {
     setIsLoading(true);
 
     try {
-      dispatch(login(username,password) as any);
+      dispatch(login(username, password) as any);
       onClose();
     } catch (error: any) {
       setError(error.message);
@@ -40,22 +41,8 @@ const LoginComponent: React.FC<LoginFormProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="login-modal" 
-      style={{
-        backgroundColor: 'darkblue',
-        maxWidth: '300px',
-        maxHeight: '300px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        padding: '30px',
-        right: '0px',
-        top: '0',
-        zIndex: '999',
-        flexDirection: 'column',
-      }}>
-      <button type="button" onClick={onClose}>&times;</button>
+    <div className="login-modal">
+      <button type="button" onClick={onClose} className="close-btn">&times;</button>
       <form onSubmit={handleSubmitLogin}>
         <div className="form-group">
           <label htmlFor="username">Username</label>
@@ -82,10 +69,16 @@ const LoginComponent: React.FC<LoginFormProps> = ({ onClose }) => {
         <button type="submit" className="btn btn-primary" disabled={isLoading}>
           {isLoading ? 'Loading...' : 'Login'}
         </button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && <p className="error-text">{error}</p>}
+        <div className="additional-links">
+          <a href="#" className="forgot-password">Forgot your password?</a>
+          <p className="create-account">Don't have an account?</p>
+          <button className="btn btn-primary">Create an account</button>
+        </div>
       </form>
     </div>
   );
 };
 
 export default LoginComponent;
+

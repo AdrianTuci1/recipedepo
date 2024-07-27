@@ -49,6 +49,16 @@
       grid-area: header;
       display: flex;
       height: 150px;
+
+      .chestii{
+        max-width: 60px;
+        display: flex;
+        flex-direction: column;
+
+        @include media.tablet{
+          flex-direction: row;
+        }
+      }
       .type{
         width: 100px;
       }
@@ -169,6 +179,7 @@
     @media (max-width: 768px) {
       display: flex;
       flex-direction: column;
+
       .image-container {
         order: 2;
         align-self: center;

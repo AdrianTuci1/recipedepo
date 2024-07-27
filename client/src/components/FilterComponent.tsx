@@ -63,7 +63,7 @@ const FilterComponent: React.FC<FilterProps> = ({ showFilters, toggleFilters, fi
       <div>
         <label>Tip:</label>
         <ul className='fil-type ule'>
-          {['toate', 'fel principal', 'salata', 'supe', 'gustare', 'sushi', 'desert'].map(type => (
+          {['toate', 'fel principal', 'salate', 'supe', 'gustare', 'sushi', 'desert'].map(type => (
             <li 
             key={type} 
             onClick={() => handleTypeChange(type)}

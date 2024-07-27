@@ -125,8 +125,10 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
           </div>
           <div className="header bd">
             <h1 className="titlez">{title}</h1>
-            <div className="type"><img src={overlayType} alt={type} style={{ width: '30px' }}/></div>
-            <div className="optionnn"><img src={overlayImage} alt={options} style={{ width: '30px' }} /></div>
+            <div className="chestii">
+            <div className="type"><img src={overlayType} alt={type} style={{ width: '50px' }}/></div>
+            <div className="optionnn"><img src={overlayImage} alt={options} style={{ width: '50px' }} /></div>
+            </div>
           </div>
           <div className="options ">
             <div className="option-item"><img src="/person.png" alt="" style={{ width: '25px' }} />{servings}</div>

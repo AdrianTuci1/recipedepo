@@ -145,12 +145,12 @@ const UserSettings: React.FC = () => {
             style={{ display: 'none' }}
           />
           <button type="button" className="btn btn-upload" onClick={handleUploadClick}>
-            Upload Image
+            UPLOAD IMAGE
           </button>
         </div>
         <form onSubmit={handleUpdateUser} className="user-settings-form">
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">NUME</label>
             <input
               type="text"
               id="username"
@@ -171,7 +171,7 @@ const UserSettings: React.FC = () => {
             )}
           </div>
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">EMAIL</label>
             <input
               type="email"
               id="email"
@@ -192,7 +192,7 @@ const UserSettings: React.FC = () => {
             )}
           </div>
           <div className="form-group">
-            <label htmlFor="phoneNumber">Phone Number</label>
+            <label htmlFor="phoneNumber">TEL.</label>
             <input
               type="text"
               id="phoneNumber"
@@ -212,15 +212,17 @@ const UserSettings: React.FC = () => {
               </button>
             )}
           </div>
-          <button type="submit" className="btn btn-primary" disabled={isLoading}>
+          <button type="submit" className="btn btn-primary upd" disabled={isLoading}>
             {isLoading ? 'Updating...' : 'Update'}
           </button>
           {error && <p className="error-message">{error}</p>}
         </form>
       </div>
-      <button onClick={handleLogout} className="btnz logout">
+      <div className="centerz">
+      <button onClick={handleLogout} className="btn logout">
         Logout
       </button>
+      </div>
     </div>
   );
 };

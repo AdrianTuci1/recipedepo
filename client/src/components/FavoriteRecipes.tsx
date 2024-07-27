@@ -47,7 +47,7 @@ const FavoriteRecipes: React.FC = () => {
 
   return (
     <div className="favorite-recipes-container">
-      <h1>Your Favorite Recipes</h1>
+      <h1 className='pref' style={{padding:'20px'}}>Retete Preferate</h1>
       <div className="card-containe list-view">
         {recipes.map((recipe) => (
           <ListRecipeCard key={recipe.id} recipe={recipe} />

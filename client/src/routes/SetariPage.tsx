@@ -2,8 +2,10 @@ import UserSettingsPage from '../components/UserSettings'
 
 function SetariPage() {
   return (
-    <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+    <div className='col-bg'>
+        <div className="pluses"></div>
         <UserSettingsPage />
+        <div className="pluses"></div>
     </div>
   )
 }

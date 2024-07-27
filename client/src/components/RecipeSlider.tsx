@@ -18,7 +18,7 @@ const RecipeSlider: React.FC = () => {
         const data = await response.json();
         setRecipes(data);
       } catch (err) {
-        setError(err.message);
+        setError('eroare');
       } finally {
         setLoading(false);
       }

@@ -5,10 +5,19 @@ import '../styles/homepage.scss'
 function HomePage() {
 
   const navigate = useNavigate();
+
+  const handleCreateAccount = () => {
+    navigate('/inregistrare')
+  };
+
+  const handleViewPublicRecipes = () => {
+    navigate('/retete')
+  };
+
   return (
     <>
     <div className="pagina">
-    <div className="sectiune_1">
+    <div className="sectiune_1 pattern-grid-md">
       <div className="stanga">
         <h1 className='text_big'>CAUTA <a className='strong'>RETETELE</a> TALE PREFERATE</h1>
         <h2>
@@ -22,8 +31,8 @@ function HomePage() {
         PENTRU URMATOARELE ZILE.
         </p>
         <div className='buttons'>
-        <button className='btn btn-primary' onClick={(e) => navigate('/retete')}>VEZI RETETELE</button>
-        <button className='btn btn-secondary' onClick={(e) => navigate('/inregistrare')}>ALATURA-TE</button>
+        <button className='btn btn-primary' onClick={handleViewPublicRecipes}>VEZI RETETELE</button>
+        <button className='btn btn-secondary' onClick={handleCreateAccount}>ALATURA-TE</button>
         </div>
       </div>
       <div className="dreapta">
@@ -31,8 +40,12 @@ function HomePage() {
         <img src="gogosi.avif" alt="" className='img01'/>
       </div>
     </div>
+    <div className="pluses">
+    </div>
     <div className="sectiune_2">
       <RecipeSlider />
+    </div>
+    <div className="pluses">
     </div>
     <div className="sectiune_3">
       

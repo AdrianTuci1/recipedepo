@@ -2,10 +2,12 @@
 
 .non-authenticated-page {
     display: flex;
+    flex-direction: column;
     height: 100vh;
-    background-color: $darkGreen;
+    background-color: #243210;
     color: $textWhite;
     font-family: $primaryFont;
+    padding-block: 20px;
   
     .content {
       margin-top: 50px;

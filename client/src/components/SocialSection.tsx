@@ -15,7 +15,7 @@ interface Comment {
   userId: string;
   content: string;
   createdAt: string;
-  user: {
+  user?: {
     username: string;
   };
 }
@@ -61,15 +61,15 @@ const SocialSection: React.FC<SocialSectionProps> = ({ recipeId, commentsCount, 
 
   return (
     <div className="social-section bd">
-      <div className="social-likes"><Heart className="icon" /> {likes}</div>
+      <div className="social-likes"><Heart className="iconz" /> {likes}</div>
       <div className="comment-section">
         <h3>Comments {commentsCount}</h3>
         <ul>
           {comments.map(comment => (
             <li key={comment.id}>
-              <strong>{comment.user.username}:</strong> {comment.content}
+              <strong>{comment.user ? comment.user.username : ''}:</strong> {comment.content}
               {comment.userId === userId && (
-                <button onClick={() => handleDeleteComment(comment.id)}>Delete</button>
+                <button className='del-btn' onClick={() => handleDeleteComment(comment.id)}>Delete</button>
               )}
             </li>
           ))}

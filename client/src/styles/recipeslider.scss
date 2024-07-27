@@ -1,10 +1,12 @@
+@import './variables.scss';
+
 .recipe-slider {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgb(241,132,80);
-  background: linear-gradient(132deg, rgba(241,132,80,1) 0%, rgba(215,92,10,1) 40%, rgba(171,43,5,1) 100%);
+  background: #dc7900;
+  padding-block-end: 70px;
 
   .slider-container {
     display: flex;
@@ -64,4 +66,6 @@
   color: whitesmoke;
   display: flex;
   align-items: center;
+  font-family: $primaryFont;
+  font-weight: 300;
 }

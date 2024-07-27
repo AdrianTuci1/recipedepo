@@ -28,8 +28,9 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 
   return (
     <div className="register-page">
-      <h1>Register</h1>
+      <div className="pluses"></div>
       <RegisterForm onSubmit={handleRegistration} />
+      <div className="pluses"></div>
     </div>
   );
 };

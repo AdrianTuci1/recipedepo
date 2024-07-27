@@ -84,8 +84,8 @@ function RecipeCard({ recipe }: { recipe: RecipeCardProps}) {
           <p className="serving"><img src="/person.png" alt="" style={{width:'25px'}}/>{recipe.servings} pers.</p>
           <p className="dificulty"><img src={difficultyLevel} alt="" style={{width:'30px'}}/></p>
         </div>
-        <button className="view-recipe" onClick={() => handleRecipeClick(recipe.id)}>
-          VIEW RECIPE
+        <button className="view-button" onClick={() => handleRecipeClick(recipe.id)}>
+          VEZI RETETA
         </button>
       </div>
       </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../styles/inregistrare.scss'
 
 interface RegisterFormProps {
   onSubmit: (values: { username: string; email: string; password: string; confirmPassword?: string }) => void;
@@ -24,26 +25,30 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit} className="register-form">
+      <div className="reg-wrapper">
+        <h2>INREGISTRARE</h2>
       <div className="form-group">
-        <label htmlFor="username">Username</label>
+        <label htmlFor="username">NUME UTILIZATOR:</label>
         <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
       </div>
       <div className="form-group">
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">EMAIL:</label>
         <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <p className="form-text">We'll never share your email with anyone else.</p>
+        <p className="form-text ulu">Nu vom distribui email-ul altor persoane</p>
       </div>
       <div className="form-group">
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password">PAROLA:</label>
         <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
       <div className="form-group">
-        <label htmlFor="confirmPassword">Confirm Password</label>
+        <label htmlFor="confirmPassword">CONFIRMA PAROLA:</label>
         <input type="password" id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
         {passwordError && <p className="form-text error">{passwordError}</p>}
       </div>
-      <button type="submit">Register</button>
+      <button type="submit" className='btn-inregistrare'>INREGISTRARE</button>
+      </div>
     </form>
+
   );
 };
 

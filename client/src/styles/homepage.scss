@@ -12,8 +12,7 @@
     align-items: center;
     color: $textWhite;
     font-family: $primaryFont;
-    background: rgb(28,39,14);
-    background: linear-gradient(135deg, rgba(28,39,14,1) 0%, rgba(57,77,33,1) 40%, rgba(28,39,14,1) 100%);
+    background: #243210;
     @include media.tablet{
         height: auto;
         flex-direction: column;
@@ -40,6 +39,9 @@
             -webkit-box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.75);
             -moz-box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.75);
             box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.75);
+        }
+        &:hover{
+            scale: 1.03;
         }
     }
 
@@ -109,4 +111,28 @@
 .sectiune_2{
     display: flex;
     overflow: hidden;
+}
+
+
+.pluses{
+    background:
+    conic-gradient(at 10% 50%,#0000 75%,#243210 0),
+    conic-gradient(at 10% 50%,#0000 75%,#243210 0) calc(1*33px) calc(3*33px),
+    conic-gradient(at 10% 50%,#0000 75%,#243210 0) calc(2*33px) calc(1*33px),
+    conic-gradient(at 10% 50%,#0000 75%,#243210 0) calc(3*33px) calc(4*33px),
+    conic-gradient(at 10% 50%,#0000 75%,#243210 0) calc(4*33px) calc(2*33px),
+    conic-gradient(at 50% 10%,#0000 75%,#243210 0) 0 calc(4*33px),
+    conic-gradient(at 50% 10%,#0000 75%,#243210 0) calc(1*33px) calc(2*33px),
+    conic-gradient(at 50% 10%,#0000 75%,#243210 0) calc(2*33px) 0,
+    conic-gradient(at 50% 10%,#0000 75%,#243210 0) calc(3*33px) calc(3*33px),
+    conic-gradient(at 50% 10%,#0000 75%,#243210 0) calc(4*33px) calc(1*33px),
+    #dc7900;
+    background-size: 160px 165px;
+
+    height: 95px;
+}
+
+.sectiune_3{
+    height: 60vh;
+    background-color: #243210;
 }

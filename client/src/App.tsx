@@ -22,6 +22,7 @@ import AdminUsers from './components/AdminUsers';
 import MainContent from './routes/MainContent';
 import MealPlanCarousel from './components/MealPlanCarusel';
 import NonAuthenticatedPage from './routes/NotAuthenticated';
+import FavoriteRecipes from './components/FavoriteRecipes';
 
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
           }
         >
           <Route path='retete' element={<ReteteleMele />} />
+          <Route path='favorite' element={<FavoriteRecipes />} />
           <Route path='plan' element={<MealPlanCarousel/>} />
         </Route>
         <Route path='/adauga' element={<AdaugaReteta />} />

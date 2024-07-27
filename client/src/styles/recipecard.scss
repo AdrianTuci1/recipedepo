@@ -56,17 +56,16 @@
 
         .likes, .recipe-title, .icons-container, .view-recipe {
           margin: 5px 0;
-          padding: 10px;
+          padding-inline: 10px;
         }
 
         .view-recipe {
           background-color: #007bff;
           color: #fff;
           border: none;
-          padding: 10px;
+          padding-block: 10px;
           cursor: pointer;
           transition: background-color 0.3s ease;
-
           &:hover {
             background-color: #0056b3;
           }

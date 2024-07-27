@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/authSlice';
 import '../styles/logincomponent.scss';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginFormProps {
   onClose: () => void;
@@ -14,6 +15,7 @@ const LoginComponent: React.FC<LoginFormProps> = ({ onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -32,6 +34,7 @@ const LoginComponent: React.FC<LoginFormProps> = ({ onClose }) => {
 
     try {
       dispatch(login(username, password) as any);
+      navigate('/')
       onClose();
     } catch (error: any) {
       setError(error.message);

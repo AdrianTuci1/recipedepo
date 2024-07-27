@@ -1,7 +1,10 @@
+import { useNavigate } from 'react-router-dom'
 import RecipeSlider from '../components/RecipeSlider'
 import '../styles/homepage.scss'
 
 function HomePage() {
+
+  const navigate = useNavigate();
   return (
     <>
     <div className="pagina">
@@ -19,8 +22,8 @@ function HomePage() {
         PENTRU URMATOARELE ZILE.
         </p>
         <div className='buttons'>
-        <button>VEZI RETETELE</button>
-        <button>ALATURA-TE</button>
+        <button className='btn btn-primary' onClick={(e) => navigate('/retete')}>VEZI RETETELE</button>
+        <button className='btn btn-secondary' onClick={(e) => navigate('/inregistrare')}>ALATURA-TE</button>
         </div>
       </div>
       <div className="dreapta">

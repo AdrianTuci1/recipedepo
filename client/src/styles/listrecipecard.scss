@@ -46,10 +46,10 @@
 
     .list-description-container {
       flex: 1;
-      padding: 10px;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      padding: 20px;
 
       .likes, .recipe-title, .icons-container, .view-recipe {
         margin: 5px 0;
@@ -59,7 +59,7 @@
         background-color: #007bff;
         color: #fff;
         border: none;
-        padding: 5px 10px; // Make the button smaller
+        padding: 8px 10px; // Make the button smaller
         font-size: 0.8rem; // Adjust font size
         cursor: pointer;
         width: 180px;

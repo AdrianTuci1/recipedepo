@@ -61,6 +61,7 @@ exports.delete = async (req, res) => {
   }
 };
 
+
 // Retrieve all favorite recipes of the authenticated user
 exports.findAllByUser = async (req, res) => {
   try {
@@ -76,7 +77,10 @@ exports.findAllByUser = async (req, res) => {
         as: 'recipe'
       }]
     });
-    res.status(200).json(favorites);
+
+    const recipes = favorites.map(fav => fav.recipe);
+
+    res.status(200).json(recipes);
   } catch (error) {
     console.error('Error finding favorites:', error);
     res.status(500).json({ message: error.message });

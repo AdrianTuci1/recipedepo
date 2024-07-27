@@ -3,7 +3,7 @@ import { RecipeCardProps } from './RecipeCard';
 import '../styles/retetaform.scss';
 
 interface RecipeFormProps {
-  onSubmit: (data: RecipeCardProps) => void;
+  onSubmit: (data: FormData) => void;
   initialData: RecipeCardProps;
 }
 
@@ -16,9 +16,7 @@ interface IngredientProps {
 const Ingredient: React.FC<IngredientProps> = ({ ingredient, onRemove }) => (
   <div className="ingredient-item">
     <span>{ingredient}</span>
-    <button type="button" onClick={onRemove} className='smallbtn'>
-      -
-    </button>
+    <button type="button" onClick={onRemove} className='smallbtn'>-</button>
   </div>
 );
 
@@ -31,11 +29,9 @@ interface StepProps {
 
 const Step: React.FC<StepProps> = ({ stepNumber, content, onRemove }) => (
   <div className="step-item">
-    <h4 style={{width:'100px'}}>{stepNumber}</h4>
+    <h4 style={{ width: '100px' }}>{stepNumber}</h4>
     <p>{content}</p>
-    <button type="button" onClick={onRemove} className='smallbtn'>
-      -
-    </button>
+    <button type="button" onClick={onRemove} className='smallbtn'>-</button>
   </div>
 );
 
@@ -45,10 +41,11 @@ const RetetaForm: React.FC<RecipeFormProps> = ({ initialData, onSubmit }) => {
   const [newIngredient, setNewIngredient] = useState('');
   const [steps, setSteps] = useState<string[]>([]);
   const [newStep, setNewStep] = useState('');
-  const [isPublic, setIsPublic] = useState<boolean>(false);
+  const [isPublic, setIsPublic] = useState<boolean>(initialData.isPublic);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    // Parse ingredients and steps from initialData (if provided)
     if (initialData.ingredients && typeof initialData.ingredients === 'string') {
       try {
         const parsedIngredients = JSON.parse(initialData.ingredients);
@@ -65,9 +62,11 @@ const RetetaForm: React.FC<RecipeFormProps> = ({ initialData, onSubmit }) => {
         console.error('Error parsing steps:', error);
       }
     }
+    if (initialData.imageUrl) {
+      setImagePreviewUrl(`http://localhost:8080${initialData.imageUrl}`);
+    }
   }, [initialData]);
 
-  // Add ingredient
   const handleAddIngredient = () => {
     if (newIngredient.trim()) {
       setIngredients([...ingredients, newIngredient]);
@@ -75,14 +74,12 @@ const RetetaForm: React.FC<RecipeFormProps> = ({ initialData, onSubmit }) => {
     }
   };
 
-  // Remove ingredient
   const handleRemoveIngredient = (index: number) => {
     const updatedIngredients = [...ingredients];
     updatedIngredients.splice(index, 1);
     setIngredients(updatedIngredients);
   };
 
-  // Add step
   const handleAddStep = () => {
     if (newStep.trim()) {
       setSteps([...steps, newStep]);
@@ -90,7 +87,6 @@ const RetetaForm: React.FC<RecipeFormProps> = ({ initialData, onSubmit }) => {
     }
   };
 
-  // Remove step
   const handleRemoveStep = (index: number) => {
     const updatedSteps = [...steps];
     updatedSteps.splice(index, 1);
@@ -102,51 +98,52 @@ const RetetaForm: React.FC<RecipeFormProps> = ({ initialData, onSubmit }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  
-    // Prepare the final data object
-    const finalData = {
-      ...formData, // Spread existing form data
-      ingredients, // Add ingredients array
-      steps, // Add instructions array
-      isPublic, // Add isPublic boolean
-    };
-  
-    // Call onSubmit with the prepared JSON data
-    const parsedData = JSON.parse(JSON.stringify(finalData));
-
-    if(onSubmit) {
-      onSubmit(parsedData);
-    } else {
-      console.error('onSubmit function not provided');
-    }
-  };
-
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
+      setSelectedImage(selectedFile);
       const imageUrl = URL.createObjectURL(selectedFile);
-      setFormData({ ...formData, imageUrl }); // Update form data with preview URL
+      setImagePreviewUrl(imageUrl);
     }
   };
 
   const handleRemoveImage = () => {
-    setFormData({ ...formData, imageUrl: '' }); // Reset imageUrl to empty string
+    setSelectedImage(null);
+    setImagePreviewUrl(null);
+    setFormData({ ...formData, imageUrl: '' });
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const finalData = {
+      ...formData,
+      ingredients,
+      steps,
+      isPublic,
+    };
+
+    const formDataToSubmit = new FormData();
+    formDataToSubmit.append('data', JSON.stringify(finalData));
+    if (selectedImage) {
+      formDataToSubmit.append('image', selectedImage);
+    }
+
+    onSubmit(formDataToSubmit);
   };
 
   return (
     <form id="recipe-form" onSubmit={handleSubmit} className="recipe-form">
-      <h2>{initialData.title ? 'Edit Recipe' : 'Add Recipe'}</h2>
+      <h2>{initialData.title ? 'Editeaza Reteta' : 'Adauga Reteta'}</h2>
 
       <label htmlFor="title">Nume reteta:</label>
       <input type="text" id="title" name="title" required value={formData.title} onChange={handleChange} />
 
       <label htmlFor="imageUrl">Image (optional):</label>
-      {formData.imageUrl && (
+      {imagePreviewUrl && (
         <div className="image-preview">
-          <img src={formData.imageUrl} alt="Preview" />
-          <button type="button" onClick={handleRemoveImage} style={{width:'100px'}}>Sterge imaginea</button>
+          <img src={imagePreviewUrl} alt="Preview" />
+          <button type="button" onClick={handleRemoveImage} style={{ width: '100px' }}>Sterge imaginea</button>
         </div>
       )}
       <input type="file" id="imageUrl" name="imageUrl" onChange={handleImageChange} />
@@ -159,15 +156,22 @@ const RetetaForm: React.FC<RecipeFormProps> = ({ initialData, onSubmit }) => {
       <input type="range" id="prepTime" name="prepTime" min={10} max={50} step={5} required value={formData.prepTime} onChange={handleChange} />
       <span>{formData.prepTime} min</span>
 
+      <label htmlFor="options">Optiuni:</label>
+      <select id="options" name="options" value={formData.options} onChange={handleChange}>
+        <option value="Vegan">Vegan</option>
+        <option value="High-Protein">Bogat in proteine</option>
+        <option value="Balanced">Balansat</option>
+        <option value="Traditional">Traditional</option>
+      </select>
+
       <label htmlFor="type">Tip:</label>
       <select id="type" name="type" value={formData.type} onChange={handleChange}>
-        <option value="altele">Altele</option>
-        <option value="vegan">Vegan</option>
-        <option value="pui">Pui</option>
-        <option value="porc">Porc</option>
-        <option value="vita">Vita</option>
-        <option value="oaie">Oaie</option>
-        <option value="peste">Peste</option>
+        <option value="fel principal">Fel Principal</option>
+        <option value="gustare">Gustare</option>
+        <option value="salate">Salate</option>
+        <option value="supe">Supe</option>
+        <option value="sushi">Sushi</option>
+        <option value="desert">Desert</option>
       </select>
 
       <label htmlFor="servings">Portii:</label>
@@ -192,58 +196,33 @@ const RetetaForm: React.FC<RecipeFormProps> = ({ initialData, onSubmit }) => {
         <option value="altele">Alta</option>
       </select>
       {formData.kitchen === 'altele' && (
-        <input
-          type="text"
-          name="otherKitchen"
-          value={formData.otherKitchen || ''}
-          onChange={handleChange}
-          placeholder="Introduceti bucataria"
-        />
+        <input type="text" name="otherKitchen" value={formData.otherKitchen || ''} onChange={handleChange} placeholder="Introduceti bucataria" />
       )}
 
       <h3>Ingrediente</h3>
       <div className="ingredients-list">
         {ingredients.map((ingredient, index) => (
-          <Ingredient
-            key={index}
-            ingredient={ingredient}
-            onRemove={() => handleRemoveIngredient(index)}
-          />
+          <Ingredient key={index} ingredient={ingredient} onRemove={() => handleRemoveIngredient(index)} />
         ))}
       </div>
       <div className="add-item">
-        <input
-          type="text"
-          value={newIngredient}
-          onChange={(event) => setNewIngredient(event.target.value)}
-          placeholder="Add Ingredient"
-        />
+        <input type="text" value={newIngredient} onChange={(event) => setNewIngredient(event.target.value)} placeholder="Add Ingredient" />
         <button type="button" onClick={handleAddIngredient} className='smallbtn'>+</button>
       </div>
 
       <h3>Instructiuni</h3>
       <div className="steps-list">
         {steps.map((step, index) => (
-          <Step
-            key={index}
-            stepNumber={index + 1}
-            content={step}
-            onRemove={() => handleRemoveStep(index)}
-          />
+          <Step key={index} stepNumber={index + 1} content={step} onRemove={() => handleRemoveStep(index)} />
         ))}
       </div>
       <div className="add-item">
-        <input
-          type="text"
-          value={newStep}
-          onChange={(event) => setNewStep(event.target.value)}
-          placeholder="Add Step"
-        />
+        <input type="text" value={newStep} onChange={(event) => setNewStep(event.target.value)} placeholder="Add Step" />
         <button type="button" onClick={handleAddStep} className='smallbtn'>+</button>
       </div>
 
       <label htmlFor="isPublic">Vizibilitate:</label>
-      <select value={isPublic ? "true" : "false"} onChange={(event) => setIsPublic(event.target.value === 'true')}>
+      <select value={isPublic ? 'true' : 'false'} onChange={(event) => setIsPublic(event.target.value === 'true')}>
         <option value="false">Private</option>
         <option value="true">Public</option>
       </select>
@@ -256,3 +235,4 @@ const RetetaForm: React.FC<RecipeFormProps> = ({ initialData, onSubmit }) => {
 };
 
 export default RetetaForm;
+

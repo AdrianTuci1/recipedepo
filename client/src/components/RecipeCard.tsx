@@ -67,12 +67,13 @@ function RecipeCard({ recipe }: { recipe: RecipeCardProps}) {
   const difficultyLevel = getDifficulty(recipe.difficulty);
 
   const totalTime = parseInt(recipe.cookingTime, 10) + parseInt(recipe.prepTime, 10);
+  const imageUrl = `http://localhost:8080${recipe.imageUrl}`;
 
   return (
     <div className="card">
       <div className="content">
       <div className="image-container">
-        <img className="recipe-image" src={recipe.imageUrl || ''} alt="" />
+        <img className="recipe-image" src={imageUrl || ''} alt="" />
         <img className="overlay-image" src={overlayImage} alt="Option icon" />
       </div>
       <div className="description-container">

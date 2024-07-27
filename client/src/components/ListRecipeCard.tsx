@@ -56,7 +56,7 @@ function ListRecipeCard({ recipe, onEdit, onDelete }: ListRecipeCardProps) {
   };
 
   const getDifficulty = (difficulty: string) => {
-    switch (difficulty.toLowerCase()) {
+    switch (difficulty) {
       case 'easy':
         return '/easy.png';
       case 'medium':
@@ -73,11 +73,13 @@ function ListRecipeCard({ recipe, onEdit, onDelete }: ListRecipeCardProps) {
 
   const totalTime = parseInt(recipe.cookingTime, 10) + parseInt(recipe.prepTime, 10);
 
+  const imageUrl = `http://localhost:8080${recipe.imageUrl}`;
+
   return (
     <div className="list-card">
       <div className="list-content">
         <div className="list-image-container">
-          <img className="recipe-image" src={recipe.imageUrl || ''} alt="" />
+          <img className="recipe-image" src={imageUrl} alt="" />
           <img className="overlay-image" src={overlayImage} alt="Option icon" />
         </div>
         <div className="list-description-container">

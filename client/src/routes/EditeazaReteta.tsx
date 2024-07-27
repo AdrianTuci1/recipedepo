@@ -1,36 +1,33 @@
-
-import RetetaForm from '../components/RetetaForm'
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { RecipeCardProps } from '../components/RecipeCard';
-import '../styles/retetaform.scss'
+import RetetaForm from '../components/RetetaForm';
+import '../styles/retetaform.scss';
 import Cookies from 'js-cookie';
 
 function EditeazaReteta() {
   const [recipeData, setRecipeData] = useState<RecipeCardProps | null>(null);
-
-  const { recipeId } = useParams(); // Obține ID-ul rețetei din URL
+  const { recipeId } = useParams(); // Get recipe ID from URL
 
   useEffect(() => {
-    // Efectuați o solicitare API pentru a obține detaliile rețetei specifice
-    // pe baza ID-ului din useParams
+    // Make an API request to get the recipe details based on the ID from useParams
     fetch(`http://localhost:8080/api/recipes/${recipeId}`)
       .then((response) => response.json())
       .then((data) => setRecipeData(data))
-      .catch((error) => console.error('Eroare la încărcarea rețetei:', error));
-  }, [recipeId]); // Depinde de recipeId
+      .catch((error) => console.error('Error loading recipe:', error));
+  }, [recipeId]); // Dependency on recipeId
 
-  const handleSubmit = async (data: RecipeCardProps) => {
-    console.log('Submitting Recipe:', data);
+  const handleSubmit = async (formData: FormData) => {
+    console.log('Submitting Recipe:', formData);
     console.log('Recipe ID:', recipeId);
     try {
       const token = Cookies.get('auth_token');
       const response = await fetch(`http://localhost:8080/api/recipes/${recipeId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` 
-         },
-        body: JSON.stringify(data),
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData, // Use FormData directly
       });
 
       if (!response.ok) {
@@ -42,18 +39,19 @@ function EditeazaReteta() {
     } catch (error) {
       console.error('Error submitting recipe:', error);
     } finally {
-
+      // Any cleanup or final actions
     }
   };
+
   return (
-    <div className='adauga-content' style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-      { recipeData ? (
-      <RetetaForm initialData={recipeData} onSubmit={handleSubmit}/>
-    ) : (
-      <p className="loading">Loading data...</p>
-    )}
+    <div className='adauga-content' style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      {recipeData ? (
+        <RetetaForm initialData={recipeData} onSubmit={handleSubmit} />
+      ) : (
+        <p className="loading">Loading data...</p>
+      )}
     </div>
-  )
+  );
 }
 
-export default EditeazaReteta
+export default EditeazaReteta;

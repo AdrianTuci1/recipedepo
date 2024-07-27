@@ -161,11 +161,11 @@ const UserSettings: React.FC = () => {
               disabled={!isEditing.username}
             />
             {!isEditing.username ? (
-              <button type="button" className="btn btn-edit" onClick={() => handleEdit('username')}>
+              <button type="button" className="btnz btn-edit" onClick={() => handleEdit('username')}>
                 Edit
               </button>
             ) : (
-              <button type="button" className="btn btn-cancel" onClick={() => handleCancel('username')}>
+              <button type="button" className="btnz btn-cancel" onClick={() => handleCancel('username')}>
                 Cancel
               </button>
             )}
@@ -182,11 +182,11 @@ const UserSettings: React.FC = () => {
               disabled={!isEditing.email}
             />
             {!isEditing.email ? (
-              <button type="button" className="btn btn-edit" onClick={() => handleEdit('email')}>
+              <button type="button" className="btnz btn-edit" onClick={() => handleEdit('email')}>
                 Edit
               </button>
             ) : (
-              <button type="button" className="btn btn-cancel" onClick={() => handleCancel('email')}>
+              <button type="button" className="btnz btn-cancel" onClick={() => handleCancel('email')}>
                 Cancel
               </button>
             )}
@@ -203,11 +203,11 @@ const UserSettings: React.FC = () => {
               disabled={!isEditing.phoneNumber}
             />
             {!isEditing.phoneNumber ? (
-              <button type="button" className="btn btn-edit" onClick={() => handleEdit('phoneNumber')}>
+              <button type="button" className="btnz btn-edit" onClick={() => handleEdit('phoneNumber')}>
                 Edit
               </button>
             ) : (
-              <button type="button" className="btn btn-cancel" onClick={() => handleCancel('phoneNumber')}>
+              <button type="button" className="btnz btn-cancel" onClick={() => handleCancel('phoneNumber')}>
                 Cancel
               </button>
             )}
@@ -218,7 +218,7 @@ const UserSettings: React.FC = () => {
           {error && <p className="error-message">{error}</p>}
         </form>
       </div>
-      <button onClick={handleLogout} className="btn btn-secondary">
+      <button onClick={handleLogout} className="btnz logout">
         Logout
       </button>
     </div>

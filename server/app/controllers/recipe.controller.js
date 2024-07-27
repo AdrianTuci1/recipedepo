@@ -5,21 +5,12 @@ const Op = db.Op;
 
 // Create and Save a new Recipe
 exports.create = async (req, res) => {
-  // Validate request
-  if (!req.body.title) {
-    return res.status(400).send({
-      message: "Content can not be empty!"
-    });
-  }
-
   try {
-    // Create a Recipe
-    const { 
+    const data = JSON.parse(req.body.data); // Parse the JSON string
+    const {
       title, cookingTime, prepTime, type, options, servings,
-      difficulty, price, kitchen, ingredients, steps, isPublic 
-    } = req.body;
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
-
+      difficulty, price, kitchen, isPublic, ingredients, steps
+    } = data;
     const userId = req.userId; // Assumed set by auth middleware
     const user = await User.findByPk(userId);
 
@@ -27,10 +18,24 @@ exports.create = async (req, res) => {
       return res.status(404).send({ message: "User not found" });
     }
 
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
     const recipe = await Recipe.create({
-      title, imageUrl, cookingTime, prepTime, type, options, servings,
-      difficulty, price, kitchen, ingredients: JSON.stringify(ingredients),
-      steps: JSON.stringify(steps), isPublic, userId , author: user.username // Assuming `author` to be `req.userId`
+      title,
+      imageUrl,
+      cookingTime,
+      prepTime,
+      type,
+      options,
+      servings,
+      difficulty,
+      price,
+      kitchen,
+      ingredients: JSON.stringify(ingredients), // Ensure ingredients are stored as JSON strings
+      steps: JSON.stringify(steps), // Ensure steps are stored as JSON strings
+      isPublic,
+      userId,
+      author: user.username
     });
 
     res.send(recipe);
@@ -40,6 +45,7 @@ exports.create = async (req, res) => {
     });
   }
 };
+
 // Retrieve all Recipes from the database.
 exports.findAll = async (req, res) => {
   const title = req.query.title;
@@ -76,20 +82,14 @@ exports.update = async (req, res) => {
   const id = req.params.id;
 
   try {
-    console.log(`Updating recipe with ID: ${id}`);
-    console.log('Update data:', req.body); // Log the incoming data
-
-    // Destructure the fields from the request body
-    const { 
+    const data = JSON.parse(req.body.data); // Parse the JSON string
+    const {
       title, cookingTime, prepTime, type, options, servings,
-      difficulty, price, kitchen, ingredients, steps, isPublic 
-    } = req.body;
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+      difficulty, price, kitchen, isPublic, ingredients, steps
+    } = data;
 
-    // Create an update object, stringifying ingredients and steps
     const updateData = {
       title,
-      imageUrl,
       cookingTime,
       prepTime,
       type,
@@ -98,10 +98,14 @@ exports.update = async (req, res) => {
       difficulty,
       price,
       kitchen,
-      ingredients: JSON.stringify(ingredients),
-      steps: JSON.stringify(steps),
+      ingredients: JSON.stringify(ingredients), // Ensure ingredients are stored as JSON strings
+      steps: JSON.stringify(steps), // Ensure steps are stored as JSON strings
       isPublic
     };
+
+    if (req.file) {
+      updateData.imageUrl = `/uploads/${req.file.filename}`;
+    }
 
     const [num] = await Recipe.update(updateData, { where: { id } });
     if (num === 1) {
@@ -110,7 +114,6 @@ exports.update = async (req, res) => {
       res.send({ message: `Cannot update Recipe with id=${id}. Maybe Recipe was not found or req.body is empty!` });
     }
   } catch (error) {
-    console.error('Error updating recipe:', error); // Log the error
     res.status(500).send({ message: "Error updating Recipe with id=" + id });
   }
 };

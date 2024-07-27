@@ -61,7 +61,7 @@ const FilterComponent: React.FC<FilterProps> = ({ showFilters, toggleFilters, fi
   return (
     <div className="filters-container">
       <div>
-        <label>Type:</label>
+        <label>Tip:</label>
         <ul className='fil-type ule'>
           {['toate', 'fel principal', 'salata', 'supe', 'gustare', 'sushi', 'desert'].map(type => (
             <li 
@@ -76,7 +76,7 @@ const FilterComponent: React.FC<FilterProps> = ({ showFilters, toggleFilters, fi
         </ul>
       </div>
       <div>
-        <label>Price:</label>
+        <label>Pret:</label>
         <ul className='ule'>
           {[1, 2, 3, 4].map(price => (
             <li 
@@ -104,7 +104,7 @@ const FilterComponent: React.FC<FilterProps> = ({ showFilters, toggleFilters, fi
         </ul>
       </div>
       <div>
-        <label>Kitchen:</label>
+        <label>Bucatarie:</label>
         <select name="kitchen" value={filters.kitchen} onChange={handleFilterChange}>
           <option value="">All</option>
           <option value="Italian">Italian</option>
@@ -114,12 +114,12 @@ const FilterComponent: React.FC<FilterProps> = ({ showFilters, toggleFilters, fi
         </select>
       </div>
       <div>
-        <label>Cooking Time (minutes):</label>
+        <label>Timp de gatit (minute):</label>
         <input type="range" name="cookingTime" min="10" max="120" step="5" value={filters.cookingTime} onChange={handleFilterChange} />
         <div>{filters.cookingTime} minutes</div>
       </div>
       <div>
-        <label>Options:</label>
+        <label>Optiuni:</label>
         <div style={{ maxHeight: '200px', overflowY: 'scroll'}}>
           {['Traditional', 'Balanced', 'Vegan', 'High-Protein'].map(option => (
             <div 
@@ -139,7 +139,7 @@ const FilterComponent: React.FC<FilterProps> = ({ showFilters, toggleFilters, fi
         </div>
       </div>
       <div>
-        <label>Difficulty:</label>
+        <label>Dificultate:</label>
         <div style={{ maxHeight: '200px', overflowY: 'scroll' }}>
           {['easy', 'medium', 'hard'].map(difficulty => (
             <div key={difficulty}>

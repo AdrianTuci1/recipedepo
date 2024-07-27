@@ -74,8 +74,28 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
     }
   };
 
+  const getOverlayType = (type: string) => {
+    switch (type) {
+      case 'fel principal':
+        return '/maincourse.png';
+      case 'salate':
+        return '/salad.png';
+      case 'supe':
+        return '/supe.png';
+      case 'gustare':
+        return '/chips.png';
+      case 'sushi':
+        return '/sushi.png';
+      case 'desert':
+        return '/desert.png';
+      default:
+        return '/desert.png';
+    }
+  };
+
   const difficultyImage = isDifficultyLevel(difficulty) ? getDifficultyImagePath(difficulty) : '';
   const overlayImage = getOverlayImage(recipe.options);
+  const overlayType = getOverlayType(recipe.type)
 
   const renderDollarTags = (price: number) => {
     const tags = [];
@@ -86,14 +106,13 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
   };
 
   const toggleSocialSection = () => setIsSocialSectionOpen(!isSocialSectionOpen);
-
   return (
     <>
       <div className="page-box">
         <div className="reteta-page">
           <div className="image-containe">
             <div className="image-wrape bs">
-              <img src={imageUrl} alt="" className="recipeimg" />
+              <img src={`http://localhost:8080${imageUrl}`} alt="" className="recipeimg" />
             </div>
           </div>
           <div className="ingredients-container bd">
@@ -106,7 +125,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
           </div>
           <div className="header bd">
             <h1 className="titlez">{title}</h1>
-            <div className="type">{type}</div>
+            <div className="type"><img src={overlayType} alt={type} style={{ width: '30px' }}/></div>
             <div className="optionnn"><img src={overlayImage} alt={options} style={{ width: '30px' }} /></div>
           </div>
           <div className="options ">

@@ -93,7 +93,7 @@ const RecipeListComponent: React.FC<RecipeListProps> = ({ filters, setFilters, t
       cookingTime: 120,
       options: [],
       difficulty: [],
-      type: 'all',
+      type: 'toate',
     });
   };
 

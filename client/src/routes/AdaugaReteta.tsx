@@ -30,17 +30,16 @@ const initialRecipeData:RecipeCardProps = {
   approved: false,
 }
 
-  const handleSubmit = async (data: RecipeCardProps) => {
+  const handleSubmit = async (formData: FormData) => {
 
     try {
       const token = Cookies.get('auth_token');
       const response = await fetch('http://localhost:8080/api/recipes', {
         method: 'POST',
         headers: { 
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}` 
         },
-        body: JSON.stringify(data),
+        body: formData,
       });
 
       if (!response.ok) {

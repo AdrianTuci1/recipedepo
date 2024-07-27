@@ -1,12 +1,12 @@
 $user-settings-bg: #fff;
 $user-settings-shadow: rgba(0, 0, 0, 0.1);
 $user-settings-border-radius: 8px;
-$user-settings-primary-color: #007bff;
+$user-settings-primary-color: rgb(236, 146, 0);
 $user-settings-secondary-color: #6c757d;
 $user-settings-error-color: red;
 
 .user-settings-container {
-  max-width: 800px;
+  max-width: 500px;
   margin: 0 auto;
   padding: 20px;
   background-color: $user-settings-bg;
@@ -23,6 +23,7 @@ $user-settings-error-color: red;
   }
 
   .user-settings-content {
+    margin-top: 50px;
     display: grid;
     grid-template-columns: 150px 1fr;
     gap: 20px;
@@ -85,7 +86,7 @@ $user-settings-error-color: red;
           cursor: not-allowed;
         }
 
-        .btn {
+        .btnz {
           margin-left: 10px;
           padding: 8px 12px;
           border: none;
@@ -95,6 +96,7 @@ $user-settings-error-color: red;
           &.btn-edit {
             background-color: $user-settings-primary-color;
             color: white;
+            width: 50px;
           }
 
           &.btn-cancel {
@@ -133,4 +135,14 @@ $user-settings-error-color: red;
       }
     }
   }
+}
+
+
+.logout{
+  background-color: rgb(124, 0, 0);
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
 }

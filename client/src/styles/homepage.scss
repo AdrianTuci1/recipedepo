@@ -12,7 +12,8 @@
     align-items: center;
     color: $textWhite;
     font-family: $primaryFont;
-    background-color: $darkGreen;
+    background: rgb(28,39,14);
+    background: linear-gradient(135deg, rgba(28,39,14,1) 0%, rgba(57,77,33,1) 40%, rgba(28,39,14,1) 100%);
     @include media.tablet{
         height: auto;
         flex-direction: column;
@@ -21,14 +22,31 @@
 
 .buttons{
     display: flex;
-    gap: 30px;
-    button{
+    .btn{
         width: 170px;
-        margin: 20px 0px;
+        margin: 30px 0px;
         padding: 7px;
-        border-radius: 50px;
+        border-radius: 5px;
         border: none;
+        -webkit-box-shadow: 3px 3px 2px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 3px 3px 2px 0px rgba(0,0,0,0.75);
+        box-shadow: 3px 3px 2px 0px rgba(0,0,0,0.75);
+        cursor: pointer;
+        outline: 1px solid;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, transform 0.1s ease-in-out;
+        margin-right: 30px;
+        &:active{
+            transform: scale(0.98) translate(3px, 3px);
+            -webkit-box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.75);
+            box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.75);
+        }
     }
+
+    .btn-primary{
+        background-color: rgb(220, 121, 0);
+    }
+
 }
 
 .strong{
@@ -47,6 +65,25 @@
     @include media.tablet{
         width: 90%;
     }
+
+    h1{
+        line-height: 1;
+    }
+
+    h2{
+        margin-top: 5px;
+        font-weight: 300;
+        line-height: 0.95;
+    }
+
+    p{
+        margin-top: 10px;
+        opacity: 100%;
+        color: rgb(209, 209, 209);
+        line-height: 1.1;
+        font-weight: 100;
+    }
+    
 }
 
 .dreapta{

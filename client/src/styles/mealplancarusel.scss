@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;
+    height: 100vh;
     width: 100%;
   }
   
@@ -12,7 +12,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: 700px;
+    max-width: 800px;
     box-sizing: border-box;
   
     .cards-container-wrapper {
@@ -39,7 +39,8 @@
       .card {
         scroll-snap-align: center;
         flex: 0 0 auto;
-        width: 180px; /* Smaller width for non-active cards */
+        min-width: 200px; /* Smaller width for non-active cards */
+        min-height: 450px;
         margin: 0 1rem;
         padding: 1rem;
         border: 1px solid #ccc;
@@ -53,7 +54,7 @@
   
         &.active {
           transform: scale(1.2);
-          min-width: 220px; /* Larger width for the active card */
+          min-width: 230px; /* Larger width for the active card */
           opacity: 1; /* Full opacity for active card */
           z-index: 2;
         }
@@ -73,48 +74,8 @@
           margin-bottom: 1rem;
         }
   
-        input {
-          display: block;
-          width: calc(100% - 2rem);
-          margin: 0.5rem 0;
-          padding: 0.5rem;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          box-sizing: border-box;
-        }
       }
-  
-      .add-card {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 200px; /* Smaller width for add card */
-        min-height: 220px;
-        margin: 0 1rem;
-        padding: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        background-color: #f9f9f9;
-        color: #666;
-        font-size: 2rem;
-        cursor: pointer;
-        transition: background-color 0.3s ease, width 0.3s ease, opacity 0.3s ease;
-        box-sizing: border-box;
-        opacity: 0.5; /* Make add card less opaque */
-  
-        &:hover {
-          background-color: #eee;
-        }
-  
-        &.visible {
-          display: flex;
-        }
-  
-        &.hidden {
-          display: none;
-        }
-      }
-    }
+}
   
     .save-button {
       margin-top: 1rem;
@@ -179,4 +140,75 @@
         width: 150px;
     }
   }
-  
+
+// modal
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 1000;
+}
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  z-index: 1001;
+  width: 80%;
+  height: 80%;
+  overflow-y: auto;
+}
+
+.selected-recipes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+
+  .selected-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .custom-text,
+    .recipe-card {
+      display: flex;
+      align-items: center;
+
+      button {
+        margin-left: 10px;
+        background: none;
+        border: none;
+        color: red;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.recipe-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  .checkbox {
+    margin-right: 10px;
+  }
+}
+
+
+.placeholder {
+  height: 50px;
+  border: 1px dashed #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
+}

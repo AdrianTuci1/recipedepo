@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../styles/mealplancarusel.scss';
 import MealPlanCard from './MealPlanCard';
+import { RecipeCardProps } from './SmallRecipeCard';
 
 type MealPlan = {
   day: string;
-  meals: string[];
+  meals: (string | RecipeCardProps)[];
   nutrition: { carbs: number; protein: number; calories: number };
 };
 
@@ -17,17 +18,17 @@ const MealPlanCarousel: React.FC = () => {
     if (mealPlans.length < 7) {
       const newPlans = [
         ...mealPlans,
-        { day: `Day ${mealPlans.length + 1}`, meals: ['', '', ''], nutrition: { carbs: 0, protein: 0, calories: 0 } },
+        { day: `Day ${mealPlans.length + 1}`, meals: [], nutrition: { carbs: 0, protein: 0, calories: 0 } },
       ];
       setMealPlans(newPlans);
       setActiveIndex(newPlans.length - 1); // Set active index to the new card
     }
   };
 
-  const handleInputChange = (index: number, type: 'meals' | 'nutrition', value: any, mealIndex?: number) => {
+  const handleInputChange = (index: number, type: 'meals', value: (string | RecipeCardProps)[]) => {
     const newMealPlans = [...mealPlans];
-    if (type === 'meals' && mealIndex !== undefined) {
-      newMealPlans[index].meals[mealIndex] = value;
+    if (type === 'meals') {
+      newMealPlans[index].meals = value;
     } else if (type === 'nutrition') {
       newMealPlans[index].nutrition = { ...newMealPlans[index].nutrition, ...value };
     }
@@ -54,14 +55,13 @@ const MealPlanCarousel: React.FC = () => {
       const containerWidth = container.offsetWidth;
       const cardWidth = container.children[activeIndex]?.getBoundingClientRect().width || 0;
       const activeCard = container.children[activeIndex] as HTMLElement;
-  
+
       if (activeCard) {
         const scrollPosition = activeCard.offsetLeft - (containerWidth / 2 - cardWidth / 2) + (containerWidth / 2 - cardWidth / 2);
         container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
       }
     }
   }, [activeIndex, mealPlans.length]);
-  
 
   const renderCards = () => {
     const cardsToRender = [];

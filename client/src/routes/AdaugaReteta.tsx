@@ -3,8 +3,12 @@ import RetetaForm from '../components/RetetaForm'
 import { RecipeCardProps } from '../components/RecipeCard';
 import '../styles/retetaform.scss'
 import Cookies from 'js-cookie';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 function AdaugaReteta() {
+
+  const navigate = useNavigate();
 
 const initialRecipeData:RecipeCardProps = {
   id: '',
@@ -48,8 +52,12 @@ const initialRecipeData:RecipeCardProps = {
 
       // Handle successful response (e.g., show success message)
       console.log('Recipe submitted successfully!');
+      toast.success('Reteta a fost adaugata cu succes!');
+      navigate(-1)
     } catch (error) {
+      toast.error("Nu a functionat!")
       console.error('Error submitting recipe:', error);
+      navigate(-1)
     } finally {
 
     }

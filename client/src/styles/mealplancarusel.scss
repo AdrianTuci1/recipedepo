@@ -2,21 +2,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     width: 100%;
+    height: 100vh;
   }
   
   .meal-plan-carousel {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     width: 100%;
     max-width: 800px;
     box-sizing: border-box;
   
     .cards-container-wrapper {
-      padding: 5% 0;
+      padding: 10% 0;
       box-sizing: border-box;
       width: 100%;
       overflow: hidden;
@@ -31,9 +29,13 @@
       box-sizing: border-box;
       max-width: 100%;
       justify-content: center;
+      overflow-x: auto;
       overflow: visible; // Allow overflow
       padding-left: calc(50% - 110px); /* Adjust for half the width of an active card */
       padding-right: calc(50% - 110px); /* Adjust for half the width of an active card */
+      &.offset-right {
+        transform: translateX(15%);
+      }
       
   
       .card {
@@ -78,7 +80,9 @@
 }
   
     .save-button {
-      margin-top: 1rem;
+      max-width: 200px;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
       padding: 0.5rem 1rem;
       font-size: 1rem;
       color: #fff;
@@ -93,11 +97,27 @@
       }
     }
   }
+
+  .btn-wrap{
+    display: flex;
+    justify-content: center;
+  }
+
+  .add-card{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    span{
+      margin-left: 20px;
+      font-size: 30px;
+    }
+  }
   
   @media (max-width: 768px) {
     .meal-plan-carousel {
+      position: absolute;
       .cards-container-wrapper {
-        padding: 5% 0;
+        padding: 15% 0;
       }
   
       .cards-container {
@@ -119,15 +139,16 @@
   
   @media (max-width: 480px) {
     .meal-plan-carousel {
+      position: absolute;
       .cards-container-wrapper {
-        padding: 5% 0;
+        padding: 10% 0;
+        height: 100%;
       }
   
       .cards-container {
   
         .card,
         .add-card {
-          width: 80px;
           margin: 0 0.2rem;
   
           &.active {
@@ -136,9 +157,10 @@
         }
       }
     }
-    .save-button{
-        width: 150px;
-    }
+  }
+
+  .first-card{
+    margin-left: 200px;
   }
 
 // modal

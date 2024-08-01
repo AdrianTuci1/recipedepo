@@ -23,6 +23,7 @@ import MainContent from './routes/MainContent';
 import NonAuthenticatedPage from './routes/NotAuthenticated';
 import FavoriteRecipes from './components/FavoriteRecipes';
 import MealPlansTable from './routes/MealPlanTable';
+import { Toaster } from 'react-hot-toast';
 
 
 function App() {
@@ -39,6 +40,9 @@ function App() {
 
   return (
     <div className="homepage">
+      <Toaster
+        position="top-center"
+      />
       <NavBar />
       <Routes>
         <Route path="/" element={<HomePage />} />

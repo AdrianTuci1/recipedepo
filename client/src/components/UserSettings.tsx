@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { logout, updateUser } from '../redux/authSlice';
 import { getAuthToken, getAuthUser } from '../redux/storage';
 import '../styles/usersettings.scss'; // Import SCSS for styling
+import toast from 'react-hot-toast';
 
 interface User {
   id: string;
@@ -84,8 +85,10 @@ const UserSettings: React.FC = () => {
       try {
         await dispatch(updateUser(user.id, formData) as any);
         setError('User information updated successfully');
+        toast.success('Datele au fost actualizate!')
       } catch (error: any) {
         setError(error.message);
+        toast.error('A aparut o problema.')
       } finally {
         setIsLoading(false);
         setIsEditing({

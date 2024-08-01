@@ -1,6 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import RecipeSlider from '../components/RecipeSlider'
 import '../styles/homepage.scss'
+import LegendaIcn from '../components/LegendaIcn';
+import PrezentarePlan from '../components/PrezentarePlan';
+import Footer from '../components/Footer';
 
 function HomePage() {
 
@@ -48,7 +51,18 @@ function HomePage() {
     <div className="pluses">
     </div>
     <div className="sectiune_3">
-      
+      <LegendaIcn />
+      <PrezentarePlan />
+    </div>
+    <div className="sectiune_3">
+      <div className="grat-wr">
+      <h1>100% GRATUIT</h1>
+      <span>ACEST SERVICIU VA FI MEREU GRATUIT</span>
+      </div>
+    </div>
+    <div className="pluses"></div>
+    <div className="footeri">
+      <Footer />
     </div>
     </div>
     </>

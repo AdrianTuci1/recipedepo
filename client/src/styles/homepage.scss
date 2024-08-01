@@ -133,6 +133,28 @@
 }
 
 .sectiune_3{
-    height: 60vh;
     background-color: #243210;
+}
+
+.grat-wr{
+    padding-block-start: 20%;
+    padding-block-end: 30%;
+    text-align: center;
+    color: whitesmoke;
+    font-family: $primaryFont;
+    h1{
+        margin-bottom: 10px;
+        font-size: 48px;
+    }
+    span{
+        font-weight: 100;
+        font-size: 20px;
+    }
+}
+
+
+.footeri{
+    background-color: rgb(220, 121, 0);
+    display: flex;
+    flex-wrap: wrap;
 }

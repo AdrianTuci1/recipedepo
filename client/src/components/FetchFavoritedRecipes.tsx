@@ -38,7 +38,7 @@ const DraggableRecipe: React.FC<DraggableRecipeProps> = ({ recipe, index, moveRe
 
   return (
     <div ref={(node) => ref(drop(node))} className="selected-item">
-      <button className="drag-handle">☰</button>
+      <button className="drag-handle butto">☰</button>
       {typeof recipe === 'string' ? (
         <div className="custom-text">
           {recipe}
@@ -48,7 +48,7 @@ const DraggableRecipe: React.FC<DraggableRecipeProps> = ({ recipe, index, moveRe
           <SmallRecipeCard recipe={recipe} />
         </div>
       )}
-      <button onClick={() => removeRecipe(index)} className="remove-button">×</button>
+      <button onClick={() => removeRecipe(index)} className="remove-button butto">×</button>
     </div>
   );
 };

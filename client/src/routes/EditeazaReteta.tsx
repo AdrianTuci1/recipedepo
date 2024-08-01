@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { RecipeCardProps } from '../components/RecipeCard';
 import RetetaForm from '../components/RetetaForm';
 import '../styles/retetaform.scss';
 import Cookies from 'js-cookie';
+import toast from 'react-hot-toast';
 
 function EditeazaReteta() {
   const [recipeData, setRecipeData] = useState<RecipeCardProps | null>(null);
   const { recipeId } = useParams(); // Get recipe ID from URL
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Make an API request to get the recipe details based on the ID from useParams
@@ -36,8 +39,12 @@ function EditeazaReteta() {
 
       // Handle successful response (e.g., show success message)
       console.log('Recipe submitted successfully!');
+      toast.success('Reteta a fost editata cu succes!');
+      navigate(-1)
     } catch (error) {
+      toast.error("Nu a functionat!")
       console.error('Error submitting recipe:', error);
+      navigate(-1)
     } finally {
       // Any cleanup or final actions
     }

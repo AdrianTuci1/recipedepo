@@ -2,14 +2,15 @@
     max-height: 400px;
     overflow-y: auto;
     border: 1px solid #ccc;
-    padding: 8px;
+    overflow-x: hidden;
+    max-width: 100%;
+
   }
   
   .selected-item {
     display: flex;
     align-items: center;
     margin-bottom: 8px;
-    padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
     background: #fff;
@@ -23,7 +24,7 @@
     flex-grow: 1;
   }
   
-  button {
+  .butto {
     background: none;
     border: none;
     font-size: 16px;

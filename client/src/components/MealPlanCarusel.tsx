@@ -91,7 +91,7 @@ const MealPlanCarousel: React.FC = () => {
     <div className="appcarusel">
       <div className="meal-plan-carousel">
         <div className="cards-container-wrapper">
-          <div className="cards-container" ref={containerRef}>
+          <div className={`cards-container ${activeIndex === 0 ? 'offset-right' : ''}`} ref={containerRef}>
             {renderCards()}
             {/* Conditionally render the "+" card */}
             {mealPlans.length === 0 || activeIndex === mealPlans.length - 1 ? (
@@ -101,14 +101,17 @@ const MealPlanCarousel: React.FC = () => {
             ) : null}
           </div>
         </div>
+        <div className="btn-wrap">
         {mealPlans.length > 0 && (
           <button className="save-button" onClick={handleSaveMealPlan}>
             Save Meal Plan
           </button>
         )}
+        </div>
       </div>
     </div>
   );
 };
 
 export default MealPlanCarousel;
+

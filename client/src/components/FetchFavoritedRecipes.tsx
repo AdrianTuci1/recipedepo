@@ -128,7 +128,7 @@ const FetchFavoritedRecipes: React.FC<FetchFavoritedRecipesProps> = ({ onSelect,
                 checked={selectedRecipes.some(r => typeof r === 'string' ? r === recipe.title : r.id === recipe.id)}
                 onChange={() => handleSelect(recipe)}
                 className="recipe-checkbox"
-              />
+             />
               <SmallRecipeCard recipe={recipe} />
             </div>
           ))}

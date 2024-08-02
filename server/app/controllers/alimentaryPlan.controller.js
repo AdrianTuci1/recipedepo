@@ -1,92 +1,142 @@
-const db = require("../models");
+const db = require('../models');
 const AlimentaryPlan = db.alimentaryPlan;
 const Card = db.card;
-const User = db.user;
+const Recipe = db.recipe;
 
-// Create a new alimentary plan
+// Create a new Alimentary Plan with cards
 exports.createPlan = async (req, res) => {
   try {
-    const { name } = req.body;
-    const userId = req.userId; // Assumed set by auth middleware
+    const { name, isShared, cards } = req.body;
 
-    const plan = await AlimentaryPlan.create({ name, userId });
-    res.status(201).json(plan);
+    // Create Alimentary Plan
+    const plan = await AlimentaryPlan.create({
+      name,
+      userId: req.userId,
+      isShared
+    });
+
+    // Add Cards to Plan
+    for (const card of cards) {
+      await Card.create({
+        planId: plan.id,
+        day: card.day,
+        lines: JSON.stringify(card.lines) // Store lines as JSON
+      });
+    }
+
+    res.status(201).send(plan);
   } catch (error) {
-    console.error('Error creating alimentary plan:', error);
-    res.status(500).json({ message: error.message });
+    res.status(500).send({ message: error.message });
   }
 };
 
-// Get all alimentary plans for a user
-exports.getUserPlans = async (req, res) => {
-  try {
-    const userId = req.userId; // Assumed set by auth middleware
-
-    const plans = await AlimentaryPlan.findAll({ where: { userId } });
-    res.status(200).json(plans);
-  } catch (error) {
-    console.error('Error fetching user plans:', error);
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Share an alimentary plan
-exports.sharePlan = async (req, res) => {
-  try {
-    const { planId } = req.params;
-    const userId = req.userId; // Assumed set by auth middleware
-
-    const plan = await AlimentaryPlan.findByPk(planId);
-    if (!plan) {
-      return res.status(404).json({ message: "Plan not found" });
-    }
-
-    if (plan.userId !== userId) {
-      return res.status(403).json({ message: "You can only share your own plans" });
-    }
-
-    plan.isShared = true;
-    await plan.save();
-
-    res.status(200).json({ message: "Plan shared successfully" });
-  } catch (error) {
-    console.error('Error sharing plan:', error);
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Add a card to an alimentary plan
-exports.addCard = async (req, res) => {
-  try {
-    const { planId, day, lines } = req.body;
-
-    const plan = await AlimentaryPlan.findByPk(planId);
-    if (!plan) {
-      return res.status(404).json({ message: "Plan not found" });
-    }
-
-    const cardCount = await Card.count({ where: { planId } });
-    if (cardCount >= 7) {
-      return res.status(400).json({ message: "A plan can have a maximum of 7 cards" });
-    }
-
-    const card = await Card.create({ planId, day, lines });
-    res.status(201).json(card);
-  } catch (error) {
-    console.error('Error adding card:', error);
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Get all cards for an alimentary plan
+// Get all Cards for an Alimentary Plan
 exports.getCards = async (req, res) => {
   try {
     const { planId } = req.params;
+    const cards = await Card.findAll({
+      where: { planId },
+    });
 
-    const cards = await Card.findAll({ where: { planId } });
-    res.status(200).json(cards);
+    // Parse the lines JSON field for each card
+    const parsedCards = cards.map(card => ({
+      ...card.dataValues,
+      lines: JSON.parse(card.lines)
+    }));
+
+    res.status(200).send(parsedCards);
   } catch (error) {
-    console.error('Error fetching cards:', error);
-    res.status(500).json({ message: error.message });
+    res.status(500).send({ message: error.message });
+  }
+};
+
+// Get all Alimentary Plans for a user
+exports.getUserPlans = async (req, res) => {
+  try {
+    const { userId } = req;
+
+    const plans = await AlimentaryPlan.findAll({
+      where: { userId },
+      include: [
+        {
+          model: Card,
+          as: 'cards',
+          attributes: [] // We only need the count, not the actual card data
+        }
+      ],
+      attributes: {
+        include: [
+          [
+            db.sequelize.fn('COUNT', db.sequelize.col('cards.id')),
+            'days'
+          ]
+        ]
+      },
+      group: ['AlimentaryPlan.id']
+    });
+
+    res.status(200).send(plans);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+// Get a single Alimentary Plan by ID
+exports.getPlan = async (req, res) => {
+  try {
+    const { planId } = req.params;
+    const plan = await AlimentaryPlan.findOne({
+      where: { id: planId },
+      include: [
+        {
+          model: Card,
+          as: 'cards'
+        }
+      ]
+    });
+
+    if (!plan) {
+      return res.status(404).send({ message: 'Plan not found' });
+    }
+
+    // Parse the lines JSON field for each card
+    plan.cards = plan.cards.map(card => ({
+      ...card.dataValues,
+      lines: JSON.parse(card.lines)
+    }));
+
+    res.status(200).send(plan);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+// Update a single Alimentary Plan by ID
+exports.updatePlan = async (req, res) => {
+  try {
+    const { planId } = req.params;
+    const { name, isShared, cards } = req.body;
+
+    // Update Alimentary Plan
+    const plan = await AlimentaryPlan.findByPk(planId);
+    if (!plan) {
+      return res.status(404).send({ message: 'Plan not found' });
+    }
+
+    await plan.update({ name, isShared });
+
+    // Update Cards
+    await Card.destroy({ where: { planId } });
+    for (const card of cards) {
+      await Card.create({
+        planId: plan.id,
+        day: card.day,
+        lines: JSON.stringify(card.lines) // Store lines as JSON
+      });
+    }
+
+    res.status(200).send(plan);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
   }
 };

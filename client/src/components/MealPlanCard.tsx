@@ -82,7 +82,7 @@ const MealPlanCard: React.FC<MealPlanCardProps> = ({
       >
         ×
       </button>
-      <h2>{mealPlan.day}</h2>
+      <h2>Ziua {mealPlan.day}</h2>
       <button type="button" onClick={handleModalOpen} style={{ marginBottom: '5px' }}>
         Insert Cards
       </button>
@@ -130,7 +130,7 @@ const MealPlanCard: React.FC<MealPlanCardProps> = ({
               color: '#999',
             }}
           >
-            <span>Meal {mealPlan.meals.length + idx + 1}</span>
+            <span>Reteta {mealPlan.meals.length + idx + 1}</span>
           </div>
         ))}
       </div>

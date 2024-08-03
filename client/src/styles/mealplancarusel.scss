@@ -1,5 +1,31 @@
-.edit-app{
-  margin-top: 100px;
+@import './variables.scss';
+
+.set-name-container{
+  &:nth-child(1){
+    transform: translateY(-70%);
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    padding-inline: 50px;
+    gap: 10px;
+    font-family: $primaryFont;
+    input{
+      padding: 5px;
+    }
+    button{
+      width: 200px;
+      background-color: orange;
+      cursor: pointer;
+      margin-top: 10px;
+      border: 2px solid;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  }
+}
+
+.modif-inp{
+  position: absolute;
 }
 
 .appcarusel {
@@ -39,6 +65,9 @@
       padding-right: calc(50% - 110px); /* Adjust for half the width of an active card */
       &.offset-right {
         transform: translateX(15%);
+      }
+      &.offset-left {
+        transform: translateX(-0%);
       }
       
   

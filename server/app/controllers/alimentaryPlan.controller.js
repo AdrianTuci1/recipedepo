@@ -140,3 +140,26 @@ exports.updatePlan = async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 };
+
+// Remove a single Alimentary Plan by ID
+exports.removePlan = async (req, res) => {
+  try {
+    const { planId } = req.params;
+
+    // Find the plan
+    const plan = await AlimentaryPlan.findByPk(planId);
+    if (!plan) {
+      return res.status(404).send({ message: 'Plan not found' });
+    }
+
+    // Delete associated cards
+    await Card.destroy({ where: { planId } });
+
+    // Delete the plan
+    await plan.destroy();
+
+    res.status(200).send({ message: 'Plan removed successfully' });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};

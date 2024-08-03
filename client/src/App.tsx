@@ -24,7 +24,8 @@ import NonAuthenticatedPage from './routes/NotAuthenticated';
 import FavoriteRecipes from './components/FavoriteRecipes';
 import MealPlansTable from './routes/MealPlanTable';
 import { Toaster } from 'react-hot-toast';
-import EditMealPlanCarousel from './routes/EditMealPlanCarousel';
+import EditMealPlanPage from './routes/EditMealPlan';
+import ViewMealPlanPage from './routes/ViewMealPlan';
 
 
 function App() {
@@ -85,7 +86,8 @@ function App() {
         <Route path='' element={<PaginaAdmin/>}/>
         <Route path='users' element={<AdminUsers/>}/>
         </Route>
-        <Route path='/plan-alimentar/:id/edit' element={<EditMealPlanCarousel />} />
+        <Route path='/plan-alimentar/:id/edit' element={<EditMealPlanPage />} />
+        <Route path='/plan-alimentar/:id' element={<ViewMealPlanPage />} />
       </Routes>
     </div>
   );

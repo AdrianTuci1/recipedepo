@@ -1,11 +1,10 @@
-.mealplans-wrapper{
-  padding: 20px;
-}
+@import './variables.scss';
 
 .mealplans-table-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  font-family: $primaryFont;
   
     h1 {
       margin-bottom: 20px;
@@ -100,5 +99,9 @@
     }
   }
 
+
+.vezi{
+  margin: 50px;
+}
 
   

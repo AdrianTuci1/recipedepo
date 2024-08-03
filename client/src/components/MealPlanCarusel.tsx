@@ -3,6 +3,7 @@ import '../styles/mealplancarusel.scss';
 import MealPlanCard from './MealPlanCard';
 import { RecipeCardProps } from './SmallRecipeCard';
 import alimentaryPlanService, { AlimentaryPlan } from '../redux/alimentaryPlanService';
+import recipeService from '../redux/recipeService';
 
 type MealPlan = {
   day: string;
@@ -10,18 +11,53 @@ type MealPlan = {
   nutrition: { carbs: number; protein: number; calories: number };
 };
 
-const MealPlanCarousel: React.FC = () => {
+interface MealPlanCarouselProps {
+  mode: 'create' | 'edit' | 'view';
+  planId?: string; // Only required for edit/view modes
+}
+
+const MealPlanCarousel: React.FC<MealPlanCarouselProps> = ({ mode, planId }) => {
   const [mealPlans, setMealPlans] = useState<MealPlan[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [mealPlanName, setMealPlanName] = useState<string>('');
   const [isNameSet, setIsNameSet] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (mode !== 'create' && planId) {
+      // Fetch the meal plan if editing or viewing
+      const fetchMealPlan = async () => {
+        try {
+          const plan = await alimentaryPlanService.getPlan(planId);
+          setMealPlanName(plan.name);
+
+          const enrichedCards = await Promise.all(plan.cards.map(async (card: any) => {
+            const meals = await Promise.all(card.lines.map(async (line: any) => {
+              if (typeof line === 'string') {
+                return line;
+              } else {
+                const recipe = await recipeService.getRecipe(line.id);
+                return recipe;
+              }
+            }));
+            return { ...card, meals };
+          }));
+
+          setMealPlans(enrichedCards);
+        } catch (error) {
+          console.error('Error fetching meal plan:', error);
+        }
+      };
+
+      fetchMealPlan();
+    }
+  }, [mode, planId]);
+
   const handleAddCard = () => {
     if (mealPlans.length < 7) {
       const newPlans = [
         ...mealPlans,
-        { day: `Day ${mealPlans.length + 1}`, meals: [], nutrition: { carbs: 0, protein: 0, calories: 0 } },
+        { day: `${mealPlans.length + 1}`, meals: [], nutrition: { carbs: 0, protein: 0, calories: 0 } },
       ];
       setMealPlans(newPlans);
       setActiveIndex(newPlans.length - 1); // Set active index to the new card
@@ -54,24 +90,24 @@ const MealPlanCarousel: React.FC = () => {
           if (typeof meal === 'string') {
             return meal;
           } else {
-            // Assuming meal contains the required properties directly
-            return {
-              id: meal.id,
-            } as RecipeCardProps;
+            return { id: meal.id }; // Only save the recipe ID
           }
         })
       }))
     };
-  
+
     try {
-      const response = await alimentaryPlanService.createPlan(mealPlanData);
+      let response;
+      if (mode === 'create') {
+        response = await alimentaryPlanService.createPlan(mealPlanData);
+      } else if (mode === 'edit' && planId) {
+        response = await alimentaryPlanService.updatePlan(planId, mealPlanData);
+      }
       console.log('Meal Plan Saved:', response);
     } catch (error) {
       console.error('Failed to save meal plan:', error);
     }
   };
-  
-  
 
   const handleCardClick = (index: number) => {
     setActiveIndex(index);
@@ -107,6 +143,7 @@ const MealPlanCarousel: React.FC = () => {
             onCardClick={handleCardClick}
             onRemoveCard={handleRemoveCard}
             onInputChange={handleInputChange}
+            mode={mode} // Pass mode to MealPlanCard
           />
         );
       }
@@ -123,37 +160,48 @@ const MealPlanCarousel: React.FC = () => {
 
   return (
     <div className="appcarusel">
-      {!isNameSet ? (
+      {mode === 'create' && !isNameSet ? (
         <div className="set-name-container">
-          <h2>Please enter a title for your meal plan</h2>
+          <h2>INTRODU NUMELE PLANULUI</h2>
           <input
             type="text"
             value={mealPlanName}
             onChange={(e) => setMealPlanName(e.target.value)}
             placeholder="Meal Plan Title"
           />
-          <button onClick={handleSetName}>Set Title</button>
+          <button onClick={handleSetName}>URMATORUL PAS</button>
         </div>
       ) : (
         <div className="meal-plan-carousel">
+          <div className="set-name-container">
+            {mode === 'view' ? <h3>{mealPlanName}</h3> : (
+              <input
+                type="text"
+                value={mealPlanName}
+                onChange={(e) => setMealPlanName(e.target.value)}
+                placeholder="Titlu"
+                style={{display:'none'}}
+              />
+            )}
+          </div>
           <div className="cards-container-wrapper">
-            <div className={`cards-container ${activeIndex === 0 ? 'offset-right' : ''}`} ref={containerRef}>
+            <div className={`cards-container ${activeIndex === 0 ? 'offset-right' : ''} ${activeIndex === mealPlans.length - 1 ? 'offset-left' : ''}`} ref={containerRef}>
               {renderCards()}
               {/* Conditionally render the "+" card */}
-              {mealPlans.length === 0 || activeIndex === mealPlans.length - 1 ? (
+              {mode !== 'view' && (mealPlans.length === 0 || activeIndex === mealPlans.length - 1) ? (
                 <div className={`card add-card ${activeIndex >= mealPlans.length - 1 ? 'visible' : ''}`} key="add-card" onClick={handleAddCard}>
                   <span>+</span>
                 </div>
               ) : null}
             </div>
           </div>
-          <div className="btn-wrap">
-            {mealPlans.length > 0 && (
+          {mode !== 'view' && mealPlans.length > 0 && (
+            <div className="btn-wrap">
               <button className="save-button" onClick={handleSaveMealPlan}>
-                Save Meal Plan
+                SALVEAZA PLANUL
               </button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -190,6 +190,26 @@ const alimentaryPlanService = {
       throw error;
     }
   },
+
+  removePlan: async (planId: string) => {
+    try {
+      const response = await fetch(`${API_URL}/${planId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${getAuthToken()}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Failed to remove plan:', error);
+      throw error;
+    }
+  },
 };
 
 export default alimentaryPlanService;

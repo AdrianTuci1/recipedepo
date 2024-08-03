@@ -31,23 +31,38 @@ const MealPlansTable: React.FC = () => {
   }, []);
 
   const handleViewClick = (id: string) => {
+    navigate(`/plan-alimentar/${id}`);
+  };
+
+  const handleEditClick = (id: string) => {
     navigate(`/plan-alimentar/${id}/edit`);
+  };
+
+  const handleRemoveClick = async (id: string) => {
+    try {
+      await alimentaryPlanService.removePlan(id);
+      console.log('Meal plan removed successfully');
+      // Update the state to reflect the removed plan
+      setMealPlans(prevPlans => prevPlans.filter(plan => plan.id !== id));
+    } catch (error) {
+      console.error('Failed to remove meal plan:', error);
+    }
   };
 
   const handleAddMealPlan = () => {
     setShowCarousel(true);
   };
 
-  if (showCarousel || mealPlans.length === 1) {
-    return <MealPlanCarousel />;
+  if (showCarousel || mealPlans.length === 0) {
+    return <MealPlanCarousel mode="create"/>;
   }
 
   return (
     <div className="mealplans-table-container">
-        <div className="mealplans-wrapper">
-      <h1>View Meal Plans</h1>
+      <div className="mealplans-wrapper">
+      <h1 className='vezi'>VEZI PLANURILE ALIMENTARE</h1>
       <button className="add-mealplan-button" onClick={handleAddMealPlan}>
-        Add Meal Plan
+        Adauga un Plan
       </button>
       <div className="mealplans-cards">
           {mealPlans.map((mealPlan) => (
@@ -55,7 +70,8 @@ const MealPlansTable: React.FC = () => {
               key={mealPlan.id}
               mealPlan={mealPlan}
               onViewClick={handleViewClick}
-              onEditClick={handleViewClick}
+              onEditClick={handleEditClick}
+              onRemoveClick={handleRemoveClick}
             />
           ))}
         </div>

@@ -19,5 +19,8 @@ module.exports = (app) => {
   // Update a specific Alimentary Plan
   router.put('/:planId', verifyToken, alimentaryPlanController.updatePlan);
 
+  // Remove a specific Alimentary Plan
+  router.delete('/:planId', verifyToken, alimentaryPlanController.removePlan);
+
   app.use('/api/alimentaryPlans', router);
 };

@@ -15,6 +15,7 @@ type MealPlanCardProps = {
   onCardClick: (index: number) => void;
   onRemoveCard: (index: number) => void;
   onInputChange: (index: number, type: 'meals', value: (string | RecipeCardProps)[]) => void;
+  mode: 'create' | 'edit' | 'view'; // Add mode prop
 };
 
 const MealPlanCard: React.FC<MealPlanCardProps> = ({
@@ -24,6 +25,7 @@ const MealPlanCard: React.FC<MealPlanCardProps> = ({
   onCardClick,
   onRemoveCard,
   onInputChange,
+  mode
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedRecipes, setSelectedRecipes] = useState<(string | RecipeCardProps)[]>(mealPlan.meals);
@@ -53,14 +55,18 @@ const MealPlanCard: React.FC<MealPlanCardProps> = ({
       return (
         <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
           <span>{meal}</span>
-          <button onClick={() => handleRemoveMeal(mealIndex)} style={{ fontSize: '12px', width: '20px' }}>×</button>
+          {mode !== 'view' && (
+            <button onClick={() => handleRemoveMeal(mealIndex)} style={{ fontSize: '12px', width: '20px' }}>×</button>
+          )}
         </div>
       );
     } else {
       return (
         <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
           <SmallRecipeCard recipe={meal} isClickable={false} />
-          <button onClick={() => handleRemoveMeal(mealIndex)} style={{ fontSize: '12px', width: '20px' }}>×</button>
+          {mode !== 'view' && (
+            <button onClick={() => handleRemoveMeal(mealIndex)} style={{ fontSize: '12px', width: '20px' }}>×</button>
+          )}
         </div>
       );
     }
@@ -72,20 +78,24 @@ const MealPlanCard: React.FC<MealPlanCardProps> = ({
       onClick={() => onCardClick(index)}
       style={{ zIndex: activeIndex === index ? 1 : 0, width: '180px', height: '350px' }}
     >
-      <button
-        className="remove-button"
-        onClick={(e) => {
-          e.stopPropagation();
-          onRemoveCard(index);
-        }}
-        style={{ fontSize: '20px', width: '20px' }}
-      >
-        ×
-      </button>
+      {mode !== 'view' && (
+        <button
+          className="remove-button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemoveCard(index);
+          }}
+          style={{ fontSize: '20px', width: '20px' }}
+        >
+          ×
+        </button>
+      )}
       <h2>Ziua {mealPlan.day}</h2>
-      <button type="button" onClick={handleModalOpen} style={{ marginBottom: '5px' }}>
-        Insert Cards
-      </button>
+      {mode !== 'view' && (
+        <button type="button" onClick={handleModalOpen} style={{ marginBottom: '5px' }}>
+          Insert Cards
+        </button>
+      )}
       <Modal
         isOpen={showModal}
         onRequestClose={handleModalClose}
@@ -96,7 +106,7 @@ const MealPlanCard: React.FC<MealPlanCardProps> = ({
         <button className="close-button" onClick={handleModalClose}>
           ×
         </button>
-        <h2>Select Recipes</h2>
+        <h2>Alege retete</h2>
         <FetchFavoritedRecipes onSelect={handleSelectRecipes} initialSelectedRecipes={selectedRecipes} />
       </Modal>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
@@ -139,4 +149,3 @@ const MealPlanCard: React.FC<MealPlanCardProps> = ({
 };
 
 export default MealPlanCard;
-

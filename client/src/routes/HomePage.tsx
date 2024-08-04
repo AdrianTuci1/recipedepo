@@ -55,7 +55,7 @@ function HomePage() {
       <PrezentarePlan />
     </div>
     <div className="sectiune_3">
-      <div className="grat-wr">
+      <div className="grat-wr" style={{overflowX:'hidden'}}>
       <h1>100% GRATUIT</h1>
       <span>ACEST SERVICIU VA FI MEREU GRATUIT</span>
       </div>

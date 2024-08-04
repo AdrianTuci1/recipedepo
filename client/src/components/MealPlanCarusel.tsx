@@ -167,14 +167,14 @@ const MealPlanCarousel: React.FC<MealPlanCarouselProps> = ({ mode, planId }) => 
             type="text"
             value={mealPlanName}
             onChange={(e) => setMealPlanName(e.target.value)}
-            placeholder="Meal Plan Title"
+            placeholder="Titlu"
           />
           <button onClick={handleSetName}>URMATORUL PAS</button>
         </div>
       ) : (
         <div className="meal-plan-carousel">
           <div className="set-name-container">
-            {mode === 'view' ? <h3>{mealPlanName}</h3> : (
+            {mode === 'view' ? <h2 className='mpn'>{mealPlanName}</h2> : (
               <input
                 type="text"
                 value={mealPlanName}
@@ -185,7 +185,7 @@ const MealPlanCarousel: React.FC<MealPlanCarouselProps> = ({ mode, planId }) => 
             )}
           </div>
           <div className="cards-container-wrapper">
-            <div className={`cards-container ${activeIndex === 0 ? 'offset-right' : ''} ${activeIndex === mealPlans.length - 1 ? 'offset-left' : ''}`} ref={containerRef}>
+            <div className={`cards-container ${activeIndex === 0 ? 'offset-right' : ''} ${mode === 'view' && activeIndex === mealPlans.length - 1 ? 'offset-left' : ''}`} ref={containerRef}>
               {renderCards()}
               {/* Conditionally render the "+" card */}
               {mode !== 'view' && (mealPlans.length === 0 || activeIndex === mealPlans.length - 1) ? (

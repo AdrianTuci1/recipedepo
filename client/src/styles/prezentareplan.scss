@@ -45,6 +45,11 @@
 .prez-imag{
     display: flex;
     width: 50%;
+
+    @include media.phone{
+        width: 100%;
+        overflow: hidden;
+    }
     .prez-imag-im{
         transform: translateX(-20%);
     }

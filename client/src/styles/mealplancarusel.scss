@@ -39,6 +39,7 @@
   .meal-plan-carousel {
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: 100%;
     max-width: 800px;
     box-sizing: border-box;
@@ -67,7 +68,7 @@
         transform: translateX(15%);
       }
       &.offset-left {
-        transform: translateX(-0%);
+        transform: translateX(-15%);
       }
       
   
@@ -274,4 +275,13 @@
   .set-name-wrapper{
     width: 300px;
   }
+}
+
+
+.mpn{
+  outline: 2px solid;
+  margin-top: 20px;
+  text-align: center;
+  background: lightgray;
+  border-radius: 5px;
 }

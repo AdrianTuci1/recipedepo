@@ -93,7 +93,7 @@ const MealPlanCard: React.FC<MealPlanCardProps> = ({
       <h2>Ziua {mealPlan.day}</h2>
       {mode !== 'view' && (
         <button type="button" onClick={handleModalOpen} style={{ marginBottom: '5px' }}>
-          Insert Cards
+          Adauga retete
         </button>
       )}
       <Modal

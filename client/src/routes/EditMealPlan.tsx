@@ -6,7 +6,7 @@ const EditMealPlanPage = () => {
 
   return (
     <div>
-      <h1>Edit Meal Plan</h1>
+      <h2>Mod de editare:</h2>
       <MealPlanCarousel mode="edit" planId={id} />
     </div>
   );

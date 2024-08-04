@@ -3,19 +3,19 @@ import '../styles/legenda.scss'
 
 
 const images = [
-    { url: '/easy.png', description: 'Description for image 1' },
-    { url: '/price.png', description: 'Description for image 2' },
-    { url: '/prepare.png', description: 'Description for image 3' },
-    { url: '/cook.png', description: 'Description for image 4' },
-    { url: '/maincourse.png', description: 'Description for image 4' },
-    { url: '/desert.png', description: 'Description for image 5' },
-    { url: '/salad.png', description: 'Description for image 6' },
-    { url: '/supe.png', description: 'Description for image 7' },
-    { url: '/sushi.png', description: 'Description for image 8' },
-    { url: '/protein.png', description: 'Description for image 8' },
-    { url: '/vegan.png', description: 'Description for image 8' },
-    { url: '/traditional.png', description: 'Description for image 8' },
-    { url: '/balanced.png', description: 'Description for image 8' },
+    { url: '/easy.png', description: 'DIFICULTATE: Poate fi de 3 feluri, acest simbol reprezinta dificultate scazuta.' },
+    { url: '/price.png', description: 'PRET: Pretul este reprezentat de aceasta imagine, valoarea maxima este 4.' },
+    { url: '/prepare.png', description: 'TIMP DE PREPARARE: Timpul necesar pentru prepararea mancarii, nu include timpul de gatit.' },
+    { url: '/cook.png', description: 'TIMP DE GATIT: Timpul de gatit, poate fi la plita, cuptor sau airfryer.' },
+    { url: '/maincourse.png', description: 'FEL PRINCIPAL: Reteta este servita ca fel principal.' },
+    { url: '/desert.png', description: 'DESERT: Dulciuri, inghetata, prajituri, smoothie-uri.' },
+    { url: '/salad.png', description: 'SALATA' },
+    { url: '/supe.png', description: 'SUPE' },
+    { url: '/sushi.png', description: 'SUSHI' },
+    { url: '/protein.png', description: 'BOGAT IN PROTEINE: Aceste alimente sunt consistente si au un continut mare de proteine.' },
+    { url: '/vegan.png', description: 'VEGAN: nu include carne, oua...' },
+    { url: '/traditional.png', description: 'TRADITIONAL: reteta traditionala' },
+    { url: '/balanced.png', description: 'BALANSAT: Potrivit pentru cei ce au nevoie de o alimentatie calculata.' },
   ];
 
 

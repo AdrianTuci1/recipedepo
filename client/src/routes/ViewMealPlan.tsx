@@ -7,8 +7,9 @@ const ViewMealPlanPage = () => {
 
   return (
     <div>
-      <h1>View Meal Plan</h1>
+      <div className="mpc-wrapper" style={{marginTop:'50px'}}>
       <MealPlanCarousel mode="view" planId={id} />
+      </div>
     </div>
   );
 };

@@ -60,7 +60,9 @@ const MealPlansTable: React.FC = () => {
   return (
     <div className="mealplans-table-container">
       <div className="mealplans-wrapper">
-      <h1 className='vezi'>VEZI PLANURILE ALIMENTARE</h1>
+      <div className="mealplans-title">
+      <h1>VEZI PLANURILE ALIMENTARE</h1>
+      </div>
       <button className="add-mealplan-button" onClick={handleAddMealPlan}>
         Adauga un Plan
       </button>

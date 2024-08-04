@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
       <div className="footer-top">
         <div className="footer-section">
           <ul>
-            <li className='tip'>HARTA SITE</li>
+            <li className="tip" style={{alignItems:'center'}}> HARTA SITE <img src="/navigation.png" alt="" style={{width:'40px', transform:'translateY(10px)'}}/></li>
             <li>ACASA</li>
             <li>RETETE</li>
             <li>MENIU DIGITAL</li>
@@ -15,13 +15,14 @@ const Footer: React.FC = () => {
         </div>
         <div className="footer-section">
           <ul>
-            <li className='tip'>SERVICII</li>
-            <li>SETARI</li>
+            <li className='tip'>SERVICII <img src="/boxy.png" alt="" style={{width:'40px', transform:'translateY(10px)'}}/></li>
+            <li>MENIU DIGITAL</li>
             <li>RETELE MELE</li>
             <li>PLAN ALIMENTAR</li>
           </ul>
         </div>
         <div className="footer-section get-in-touch">
+          <img src="/message.png" alt="message" style={{width:'40px', filter:'grayscale(1) invert(1)'}}/>
           <h2>SPUNE-NE PAREREA</h2>
           <p>Parerea ta este importantanta pentru a ne imbunatatii serviciile.</p>
           <button>TRIMITE UN MESAJ</button>

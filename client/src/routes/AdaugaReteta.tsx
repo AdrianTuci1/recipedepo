@@ -5,6 +5,7 @@ import '../styles/retetaform.scss'
 import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import fetchWrapper from '../redux/fetchWrapper';
 
 function AdaugaReteta() {
 
@@ -38,7 +39,7 @@ const initialRecipeData:RecipeCardProps = {
 
     try {
       const token = Cookies.get('auth_token');
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes`, {
+      const response = await fetchWrapper(`${import.meta.env.VITE_API_BASE_URL}/api/recipes`, {
         method: 'POST',
         headers: { 
           'Authorization': `Bearer ${token}` 
@@ -52,10 +53,10 @@ const initialRecipeData:RecipeCardProps = {
 
       // Handle successful response (e.g., show success message)
       console.log('Recipe submitted successfully!');
-      toast.success('Reteta a fost adaugata cu succes!');
+      toast('Reteta a fost adaugata cu succes!');
       navigate(-1)
     } catch (error) {
-      toast.error("Nu a functionat!")
+      toast("Nu a functionat!")
       console.error('Error submitting recipe:', error);
       navigate(-1)
     } finally {

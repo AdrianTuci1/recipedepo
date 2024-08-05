@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import '../styles/retelemele.scss';
 import ListRecipeCard from "./ListRecipeCard";
+import fetchWrapper from "../redux/fetchWrapper";
 
 interface RecipeListProps {}
 
@@ -24,7 +25,7 @@ function ReteteleMele({}: RecipeListProps) {
       const token = Cookies.get('auth_token');
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes/user/recipes`, {
+        const response = await fetchWrapper(`${import.meta.env.VITE_API_BASE_URL}/api/recipes/user/recipes`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,

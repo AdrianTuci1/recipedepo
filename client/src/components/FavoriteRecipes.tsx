@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ListRecipeCard from './ListRecipeCard';
 import { RecipeCardProps } from '../types/RecipeCardProps';
 import { getAuthToken, getAuthUser } from '../redux/storage';
+import fetchWrapper from '../redux/fetchWrapper';
 
 const FavoriteRecipes: React.FC = () => {
   const [recipes, setRecipes] = useState<RecipeCardProps[]>([]);
@@ -18,7 +19,7 @@ const FavoriteRecipes: React.FC = () => {
       }
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/favorites/user/${authUser.id}`, {
+        const response = await fetchWrapper(`${import.meta.env.VITE_API_BASE_URL}/api/favorites/user/${authUser.id}`, {
           headers: {
             Authorization: `Bearer ${authToken}`
           }

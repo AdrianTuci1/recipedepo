@@ -1,3 +1,4 @@
+import fetchWrapper from './fetchWrapper';
 import { getAuthToken } from './storage';
 
 export interface RecipeCardProps {
@@ -25,7 +26,7 @@ const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/alimentaryPlans`;
 const alimentaryPlanService = {
   createPlan: async (plan: AlimentaryPlan) => {
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetchWrapper(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +48,7 @@ const alimentaryPlanService = {
 
   getUserPlans: async () => {
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetchWrapper(API_URL, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${getAuthToken()}`
@@ -171,7 +172,7 @@ const alimentaryPlanService = {
 
   updatePlan: async (planId: string, plan: AlimentaryPlan) => {
     try {
-      const response = await fetch(`${API_URL}/${planId}`, {
+      const response = await fetchWrapper(`${API_URL}/${planId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

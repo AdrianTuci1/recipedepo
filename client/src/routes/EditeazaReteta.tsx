@@ -5,6 +5,7 @@ import RetetaForm from '../components/RetetaForm';
 import '../styles/retetaform.scss';
 import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
+import fetchWrapper from '../redux/fetchWrapper';
 
 function EditeazaReteta() {
   const [recipeData, setRecipeData] = useState<RecipeCardProps | null>(null);
@@ -14,7 +15,7 @@ function EditeazaReteta() {
 
   useEffect(() => {
     // Make an API request to get the recipe details based on the ID from useParams
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes/${recipeId}`)
+    fetchWrapper(`${import.meta.env.VITE_API_BASE_URL}/api/recipes/${recipeId}`)
       .then((response) => response.json())
       .then((data) => setRecipeData(data))
       .catch((error) => console.error('Error loading recipe:', error));
@@ -39,10 +40,10 @@ function EditeazaReteta() {
 
       // Handle successful response (e.g., show success message)
       console.log('Recipe submitted successfully!');
-      toast.success('Reteta a fost editata cu succes!');
+      toast('Reteta a fost editata cu succes!');
       navigate(-1)
     } catch (error) {
-      toast.error("Nu a functionat!")
+      toast("Nu a functionat!")
       console.error('Error submitting recipe:', error);
       navigate(-1)
     } finally {

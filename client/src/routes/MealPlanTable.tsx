@@ -4,6 +4,7 @@ import MealPlanCarousel from '../components/MealPlanCarusel';
 import '../styles/mealplans.scss'; // Ensure this path is correct for your project structure
 import alimentaryPlanService from '../redux/alimentaryPlanService';
 import MealPlanOverviewCard from '../components/MealPlanOverviewCard';
+import toast from 'react-hot-toast';
 
 interface MealPlan {
   id: string;
@@ -42,6 +43,7 @@ const MealPlansTable: React.FC = () => {
     try {
       await alimentaryPlanService.removePlan(id);
       console.log('Meal plan removed successfully');
+      toast(`Ai sters cu succes planul!`)
       // Update the state to reflect the removed plan
       setMealPlans(prevPlans => prevPlans.filter(plan => plan.id !== id));
     } catch (error) {

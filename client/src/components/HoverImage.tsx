@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getAuthUser } from '../redux/storage';
 import { addFavorite, removeFavorite, isRecipeLikedByUser } from '../redux/favoriteService';
 import '../styles/hoverimage.scss';
+import toast from 'react-hot-toast';
 
 interface HoverImageProps {
   defaultSrc: string;
@@ -58,6 +59,9 @@ const HoverImage: React.FC<HoverImageProps> = ({
         break;
       case 'switch':
         if (switchSrc) {
+          if(!userId){
+            toast("Trebuie sa fii inregistrat pentru a putea adauga la favorite!")
+          }
           if (recipeId && userId) {
             try {
               if (isFavorited) {

@@ -4,6 +4,7 @@ import MealPlanCard from './MealPlanCard';
 import { RecipeCardProps } from './SmallRecipeCard';
 import alimentaryPlanService, { AlimentaryPlan } from '../redux/alimentaryPlanService';
 import recipeService from '../redux/recipeService';
+import toast from 'react-hot-toast';
 
 type MealPlan = {
   day: string;
@@ -104,7 +105,9 @@ const MealPlanCarousel: React.FC<MealPlanCarouselProps> = ({ mode, planId }) => 
         response = await alimentaryPlanService.updatePlan(planId, mealPlanData);
       }
       console.log('Meal Plan Saved:', response);
+      toast('Ai salvat cu succes planul!')
     } catch (error) {
+      toast('A aparut o problema.')
       console.error('Failed to save meal plan:', error);
     }
   };

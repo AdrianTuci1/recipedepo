@@ -5,6 +5,7 @@ import { logout, updateUser } from '../redux/authSlice';
 import { getAuthToken, getAuthUser } from '../redux/storage';
 import '../styles/usersettings.scss'; // Import SCSS for styling
 import toast from 'react-hot-toast';
+import fetchWrapper from '../redux/fetchWrapper';
 
 interface User {
   id: string;
@@ -40,11 +41,12 @@ const UserSettings: React.FC = () => {
 
       if (!authUser) {
         setError('Unauthorized');
+        navigate('/')
         return;
       }
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/users/${authUser.id}`, {
+        const response = await fetchWrapper(`${import.meta.env.VITE_API_BASE_URL}/api/users/${authUser.id}`, {
           headers: {
             Authorization: `Bearer ${authToken}`
           }
@@ -85,10 +87,10 @@ const UserSettings: React.FC = () => {
       try {
         await dispatch(updateUser(user.id, formData) as any);
         setError('User information updated successfully');
-        toast.success('Datele au fost actualizate!')
+        toast('Datele au fost actualizate!')
       } catch (error: any) {
         setError(error.message);
-        toast.error('A aparut o problema.')
+        toast('A aparut o problema.')
       } finally {
         setIsLoading(false);
         setIsEditing({

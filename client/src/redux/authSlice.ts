@@ -5,6 +5,8 @@ import {
   setAuthUser, getAuthUser, removeAuthUser,
   setAuthRoles, getAuthRoles, removeAuthRoles 
 } from './storage';
+import { isTokenExpired } from './auth';
+import toast from 'react-hot-toast';
 
 interface User {
   id: string;
@@ -82,9 +84,10 @@ const setAuthStateFromStorage = (dispatch: any) => {
   const user = getAuthUser();
   const roles = getAuthRoles();
 
-  if (token && user) {
+  if (token && user && !isTokenExpired(token)) {
     dispatch(loginSuccess({ user, token, roles }));
   } else {
+    dispatch(logoutSuccess());
     dispatch(setLoading(false));
   }
 };
@@ -118,9 +121,11 @@ export const login = (username: string, password: string): AppThunk => async (di
       };
       const token = data.accessToken;
       dispatch(loginSuccess({ user: userData, token, roles: data.roles }));
+      toast('Te-ai conectat cu succes!')
     }
   } catch (error: any) {
     console.error('Login error:', error);
+    toast(`${error}`)
     dispatch(authFailure(error.message));
   }
 };
@@ -150,9 +155,11 @@ export const updateUser = (id: string, formData: FormData): AppThunk => async (d
   }
 };
 
+
 export const logout = (): AppThunk => (dispatch) => {
   dispatch(logoutSuccess());
   console.log('Logout succesful!')
+  toast('Te-ai deconectat cu succes!')
 };
 
 export default authSlice.reducer;

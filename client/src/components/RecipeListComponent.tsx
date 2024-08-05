@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import RecipeCard from './RecipeCard'; // Adjust the import path as necessary
 import ListRecipeCard from './ListRecipeCard'; // Import the new ListRecipeCard component
-import { RecipeCardProps } from './RecipeCard'; // Ensure the correct path
+import { RecipeCardProps } from '../types/RecipeCardProps'; // Ensure the correct path
 import InfoSectionComponent from './InfoSectionComponent';
 import { Filters } from '../types/Filters';
 import '../styles/maincontent.scss';
+import { fetchRecipes } from '../redux/recipeService';
 
 type RecipeListProps = {
   filters: Filters;
@@ -16,45 +17,36 @@ const RecipeListComponent: React.FC<RecipeListProps> = ({ filters, setFilters, t
   const [recipes, setRecipes] = useState<RecipeCardProps[]>([]);
   const [sortOption, setSortOption] = useState<string>('');
   const [isCardView, setIsCardView] = useState<boolean>(true);
+  const [offset, setOffset] = useState(0);
+  const limit = 30;
+
+  const loadRecipes = async (offset: number, limit: number, filters: Filters) => {
+    try {
+      const fetchedRecipes = await fetchRecipes(offset, limit, filters);
+      if (offset === 0) {
+        setRecipes(fetchedRecipes);
+      } else {
+        setRecipes((prevRecipes) => [...prevRecipes, ...fetchedRecipes]);
+      }
+      setOffset((prevOffset) => prevOffset + limit);
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchRecipes = async () => {
-      try {
-        const response = await fetch('http://localhost:8080/api/recipes/public');
-        const data = await response.json();
+    loadRecipes(0, limit, filters); // Load initial recipes with filters
+  }, [filters]);
 
-        if (Array.isArray(data)) {
-          setRecipes(data);
-        } else {
-          console.error('API response is not an array:', data);
-        }
-      } catch (error) {
-        console.error('Error fetching recipes:', error);
-      }
-    };
-
-    fetchRecipes();
-  }, []);
+  const loadMoreRecipes = async () => {
+    loadRecipes(offset, limit, filters);
+  };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOption(e.target.value);
   };
 
-  const filterRecipes = () => {
-    return recipes.filter(recipe => {
-      const matchesType = filters.type === 'toate' || recipe.type.toLowerCase() === filters.type.toLowerCase();
-      const matchesPrice = filters.price === null || recipe.price <= filters.price;
-      const matchesKitchen = filters.kitchen === '' || recipe.kitchen.toLowerCase() === filters.kitchen.toLowerCase();
-      const cookingTime = parseInt(recipe.cookingTime, 10) + parseInt(recipe.prepTime, 10);
-      const matchesCookingTime = filters.cookingTime === 120 || cookingTime <= filters.cookingTime;
-      const matchesOptions = filters.options.length === 0 || filters.options.every(option => recipe.options.includes(option));
-      const matchesDifficulty = filters.difficulty.length === 0 || filters.difficulty.includes(recipe.difficulty.toLowerCase());
-
-      return matchesType && matchesPrice && matchesKitchen && matchesCookingTime && matchesOptions && matchesDifficulty;
-    });
-  };
-
-  const sortedRecipes = filterRecipes().sort((a, b) => {
+  const sortedRecipes = [...recipes].sort((a, b) => {
     if (sortOption === 'price') return a.price - b.price;
     if (sortOption === 'cookingTime') return (parseInt(a.cookingTime, 10) + parseInt(a.prepTime, 10)) - (parseInt(b.cookingTime, 10) + parseInt(b.prepTime, 10));
     return 0;
@@ -64,7 +56,7 @@ const RecipeListComponent: React.FC<RecipeListProps> = ({ filters, setFilters, t
     if (Array.isArray(filters[key])) {
       return (filters[key] as string[]).length > 0;
     }
-    return filters[key] !== '' && filters[key] !== 120 && filters[key] !== null && filters[key] !== 'all';
+    return filters[key] !== '' && filters[key] !== 120 && filters[key] !== null && filters[key] !== 'toate';
   });
 
   const removeFilter = (filterName: keyof Filters, filterValue?: string) => {
@@ -126,9 +118,11 @@ const RecipeListComponent: React.FC<RecipeListProps> = ({ filters, setFilters, t
           ))}
         </div>
       </div>
+      <div className="load-more">
+        <button onClick={loadMoreRecipes} className='maimult'>Mai mult</button>
+      </div>
     </div>
   );
 };
 
 export default RecipeListComponent;
-

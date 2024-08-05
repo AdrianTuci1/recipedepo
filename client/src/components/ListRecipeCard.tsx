@@ -1,30 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { Clock2, Edit3, Trash2 } from 'lucide-react';
 import '../styles/listrecipecard.scss';
+import { RecipeCardProps } from '../types/RecipeCardProps';
 
-export interface RecipeCardProps {
-  id: string;
-  title: string;
-  imageUrl?: string;
-  cookingTime: string;
-  prepTime: string;
-  type: string;
-  options: string;
-  servings: number;
-  difficulty: string;
-  price: number;
-  kitchen: string;
-  otherKitchen?: string;
-  ingredients: string;
-  steps: string;
-  author: string;
-  likes: number; 
-  views: number;
-  commentsCount: number;
-  userId: string;
-  isPublic: boolean;
-  approved: boolean;
-}
 
 interface ListRecipeCardProps {
   recipe: RecipeCardProps;

@@ -145,13 +145,38 @@ exports.deleteAll = async (req, res) => {
   }
 };
 
-// Find all public Recipes
+
+// Find all public Recipes with filters and pagination
 exports.findAllPublic = async (req, res) => {
   try {
-    const recipes = await Recipe.findAll({ 
-      where: { isPublic: true, approved: true },
+    const offset = parseInt(req.query.offset) || 0;
+    const limit = parseInt(req.query.limit) || 30;
+    const { type, price, kitchen, cookingTime, options, difficulty } = req.query;
+
+    const whereClause = {
+      isPublic: true,
+      approved: true,
+    };
+
+    if (type && type !== 'toate') whereClause.type = type;
+    if (price) whereClause.price = { [Op.lte]: price };
+    if (kitchen) whereClause.kitchen = kitchen;
+    if (difficulty) whereClause.difficulty = { [Op.in]: difficulty.split(',') };
+    if (options) whereClause.options = { [Op.contains]: options.split(',') };
+
+    const recipes = await Recipe.findAll({
+      where: whereClause,
+      offset: offset,
+      limit: limit,
     });
-    res.send(recipes);
+
+    // Calculate total cooking time (cookingTime + prepTime) and filter if needed
+    const filteredRecipes = recipes.filter(recipe => {
+      const totalCookingTime = parseInt(recipe.cookingTime, 10) + parseInt(recipe.prepTime, 10);
+      return !cookingTime || totalCookingTime <= parseInt(cookingTime, 10);
+    });
+
+    res.send(filteredRecipes);
   } catch (error) {
     res.status(500).send({ message: error.message || "Some error occurred while retrieving public recipes." });
   }

@@ -208,3 +208,14 @@
   width: 120px;
 }
 
+.load-more{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-block: 50px ;
+  .maimult{
+    width: 300px;
+    padding: 5px;
+    cursor: pointer;
+  }
+}

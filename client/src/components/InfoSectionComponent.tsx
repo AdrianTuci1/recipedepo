@@ -35,7 +35,7 @@ const InfoSectionComponent: React.FC<InfoSectionProps> = ({
     <div className="info-section">
       <div className="type-ava">
         <h2>{recipeType.charAt(0).toUpperCase() + recipeType.slice(1)}</h2>
-        <h4>({sortedRecipes.length} Available)</h4>
+        <h4>({sortedRecipes.length} Disponibile)</h4>
       </div>
       <div className="filter-section">
         <div>Current Filters:</div>
@@ -50,7 +50,7 @@ const InfoSectionComponent: React.FC<InfoSectionProps> = ({
             ))}
         </div>
         {activeFilters.length > 0 && (
-          <button onClick={clearAllFilters}>Clear All Filters</button>
+          <button onClick={clearAllFilters}>Sterge toate filtrele</button>
         )}
       </div>
       <div className='bar-section'>

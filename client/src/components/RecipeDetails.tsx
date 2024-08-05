@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/retetapage.scss';
 import { CookingPot, Eye, MessagesSquare, User, Heart } from 'lucide-react';
-import { RecipeCardProps } from './RecipeCard';
+import { RecipeCardProps } from '../types/RecipeCardProps';
 import HoverImage from './HoverImage';
 import SocialSection from './SocialSection';
 import { incrementRecipeViews } from '../redux/commentService';
@@ -112,7 +112,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
         <div className="reteta-page">
           <div className="image-containe">
             <div className="image-wrape bs">
-              <img src={`http://localhost:8080${imageUrl}`} alt="" className="recipeimg" />
+              <img src={`${import.meta.env.VITE_API_BASE_URL}${imageUrl}`} alt="" className="recipeimg" />
             </div>
           </div>
           <div className="ingredients-container bd">
@@ -207,7 +207,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
             <div className="views icn sc"><Eye className="icon" /> {views}</div>
             <div className="comments icn sc"><MessagesSquare className="icon" /> {commentsCount}</div>
             <div className="likes icn sc"><Heart className="icon" /> {likes}</div>
-            <div className="username icn"><User className="icon" /> {author}</div>
+            <div className="username icn sc"><User className="icon" /> {author}</div>
           </div>
         </div>
         {isSocialSectionOpen && (

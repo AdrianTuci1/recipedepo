@@ -27,7 +27,7 @@ export const addFavorite = createAsyncThunk<Favorite, { userId: string; recipeId
     }
 
     try {
-      const response = await fetch('http://localhost:8080/api/favorites', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/favorites`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ export const removeFavorite = createAsyncThunk<Favorite, { userId: string; recip
     }
 
     try {
-      const response = await fetch('http://localhost:8080/api/favorites', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/favorites`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

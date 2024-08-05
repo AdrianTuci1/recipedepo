@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import RecipeDetails from '../components/RecipeDetails';
 import '../styles/retetapage.scss';
-import { RecipeCardProps } from '../components/RecipeCard';
+import { RecipeCardProps } from '../types/RecipeCardProps';
 
 function RetetaPage() {
   const [recipeData, setRecipeData] = useState<RecipeCardProps | null>(null);
@@ -13,7 +13,7 @@ function RetetaPage() {
   useEffect(() => {
     // Efectuați o solicitare API pentru a obține detaliile rețetei specifice
     // pe baza ID-ului din useParams
-    fetch(`http://localhost:8080/api/recipes/${recipeId}`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes/${recipeId}`)
       .then((response) => response.json())
       .then((data) => setRecipeData(data))
       .catch((error) => console.error('Eroare la încărcarea rețetei:', error));
@@ -27,7 +27,7 @@ function RetetaPage() {
   const handleDeleteClick = async () => {
     setIsDeleting(true); // Show loading state while deleting
     try {
-      const response = await fetch(`http://localhost:8080/api/recipes/${recipeId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes/${recipeId}`, {
         method: 'DELETE',
       });
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import RecipeCard, { RecipeCardProps } from './RecipeCard';
+import RecipeCard from './RecipeCard';
+import { RecipeCardProps } from '../types/RecipeCardProps';
 import '../styles/recipeslider.scss';
 
 const RecipeSlider: React.FC = () => {
@@ -11,7 +12,7 @@ const RecipeSlider: React.FC = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/recipes/top/favorites');
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes/top/favorites`);
         if (!response.ok) {
           throw new Error('Failed to fetch recipes');
         }

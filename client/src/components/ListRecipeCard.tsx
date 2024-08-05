@@ -51,7 +51,7 @@ function ListRecipeCard({ recipe, onEdit, onDelete }: ListRecipeCardProps) {
 
   const totalTime = parseInt(recipe.cookingTime, 10) + parseInt(recipe.prepTime, 10);
 
-  const imageUrl = `http://localhost:8080${recipe.imageUrl}`;
+  const imageUrl = `${import.meta.env.VITE_API_BASE_URL}${recipe.imageUrl}`;
 
   return (
     <div className="list-card">

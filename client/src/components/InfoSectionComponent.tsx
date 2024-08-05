@@ -63,9 +63,9 @@ const InfoSectionComponent: React.FC<InfoSectionProps> = ({
         <div className="sort-by">
           <div className="sort-label">Sorteaza:</div>
           <select value={sortOption} onChange={handleSortChange} className='sort-select'>
-            <option value="">None</option>
-            <option value="price">Price</option>
-            <option value="cookingTime">Cooking Time</option>
+            <option value="">initial</option>
+            <option value="price">Pret (crescator)</option>
+            <option value="cookingTime">Timp de gatit (crescator)</option>
           </select>
         </div>
         <div className="afisaza">

@@ -1,7 +1,5 @@
 import { getAuthToken } from "./storage";
 
-const API_URL = 'http://localhost:8080/api/favorites'; // Adjust the URL as needed
-
 // Define the response type for the favorite actions
 interface FavoriteResponse {
   success: boolean;
@@ -18,7 +16,7 @@ interface FavoriteRecipe {
 export const addFavorite = async (recipeId: string, userId: string): Promise<FavoriteResponse> => {
   try {
     const token = getAuthToken();
-    const response = await fetch(`${API_URL}/add`, {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/favorites/add`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,7 +37,7 @@ export const addFavorite = async (recipeId: string, userId: string): Promise<Fav
 export const removeFavorite = async (userId: string, recipeId: string): Promise<void> => {
   try {
     const token = getAuthToken();
-    const response = await fetch(`${API_URL}/remove`, {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/favorites/remove`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -63,7 +61,7 @@ export const removeFavorite = async (userId: string, recipeId: string): Promise<
 export const getUserFavorites = async (userId: string): Promise<FavoriteRecipe[]> => {
   try {
     const token = getAuthToken();
-    const response = await fetch(`${API_URL}/user/${userId}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/favorites/user/${userId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -83,7 +81,7 @@ export const getUserFavorites = async (userId: string): Promise<FavoriteRecipe[]
 export const isRecipeLikedByUser = async (userId: string, recipeId: string): Promise<{ liked: boolean }> => {
   try {
     const token = getAuthToken();
-    const response = await fetch(`${API_URL}/isLiked/${userId}/${recipeId}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/favorites/isLiked/${userId}/${recipeId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

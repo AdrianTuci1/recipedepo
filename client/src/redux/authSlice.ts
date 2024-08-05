@@ -95,7 +95,7 @@ export const initializeLoginState = (): AppThunk => (dispatch) => {
 
 export const login = (username: string, password: string): AppThunk => async (dispatch) => {
   try {
-    const response = await fetch('http://localhost:8080/api/auth/signin', {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/signin`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
@@ -128,7 +128,7 @@ export const login = (username: string, password: string): AppThunk => async (di
 export const updateUser = (id: string, formData: FormData): AppThunk => async (dispatch) => {
   try {
     const token = getAuthToken();
-    const response = await fetch(`http://localhost:8080/api/users/${id}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/users/${id}`, {
       method: 'PUT',
       body: formData,
       headers: {

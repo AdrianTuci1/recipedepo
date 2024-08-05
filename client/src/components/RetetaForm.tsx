@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { RecipeCardProps } from './RecipeCard';
+import { RecipeCardProps } from '../types/RecipeCardProps';
 import '../styles/retetaform.scss';
 
 interface RecipeFormProps {
@@ -63,7 +63,7 @@ const RetetaForm: React.FC<RecipeFormProps> = ({ initialData, onSubmit }) => {
       }
     }
     if (initialData.imageUrl) {
-      setImagePreviewUrl(`http://localhost:8080${initialData.imageUrl}`);
+      setImagePreviewUrl(`${import.meta.env.VITE_API_BASE_URL}${initialData.imageUrl}`);
     }
   }, [initialData]);
 

@@ -1,4 +1,4 @@
-import { RecipeCardProps } from "./RecipeCard";
+import { RecipeCardProps } from "../types/RecipeCardProps";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -24,7 +24,7 @@ function ReteteleMele({}: RecipeListProps) {
       const token = Cookies.get('auth_token');
 
       try {
-        const response = await fetch('http://localhost:8080/api/recipes/user/recipes', {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes/user/recipes`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
@@ -51,7 +51,7 @@ function ReteteleMele({}: RecipeListProps) {
     try {
       const token = Cookies.get('auth_token');
       const recipeId = id;
-      const response = await fetch(`http://localhost:8080/api/recipes/${recipeId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes/${recipeId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

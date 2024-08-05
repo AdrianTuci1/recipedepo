@@ -1,7 +1,5 @@
 import { getAuthToken } from './storage';
 
-const API_URL = 'http://localhost:8080/api';
-
 interface Comment {
   id: string;
   userId: string;
@@ -15,7 +13,7 @@ interface Comment {
 export const fetchComments = async (recipeId: string): Promise<Comment[]> => {
   try {
     const token = getAuthToken();
-    const response = await fetch(`${API_URL}/comments/${recipeId}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/comments/${recipeId}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -34,7 +32,7 @@ export const fetchComments = async (recipeId: string): Promise<Comment[]> => {
 export const addComment = async (recipeId: string, userId: string, content: string): Promise<Comment> => {
   try {
     const token = getAuthToken();
-    const response = await fetch(`${API_URL}/comments`, {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/comments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -55,7 +53,7 @@ export const addComment = async (recipeId: string, userId: string, content: stri
 export const deleteComment = async (commentId: string, userId: string): Promise<void> => {
   try {
     const token = getAuthToken();
-    const response = await fetch(`${API_URL}/comments/${commentId}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/comments/${commentId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -75,7 +73,7 @@ export const deleteComment = async (commentId: string, userId: string): Promise<
 
 export const incrementRecipeViews = async (recipeId: string): Promise<void> => {
   try {
-    const response = await fetch(`${API_URL}/recipes/${recipeId}/views`, {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes/${recipeId}/views`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

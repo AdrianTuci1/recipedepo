@@ -44,7 +44,7 @@ const UserSettings: React.FC = () => {
       }
 
       try {
-        const response = await fetch(`http://localhost:8080/api/users/${authUser.id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/users/${authUser.id}`, {
           headers: {
             Authorization: `Bearer ${authToken}`
           }
@@ -136,7 +136,7 @@ const UserSettings: React.FC = () => {
       <div className="user-settings-content">
         <div className="user-settings-image">
           <img
-            src={image ? URL.createObjectURL(image) : `http://localhost:8080${user.image}`}
+            src={image ? URL.createObjectURL(image) : `${import.meta.env.VITE_API_BASE_URL}${user.image}`}
             alt="Profile"
             className="profile-image"
           />

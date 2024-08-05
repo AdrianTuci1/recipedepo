@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { RecipeCardProps } from '../components/RecipeCard';
+import { RecipeCardProps } from '../types/RecipeCardProps';
 import RetetaForm from '../components/RetetaForm';
 import '../styles/retetaform.scss';
 import Cookies from 'js-cookie';
@@ -14,7 +14,7 @@ function EditeazaReteta() {
 
   useEffect(() => {
     // Make an API request to get the recipe details based on the ID from useParams
-    fetch(`http://localhost:8080/api/recipes/${recipeId}`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes/${recipeId}`)
       .then((response) => response.json())
       .then((data) => setRecipeData(data))
       .catch((error) => console.error('Error loading recipe:', error));
@@ -25,7 +25,7 @@ function EditeazaReteta() {
     console.log('Recipe ID:', recipeId);
     try {
       const token = Cookies.get('auth_token');
-      const response = await fetch(`http://localhost:8080/api/recipes/${recipeId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes/${recipeId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`

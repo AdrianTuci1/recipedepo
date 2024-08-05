@@ -3,7 +3,7 @@ import MealPlanCarousel from "./MealPlanCarusel"
 function PlanAlimentar() {
   return (
     <div>
-      <MealPlanCarousel />
+      <MealPlanCarousel mode="create"/>
     </div>
   )
 }

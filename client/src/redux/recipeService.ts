@@ -2,11 +2,10 @@
 import { RecipeCardProps } from '../types/RecipeCardProps';
 import { Filters } from '../types/Filters';
 
-const API_BASE_URL = 'http://localhost:8080/api';
 
 const getRecipe = async (id: string): Promise<RecipeCardProps> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/recipes/${id}`);
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes/${id}`);
     if (!response.ok) {
       throw new Error(`Failed to fetch recipe with ID ${id}`);
     }
@@ -31,7 +30,7 @@ export const fetchRecipes = async (offset: number, limit: number, filters: Filte
       difficulty: filters.difficulty.join(','),
     });
 
-    const response = await fetch(`http://localhost:8080/api/recipes/public?${query}`);
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes/public?${query}`);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }

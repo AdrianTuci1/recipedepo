@@ -1,6 +1,6 @@
 
 import RetetaForm from '../components/RetetaForm'
-import { RecipeCardProps } from '../components/RecipeCard';
+import { RecipeCardProps } from '../types/RecipeCardProps';
 import '../styles/retetaform.scss'
 import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
@@ -38,7 +38,7 @@ const initialRecipeData:RecipeCardProps = {
 
     try {
       const token = Cookies.get('auth_token');
-      const response = await fetch('http://localhost:8080/api/recipes', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes`, {
         method: 'POST',
         headers: { 
           'Authorization': `Bearer ${token}` 

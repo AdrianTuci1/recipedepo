@@ -19,7 +19,7 @@ const AdminApprovalTable: React.FC = () => {
     const token = Cookies.get('auth_token');
 
     try {
-      const response = await fetch('http://localhost:8080/api/recipes/admin/pending', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes/admin/pending`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -40,7 +40,7 @@ const AdminApprovalTable: React.FC = () => {
     const token = Cookies.get('auth_token');
 
     try {
-      const response = await fetch(`http://localhost:8080/api/recipes/${recipeId}/approve`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes/${recipeId}/approve`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -20,7 +20,7 @@ export interface AlimentaryPlan {
   }[];
 }
 
-const API_URL = 'http://localhost:8080/api/alimentaryPlans';
+const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/alimentaryPlans`;
 
 const alimentaryPlanService = {
   createPlan: async (plan: AlimentaryPlan) => {

@@ -154,10 +154,17 @@
     .social {
       grid-area: social;
       display: flex;
+      gap: 30px;
+      align-items: center;
+      justify-content: center;
         .icn{
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+        .sc{
+          width: fit-content;
+          gap: 5px;
         }
     }
   

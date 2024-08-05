@@ -31,7 +31,7 @@ import ViewMealPlanPage from './routes/ViewMealPlan';
 function App() {
   const dispatch = useDispatch();
   const loading = useSelector((state: RootState) => state.auth.loading);
-
+  
   useEffect(() => {
     dispatch(initializeLoginState() as any);
   }, [dispatch]);
